@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.apache.commons.lang3.ObjectUtils;
 
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.storage.file.FileBasedConfig;
@@ -60,7 +61,7 @@ public class GitUserMap implements Map<GitUserMap.Profile, String> {
 	private void setCustomProperty(String section, String subsection, String key, String value) {
 		// Don't save anything outside the purview of the git user model.
 		// Save changes only if necessary.
-		if (!getCustomProperty(section, subsection, key).equals(value)) {
+		if (!ObjectUtils.equals( getCustomProperty(section, subsection, key), value ) ) {
 			logger.info("git config --global user.{} {}", key, value);
 			getConfig().setString(section, subsection, key, value);
 			save();
