@@ -236,8 +236,9 @@ SSH_getPublicKey() {
     # If the public/private keypair doesn't exist, make it.
     if ! [[ -f ~/.ssh/id_rsa.pub ]]; then
         # Use default location, set no phassphrase, no questions asked
-        printf "\n" | ssh-keygen -t rsa -N '' 2> /dev/null > /dev/null
+        printf "\n" | ssh-keygen -t rsa -N '' 2>&1 > /dev/null
     fi
+
     cat ~/.ssh/id_rsa.pub
 }
 
