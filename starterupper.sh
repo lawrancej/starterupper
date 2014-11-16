@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#
 # Starter Upper: Setup git hosting for classroom use with minimal user interaction.
 
 # Configuration
@@ -62,7 +63,7 @@ Utility_fileOpen() {
 Utility_nonEmptyValueMatchesRegex() {
     local value="$1"; shift
     local regex="$1"
-    
+
     # First, check if value is empty
     if [[ -z "$value" ]]; then
         printf "false"
@@ -112,11 +113,11 @@ Interactive_setValue() {
     local value="$1"; shift
     local validation="$1"; shift
     local prompt="$1"; shift
-    local invalid="$1"; 
-    
+    local invalid="$1";
+
     # First, ask the user to confirm if the value we auto-guessed is correct
     Interactive_confirm "$value" "$validation" "$prompt"
-    
+
     # If the user wasn't okay with the default value, ask for the right one.
     if [[ 1 -eq $? ]]; then
         # Well, clearly the user didn't like the value
@@ -132,7 +133,7 @@ Interactive_setValue() {
         done
         # By now, the user entered something that is at least plausible
     fi
-    
+
     # Finally, set the key
     git config --global $key "$value"
 }
@@ -163,7 +164,7 @@ Valid_fullName() {
 User_getFullName() {
     # First, look in the git configuration
     local fullName="$(git config user.name)"
-    
+
     # Ask the OS for the user's full name, if it's not valid
     if [[ "$(Valid_fullName "$fullName")" == "false" ]]; then
         local username="$(User_getUsername)"
@@ -191,7 +192,7 @@ EOF
                 ;;
             *) fullName="" ;;
         esac
-        
+
         # If we got a legit full name from the OS, update the git configuration to reflect it.
         if [[ "$(Valid_fullName "$fullName")" == "true" ]]; then
             git config --global user.name "$fullName"
@@ -235,8 +236,9 @@ SSH_getPublicKey() {
     # If the public/private keypair doesn't exist, make it.
     if ! [[ -f ~/.ssh/id_rsa.pub ]]; then
         # Use default location, set no phassphrase, no questions asked
-        printf "\n" | ssh-keygen -t rsa -N '' 2> /dev/null > /dev/null
+        printf "\n" | ssh-keygen -t rsa -N '' 2>&1 > /dev/null
     fi
+
     cat ~/.ssh/id_rsa.pub
 }
 
@@ -261,7 +263,7 @@ Git_configureRepository() {
     local upstreamLogin="$3"
     local origin="git@$hostDomain:$originLogin/$REPO.git"
     local upstream="https://$hostDomain/$upstreamLogin/$REPO.git"
-    
+
     # It'll go into the user's home directory
     cd ~
     if [ ! -d $REPO ]; then
@@ -374,7 +376,7 @@ Github_getDiscount() {
 # Ask the user if they have an account yet, and guide them through onboarding
 Github_join() {
     local hasAccount="n"
-    
+
     # If we don't have their github login, ...
     if [[ -z "$(git config --global github.login)" ]]; then
         # Ask if they're on github yet
@@ -388,7 +390,7 @@ Github_join() {
             echo "2. Open your email inbox and verify your school email address."
             echo "3. Request an individual student educational discount."
             echo ""
-            
+
             echo "Press enter to join Github."
             Interactive_fileOpen "https://github.com/join"
         else
@@ -396,7 +398,7 @@ Github_join() {
             echo "2. Request an individual student educational discount."
             echo ""
         fi
-        
+
         Github_verifyEmail
         Github_getDiscount
 
@@ -542,13 +544,13 @@ Github_createPrivateRepo() {
         Github_manualCreatePrivateRepo
         return 0
     fi
-    
+
     local githubLogin="$(Host_getUsername "github")"
     # Don't create a private repo if it already exists
     if [[ -z $(Github_invoke GET "/repos/$githubLogin/$REPO" "" | grep "Not Found") ]]; then
         return 0
     fi
-    
+
     echo "Creating private repository $githubLogin/$REPO on Github..."
     local result="$(Github_invoke POST "/user/repos" "{\"name\": \"$REPO\", \"private\": true}")"
     if [[ ! -z $(echo $result | grep "HTTP/... 4.." ) ]]; then
@@ -560,7 +562,7 @@ Github_createPrivateRepo() {
         echo "* Apply for the individual student educational discount if you haven't already done so."
         echo "* If you were already a Github user, free up some private repositories."
         echo
-        
+
         Github_verifyEmail
         Github_getDiscount
         Github_manualCreatePrivateRepo
@@ -615,7 +617,7 @@ Test() {
     echo $fullname
     echo $username
     echo $email
-    
+
     echo "Valid email: $(Valid_email "LAWRANCEJ@WIT.EDU")"
 
     verified=$(Utility_nonEmptyValueMatchesRegex "$fullname" "")
@@ -675,19 +677,19 @@ gitlab_authenticate() {
     echo "Copy your private token from GitLab"
     sleep 2
     file_open "https://gitlab.com/profile/account"
-    
+
     read -p "Paste your private token here: " token < /dev/tty
-    
+
     while [[ ! -z "$(curl https://gitlab.com/api/v3/user?private_token=$token | grep '401 Unauthorized')" ]]; do
         echo "ERROR: Invalid private token."
-        read -p "Paste your private token here: " token < /dev/tty    
+        read -p "Paste your private token here: " token < /dev/tty
     done
     git config --global gitlab.token "$token"
 }
 
 gitlab_setup_ssh() {
     gitlab_authenticate
-    
+
     # Check if public key is shared
     publickey_shared=$(curl https://gitlab.com/api/v3/user/keys?private_token=$(git config --global gitlab.token) 2> /dev/null | grep $(cat ~/.ssh/id_rsa.pub | sed -e 's/ssh-rsa \(.*\)=.*/\1/'))
     # If not, share it
@@ -701,7 +703,7 @@ gitlab_setup_ssh() {
 # Setup Gravatar
 Gravatar_setup() {
     local hash="$(printf "$1" | md5sum | tr -d ' *-')"
-    local gravatar="$(curl -I "http://www.gravatar.com/avatar/$hash?d=404" 2> /dev/null)" 
+    local gravatar="$(curl -I "http://www.gravatar.com/avatar/$hash?d=404" 2> /dev/null)"
     # If the user has no Gravatar, ...
     if [[ -z $(echo "$gravatar" | grep "HTTP/... 2.." ) ]]; then
         # Nag them to join
@@ -710,7 +712,7 @@ Gravatar_setup() {
         echo "Press enter to see your default profile picture."
         Interactive_fileOpen ~/.gravatar.png
         rm -f ~/.gravatar.png
-        
+
         echo "Press enter to sign up for Gravatar with your school email address."
         echo "Take a picture with your webcam or upload a recent photo of yourself."
         echo "$(Utility_paste "$(User_getEmail)" "your email address")"
