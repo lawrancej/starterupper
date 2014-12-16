@@ -55,7 +55,8 @@
   .github-repository {display: none;}
   .github-key {display: none;}
   .git-clone {display: none;}
-  .git-remote {display: none;}
+  .git-origin {display: none;}
+  .git-upstream {display: none;}
   .git-name {display: none;}
   .git-email {display: none;}
   .git-push {display: none;}
@@ -490,18 +491,18 @@
             <i class="fa-li fa fa-lg fa-folder-open fail no-git-clone"></i>
             <code>cd REPOSITORY</code></li>
             <li>
-            <i class="fa-li fa fa-lg fa-check success git-remote"></i>
-            <i class="fa-li fa fa-lg fa-chain-broken fail no-git-remote"></i>
-            <code>git remote rm origin</code>
-            </li>
-            <li>
-            <i class="fa-li fa fa-lg fa-check success git-remote"></i>
-            <i class="fa-li fa fa-lg fa-chain fail no-git-remote"></i>
+            <i class="fa-li fa fa-lg fa-check success git-upstream"></i>
+            <i class="fa-li fa fa-lg fa-chain fail no-git-upstream"></i>
             <code>git remote add upstream https://github.com/INSTRUCTOR_GITHUB/REPOSITORY.git</code>
             </li>
             <li>
-            <i class="fa-li fa fa-lg fa-check success git-push"></i>
-            <i class="fa-li fa fa-lg fa-chain fail no-git-push"></i>
+            <i class="fa-li fa fa-lg fa-check success git-origin"></i>
+            <i class="fa-li fa fa-lg fa-chain-broken fail no-git-origin"></i>
+            <code>git remote rm origin</code>
+            </li>
+            <li>
+            <i class="fa-li fa fa-lg fa-check success git-origin"></i>
+            <i class="fa-li fa fa-lg fa-chain fail no-git-origin"></i>
             <code id="origin-code">git remote add origin git@github.com:USER_NAME/REPOSITORY.git</code>
             </li>
             <li>

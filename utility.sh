@@ -354,19 +354,13 @@ git::clone_upstream() {
 }
 
 # Configure remotes
-git::configureRepository() {
-    local hostDomain="$1"
-    local originLogin="$2"
-    local upstreamLogin="$3"
+git::configure_remotes() {
+    local hostDomain="$1"; shift
+    local originLogin="$1"; shift
+    local upstreamLogin="$1";
     local origin="git@$hostDomain:$originLogin/$REPO.git"
     local upstream="https://$hostDomain/$upstreamLogin/$REPO.git"
     
-    # It'll go into the user's home directory
-    cd ~
-    if [ ! -d $REPO ]; then
-        git clone "$upstream"
-    fi
-
     # Configure remotes
     cd ~/$REPO
     git remote rm origin 2> /dev/null
@@ -375,6 +369,7 @@ git::configureRepository() {
     git remote add upstream "$upstream"
     git config branch.master.remote origin
     git config branch.master.merge refs/heads/master
+    git remote | tr '\n' ' '
 }
 
 # Show the local and remote repositories
