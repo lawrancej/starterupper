@@ -389,8 +389,8 @@ git::showRepositories() {
 # 3. SSH public key was shared with host
 # 4. SSH is working
 # 5. The private repo exists
-git::pushRepo() {
+git::push() {
     cd ~/$REPO
-    git fetch --all
-    git push -u origin master # 2> /dev/null
+    git push -u origin master 2> /dev/null > /dev/null
+    utility::lastSuccess
 }

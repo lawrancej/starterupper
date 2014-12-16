@@ -167,6 +167,7 @@ function setupLocal() {
             controller.update('git-clone', response.clone);
             controller.update('git-origin', /origin/.test(response.remotes));
             controller.update('git-upstream', /upstream/.test(response.remotes));
+            controller.update('git-push', response.push);
 //            alert("hi" + JSON.stringify(response));
             //console.log(JSON.stringify(response));
 //            controller.update('gravatar-account',true);

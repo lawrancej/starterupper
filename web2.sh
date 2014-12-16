@@ -110,7 +110,8 @@ app::setup() {
     "email": "$(user::setEmail "$user_email")",
     "github": "$(github::set_login "$github_login")",
     "clone": $(utility::asTrueFalse $(git::clone_upstream "github.com" "$INSTRUCTOR_GITHUB")),
-    "remotes": "$(git::configure_remotes "github.com" "$(git config --global github.login)" "$INSTRUCTOR_GITHUB")"
+    "remotes": "$(git::configure_remotes "github.com" "$(git config --global github.login)" "$INSTRUCTOR_GITHUB")",
+    "push": $(utility::asTrueFalse $(git::push))
 }
 EOF
             # The response needs to set variables: name, email, git-clone, git-push
