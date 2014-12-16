@@ -73,7 +73,7 @@ app::browser() {
     local request="$1"
     local agent="$(request::lookup "$request" "User-Agent")"
     case "$agent" in
-        *MSIE* | *Trident* ) # Internet explorer
+        *MSIE* | *Trident* )
             server::send_string ".firefox, .chrome {display: none;}" "browser.css" ;;
         *Firefox* )
             server::send_string ".chrome, .msie {display: none;}" "browser.css" ;;
@@ -85,17 +85,19 @@ app::browser() {
 # Setup local repositories
 app::setup() {
     local request="$1"
+    local response=""
     case "$(request::method "$request")" in
         # Respond to preflight request
         "OPTIONS" )
-            # response should be a thing we build up, with the status, headers, and the send-off
-            # NOT something we do manually
-            echo -n -e "HTTP/1.1 204 No Content\r\nDate: $(date '+%a, %d %b %Y %T %Z')\r\nAccess-Control-Allow-Origin: *\r\nAccess-Control-Allow-Methods: GET, POST\r\nAccess-Control-Allow-Headers: $(request::lookup "$request" "Access-Control-Request-Headers")\r\nServer: Starter Upper\r\n\r\n"
+            response="$(response::new "204 No Content")"
+            response="$(response::add_header "$response" "Access-Control-Allow-Origin: *")"
+            response="$(response::add_header "$response" "Access-Control-Allow-Methods: GET, POST")"
+            response="$(response::add_header "$response" "Access-Control-Allow-Headers: $(request::lookup "$request" "Access-Control-Request-Headers")")"
+            response::send "$response"
             echo "SENT RESPONSE" >&2
             ;;
         # Get that glorious data from the user and do what we set out to accomplish
         "POST" )
-            echo "hi" >&2
             local data="$(json::unpack "$(request::payload "$request")")"
             local github_login="$(json::lookup "$data" "github.login")"
             local user_name="$(json::lookup "$data" "user.name")"
@@ -103,16 +105,15 @@ app::setup() {
             # Git configuration
             
             read -r -d '' response <<-EOF
-            {
-                "name": $(utility::asTrueFalse $(user::setFullName "$user_name")),
-                "email": $(utility::asTrueFalse $(user::setEmail "$user_email")),
-            }
+{
+    "name": "$(user::setFullName "$user_name")",
+    "email": "$(user::setEmail "$user_email")",
+    "github": "$(github::set_login "$github_login")",
+    "clone": $(utility::asTrueFalse $(git::clone_upstream "github.com" "$INSTRUCTOR_GITHUB"))
+}
 EOF
-            
-            # Github configuration
-            github::set_login "$github_login"
-            
-            # The response needs to set variables: git-config, git-clone, git-push
+            # The response needs to set variables: name, email, git-clone, git-push
+            server::send_string "$response" "response.json"
             ;;
         # If we get here, something terribly wrong has happened...
         * )

@@ -55,7 +55,9 @@
   .github-repository {display: none;}
   .github-key {display: none;}
   .git-clone {display: none;}
-  .git-config {display: none;}
+  .git-remote {display: none;}
+  .git-name {display: none;}
+  .git-email {display: none;}
   .git-push {display: none;}
   .no-setup-complete {display: none;}
   
@@ -461,21 +463,21 @@
         </header>
         <div class="clear"></div>
         <div class="grid_2 subheading">
-            Configure git<br style="margin-bottom: 22px;" />
-            Clone upstream<br style="margin-bottom: 22px;"/>
-            Configure remotes<br style="margin-bottom: 42px;"/>
-            Push to origin
+            <p style="margin-bottom: 22px;">Configure git</p>
+            <p style="margin-bottom: 22px;">Clone upstream</p>
+            <p style="margin-bottom: 42px;">Configure remotes</p>
+            <p>Push to origin</p>
         </div>
         <div class="grid_10">
           <ul class="fa-ul" style="margin-left: 0px; font-size: 10pt;">
             <li>
-            <i class="fa-li fa fa-lg fa-check success git-config"></i>
-            <i class="fa fa-li fa-lg fa-user fail no-git-config"></i>
+            <i class="fa-li fa fa-lg fa-check success git-name"></i>
+            <i class="fa fa-li fa-lg fa-user fail no-git-name"></i>
             <code id="git-config-name">git config --global user.name "FULL_NAME"</code>
             </li>
             <li>
-            <i class="fa-li fa fa-lg fa-check success git-config"></i>
-            <i class="fa fa-envelope fa-li fa-lg fail no-git-config"></i><code
+            <i class="fa-li fa fa-lg fa-check success git-email"></i>
+            <i class="fa fa-envelope fa-li fa-lg fail no-git-email"></i><code
             id="git-config-email">git config --global user.email USER_EMAIL</code>
             </li>
             <li>
@@ -488,13 +490,13 @@
             <i class="fa-li fa fa-lg fa-folder-open fail no-git-clone"></i>
             <code>cd REPOSITORY</code></li>
             <li>
-            <i class="fa-li fa fa-lg fa-check success git-clone"></i>
-            <i class="fa-li fa fa-lg fa-chain-broken fail no-git-clone"></i>
+            <i class="fa-li fa fa-lg fa-check success git-remote"></i>
+            <i class="fa-li fa fa-lg fa-chain-broken fail no-git-remote"></i>
             <code>git remote rm origin</code>
             </li>
             <li>
-            <i class="fa-li fa fa-lg fa-check success git-clone"></i>
-            <i class="fa-li fa fa-lg fa-chain fail no-git-clone"></i>
+            <i class="fa-li fa fa-lg fa-check success git-remote"></i>
+            <i class="fa-li fa fa-lg fa-chain fail no-git-remote"></i>
             <code>git remote add upstream https://github.com/INSTRUCTOR_GITHUB/REPOSITORY.git</code>
             </li>
             <li>

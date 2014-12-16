@@ -158,11 +158,20 @@ function setupLocal() {
             "user.email": model.email(),
         }),
         success: function(response) {
-            alert("hi");
+            if (response.name == model.name()) {
+                controller.update('git-name',true);
+            }
+            if (response.email == model.email()) {
+                controller.update('git-email',true);
+            }
+            controller.update('git-clone', response.clone);
+//            alert("hi" + JSON.stringify(response));
             //console.log(JSON.stringify(response));
 //            controller.update('gravatar-account',true);
         },
         error: function(response) {
+            alert("boo");
+            alert(JSON.stringify(response));
         }
     });
 

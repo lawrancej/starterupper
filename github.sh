@@ -5,11 +5,13 @@ source utility.sh
 # Github non-interactive functions
 # ---------------------------------------------------------------------
 
+# Set github login and print it back out
 github::set_login() {
     local login="$1"
     if [[ $(github::validUsername "$login") ]]; then
         git config --global github.login "$login"
     fi
+    git config --global github.login
 }
 
 # Helpers

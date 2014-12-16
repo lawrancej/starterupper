@@ -129,6 +129,7 @@ utility::MIMEType() {
         *.png ) printf "image/png" ;;
         *.svg ) printf "image/svg+xml" ;;
         *.pdf ) printf "application/pdf" ;;
+        *.json ) printf "application/json" ;;
         * ) printf "application/octet-stream" ;;
     esac
 }
@@ -221,12 +222,13 @@ valid::fullName() {
     utility::nonEmptyValueMatchesRegex "$fullName" "\w+ \w+"
 }
 
-# Set the full name, and return whether we were able to set it
+# Set the full name, and return the name that was set
 user::setFullName() {
     local fullName="$1"
     if [[ $(valid::fullName "$fullName") ]]; then
         git config --global user.name "$fullName"
     fi
+    git config --global user.name
 }
 
 # Get the user's full name (Firstname Lastname); defaults to OS-supplied full name
@@ -290,11 +292,13 @@ user::getEmail() {
     printf "$email"
 }
 
+# Set email for the user and return email stored in git
 user::setEmail() {
     local email="$1"
     if [[ $(valid::email "$email") ]]; then
         git config --global user.email "$email"
     fi
+    git config --global user.email
 }
 
 # Get the domain name out of the user's email address
@@ -334,7 +338,22 @@ Host_getUsername() {
 # Git
 # ---------------------------------------------------------------------
 
-# Clone repository and configure remotes
+# Clone/fetch upstream
+git::clone_upstream() {
+    local host="$1"; shift
+    local upstream="$1"
+    # It'll go into the user's home directory
+    cd ~
+    if [ ! -d $REPO ]; then
+        git clone "https://$host/$upstream/$REPO.git" > /dev/null
+    else
+        cd $REPO
+        git fetch --all > /dev/null
+    fi
+    utility::lastSuccess
+}
+
+# Configure remotes
 git::configureRepository() {
     local hostDomain="$1"
     local originLogin="$2"

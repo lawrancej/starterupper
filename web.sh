@@ -183,12 +183,12 @@ server::send_file() {
 # Send string with HTTP response headers
 server::send_string() {
     local str="$1"; shift
-    local type="$1"
+    local type="$1"; shift
     local response="$(response::new "200 OK")"
     response="$(response::add_string_headers "$response" "$str" "$(utility::MIMEType $type)")"
+    response="$response\r\nAccess-Control-Allow-Origin: *"
     response::send "$response"
     echo "$str"
-#    echo "SENT $str" >&2
 }
 
 # Listen for requests
