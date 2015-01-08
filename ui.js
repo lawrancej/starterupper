@@ -173,8 +173,8 @@ function setupLocal() {
 //            controller.update('gravatar-account',true);
         },
         error: function(response) {
-            alert("boo");
-            alert(JSON.stringify(response));
+            console.log(JSON.stringify(response));
+            alert("Local server not responding.");
         }
     });
 
