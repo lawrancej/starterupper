@@ -144,6 +144,7 @@ app::router() {
     esac
 }
 
+cd ~
 app::make_index
 utility::fileOpen temp.html > /dev/null
 server::start "app::router"

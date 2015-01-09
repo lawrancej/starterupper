@@ -216,6 +216,13 @@ ssh::connected() {
     fi
 }
 
+# Add host to known hosts
+ssh::add_host() {
+    local host="$1"
+    ssh-keyscan -t rsa "$1" 2>&1 | sort -u - ~/.ssh/known_hosts > ~/.ssh/tmp_hosts
+    cat ~/.ssh/tmp_hosts >> ~/.ssh/known_hosts
+}
+
 # User functions
 # ---------------------------------------------------------------------
 
@@ -241,7 +248,9 @@ valid::fullName() {
 user::setFullName() {
     local fullName="$1"
     if [[ $(valid::fullName "$fullName") ]]; then
-        git config --global user.name "$fullName"
+        if [[ "$fullName" != "The argument 'getfullname.ps1' to the -File parameter does not exist. Provide the path to an existing '.ps1' file as an argument to the -File parameter." ]]; then
+            git config --global user.name "$fullName"
+        fi
     fi
     git config --global user.name
 }
@@ -403,9 +412,11 @@ git::showRepositories() {
 # 2. The project host username was properly set
 # 3. SSH public key was shared with host
 # 4. SSH is working
-# 5. The private repo exists
+# 5. SSH key is in known_hosts
+# 6. The private repo exists
 git::push() {
     cd ~/$REPO
+    ssh::add_host github.com
     git push -u origin master 2> /dev/null > /dev/null
     utility::lastSuccess
 }
@@ -1206,6 +1217,7 @@ app::router() {
     esac
 }
 
+cd ~
 printf "Please wait, gathering information..." >&2
 app::make_index
 utility::fileOpen temp.html > /dev/null
