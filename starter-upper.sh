@@ -191,7 +191,9 @@ utility::nonEmptyValueMatchesRegex() {
 
 # Configure our keypair and add known hosts keys
 ssh::configure() {
+    # Just in case they've never used SSH before...
     mkdir -p ~/.ssh
+    
     # If our public/private keypair doesn't exist, make it.
     if ! [[ -f ~/.ssh/id_rsa.pub ]]; then
         # Use default location, set no phassphrase, no questions asked
@@ -206,7 +208,6 @@ ssh::configure() {
 
 # Get the user's public key
 ssh::getPublicKey() {
-    ssh::configure
     cat ~/.ssh/id_rsa.pub | sed s/==.*$/==/ # Ignore the trailing comment
 }
 
@@ -325,27 +326,6 @@ user::setEmail() {
         git config --global user.email "$email"
     fi
     git config --global user.email
-}
-
-# Get the domain name out of the user's email address
-user::getEmailDomain() {
-    printf "$(user::getEmail)" | sed 's/.*[@]//'
-}
-
-# Is the school valid?
-valid::school() {
-    local school="$1"
-    utility::nonEmptyValueMatchesRegex "$school" "\w+"
-}
-
-# Get the user's school from their email address
-user::getSchool() {
-    local school="$(git config --global user.school)"
-    Acquire_software
-    if [[ ! "$(utility::nonEmptyValueMatchesRegex "$school" "\w+")" ]]; then
-        school="$(echo -e "$(user::getEmailDomain)\r\n" | nc whois.educause.edu 43 | sed -n -e '/Registrant:/,/   .*/p' | sed -n -e '2,2p' | sed 's/^[ ]*//')"
-    fi
-    printf "$school"
 }
 
 # Generic project host configuration functions
@@ -626,7 +606,7 @@ server::respond() {
     done
 }
 
-Acquire_netcat() {
+server::get_netcat() {
     local netcat=""
     # Look for netcat
     for program in "nc" "ncat" "netcat"; do
@@ -645,18 +625,11 @@ Acquire_netcat() {
     printf $netcat
 }
 
-server::works() {
-    local nc=$(Acquire_netcat)
-    "$nc" -l 8080 &
-    sleep 10
-    echo "works" > /dev/tcp/localhost/8080
-}
-
 # Start the web server, using the supplied routing function
 server::start() {
     local routes="$1"
     pipe::new "$PIPE"
-    local nc=$(Acquire_netcat)
+    local nc=$(server::get_netcat)
     
     server::respond "$routes" | "$nc" -k -l 8080 | server::listen
 }
@@ -716,79 +689,33 @@ github::validUsername() {
     fi
 }
 
-# Are we logged into Github?
-github::loggedIn() {
-    if [[ -n "$(git config --global github.token)" ]]; then
-        utility::success
-    else
-        utility::fail
-    fi    
-}
-
-# Did the user add their email to the Github account?
-github::emailAdded() {
-    local email="$1"
-    local emails="$(github::invoke GET "/user/emails" "" | tr '\n}[]{' ' \n   ')"
-    if [[ -z $(echo "$emails" | grep "$email") ]]; then
-        utility::fail
-    else
-        utility::success
-    fi
-}
-
 # Commands
-
-# Log out of Github
-github::logout() {
-    git config --global --unset github.login
-    git config --global --unset github.token
-}
-
-# Add email to Github account, if not already added
-# Even though this adds email programmatically, Github will not send a verification email.
-github::addEmail() {
-    local email="$1"
-    if [[ ! $(github::emailAdded "$email") ]]; then
-        github::invoke POST "/user/emails" "[\"$email\"]" > /dev/null
-    fi
-}
 
 # Github CLI-interactive functions
 # ---------------------------------------------------------------------
 
 # Share the public key
-github::sharePublicKey() {
+# Fail if the key isn't shared or we can't connect.
+github::connected() {
     local githubLogin="$(Host_getUsername "github")"
-    # If authentication failed, degrade gracefully
-    if [[ -z "$(git config --global github.token)" ]]; then
-        echo "Press enter to open https://github.com/settings/ssh to share your public SSH key with Github."
-        echo "On that page, click Add SSH Key, then enter these details:"
-        echo "Title: $(hostname)"
-        echo "Key: $(Interactive_paste "$(ssh::getPublicKey)" "your public SSH key")"
-        Interactive_fileOpen "https://github.com/settings/ssh"
-    # Otherwise, use the API
-    else
-        # Check if public key is shared
-        local publickeyShared=$(curl -i https://api.github.com/users/$githubLogin/keys 2> /dev/null)
-        # If not shared, share it
-        if [[ -z $(echo "$publickeyShared" | grep $(ssh::getPublicKey | sed -e 's/ssh-rsa \(.*\)=.*/\1/')) ]]; then
-            echo "Sharing public key..."
-            github::invoke POST "/user/keys" "{\"title\": \"$(hostname)\", \"key\": \"$(ssh::getPublicKey)\"}" > /dev/null
-        fi
+    # Check if public key is shared
+    local publickeyShared=$(curl -i https://api.github.com/users/$githubLogin/keys 2> /dev/null)
+    # If not shared, share it
+    if [[ -z $(echo "$publickeyShared" | grep $(ssh::getPublicKey | sed -e 's/ssh-rsa \(.*\)=.*/\1/')) ]]; then
+        return 1
     fi
     # Test SSH connection on default port (22)
     if [[ ! $(ssh::connected "github.com") ]]; then
-        echo "Your network has blocked port 22; trying port 443..."
         printf "Host github.com\n  Hostname ssh.github.com\n  Port 443\n" >> ~/.ssh/config
         # Test SSH connection on port 443
         if [[ ! $(ssh::connected "github.com") ]]; then
-            echo "WARNING: Your network has blocked SSH."
-            ssh_works=false
+            return 1
         fi
     fi
+    return 0
 }
 
-# Add collaborators
+# Add collaborators (move to web front-end)
 github::addCollaborators() {
     cd ~/$REPO
     for repository in $(github::invoke GET "/user/repos?type=member\&sort=created\&page=1\&per_page=100" "" | grep "full_name.*$REPO" | sed s/.*full_name....// | sed s/..$//); do
@@ -819,28 +746,28 @@ app::index() {
     
     echo "$(request::payload "$request")" >&2
 #    printf "$(request::query "$request")" >&2
-    local email
     
     request::post_form_data "$request" | while read parameter; do
         local key="$(parameter::key "$parameter")"
         local value="$(parameter::value "$parameter")"
         case "$key" in
             "user.name" )
-                user::setFullName "$value"
+                user::setFullName "$value" > /dev/null
                 ;;
             "user.email" )
-                email="$value"
-                user::setEmail "$value"
-                github::addEmail "$value"
+                user::setEmail "$value" > /dev/null
                 ;;
-#            "github.login" )
-#                Github
+            "github.login" )
+                github::set_login "$value" > /dev/null
+                ;;
         esac
     done
     
+    git::configure_remotes "github.com" "$(git config --global github.login)" "$INSTRUCTOR_GITHUB" > /dev/null
+    git::push > /dev/null
+    
     app::make_index
     server::send_file "temp.html"
-    rm temp.html
 }
 
 # Return the browser to the browser for disabled JavaScript troubleshooting
@@ -894,8 +821,7 @@ EOF
             ;;
         # If we get here, something terribly wrong has happened...
         * )
-            echo "the request was '$request'" >&2
-            echo "$(request::method "$request")" >&2
+            return 1
             ;;
     esac
 }
@@ -929,6 +855,7 @@ main() {
     
     # Make web page
     printf "Please wait, gathering information..."
+    ssh::configure
     app::make_index
     echo -e "                                      [\e[1;32mOK\e[0m]"
     
@@ -942,7 +869,7 @@ main() {
     echo "Opening $(app::url) in a web browser."
     utility::fileOpen temp.html
 
-    echo -e "Starting local web server at http://localhost:8080...                      [\e[1;32mOK\e[0m]" >&2
+    echo -e "Starting local web server at http://localhost:8080...                      [\e[1;32mOK\e[0m]"
     server::start "app::router"
     
     # Go back where we were
@@ -950,11 +877,3 @@ main() {
 }
 
 main
-
-
-# if [[ "$(utility::fileOpen http://localhost:8080)" ]]; then
-    # echo -e "Opened web browser to http://localhost:8080                                [\e[1;32mOK\e[0m]" >&2
-# else
-    # echo -e "Please open web browser to http://localhost:8080              [\e[1;32mACTION REQUIRED\e[0m]" >&2
-# fi
-
