@@ -24,7 +24,7 @@ readonly ARGS="$@"
 # Print out the size of the file
 utility::fileSize() {
     local file="$1"
-    local theSize="$(du -b "$file" | cut -f1)"
+    local theSize="$(wc -c "$file" | awk '{print $1}' )"
     if [[ -z "$theSize" ]]; then
         theSize="0"
     fi
@@ -103,7 +103,7 @@ pipe::write() {
     # If we got a real pipe, the pipe will wait, but if we got a fake pipe, ...
     if [[ ! -p "$pipe" ]]; then
         # We need to wait for the other side to read
-        while [[ "0" != "$(utility::fileSize "$pipe")" ]]; do
+        while [[ -s "$pipe" ]]; do
             sleep 1
         done
     fi
@@ -121,7 +121,7 @@ pipe::read() {
     # Windows users can't have nice things, as usual...
     elif [[ -f "$pipe" ]]; then
         # Wait for the other side to write
-        while [[ "0" == "$(utility::fileSize "$pipe")" ]]; do
+        while [[ ! -s "$pipe" ]]; do
             sleep 1
         done
         read -r line < "$pipe"
@@ -675,13 +675,8 @@ github::validUsername() {
     local username="$1"
     # If the name is legit, ...
     if [[ $(utility::nonEmptyValueMatchesRegex "$username" "^[0-9a-zA-Z][0-9a-zA-Z-]*$") ]]; then
-        # And unavailable, ...
-        if [[ ! $(github::nameAvailable $username) ]]; then
-            # It's valid
-            utility::success
-        else
-            utility::fail
-        fi
+        # It's valid
+        utility::success
     else
         # Otherwise, it's not valid
         utility::fail
@@ -790,15 +785,17 @@ app::setup() {
     case "$(request::method "$request")" in
         # Respond to preflight request
         "OPTIONS" )
+            printf "Sending preflight..." >&2
             response="$(response::new "204 No Content")"
             response="$(response::add_header "$response" "Access-Control-Allow-Origin: *")"
             response="$(response::add_header "$response" "Access-Control-Allow-Methods: GET, POST")"
             response="$(response::add_header "$response" "Access-Control-Allow-Headers: $(request::lookup "$request" "Access-Control-Request-Headers")")"
             response::send "$response"
-            echo "SENT RESPONSE" >&2
+            echo -e "                                                       [\e[1;32mOK\e[0m]" >&2
             ;;
         # Get that glorious data from the user and do what we set out to accomplish
         "POST" )
+            printf "Responding to request..." >&2
             local data="$(json::unpack "$(request::payload "$request")")"
             local github_login="$(json::lookup "$data" "github.login")"
             local user_name="$(json::lookup "$data" "user.name")"
@@ -817,6 +814,7 @@ app::setup() {
 EOF
             # The response needs to set variables: name, email, git-clone, git-push
             server::send_string "$response" "response.json"
+            echo -e "                                                   [\e[1;32mOK\e[0m]" >&2
             ;;
         # If we get here, something terribly wrong has happened...
         * )

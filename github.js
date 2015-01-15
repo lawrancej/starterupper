@@ -27,8 +27,6 @@ if ( !Date.prototype.toISOString ) {
 
 // btoa (worry about this) IE10+ 
 // see: https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#The_.22Unicode_Problem.22
-// JSON.stringify (don't worry about this) IE8+
-// see: https://github.com/douglascrockford/JSON-js/blob/master/json2.js
 
 var Github = {
     badCredentials: false,
