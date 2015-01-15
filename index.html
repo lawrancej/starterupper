@@ -48,20 +48,20 @@
   
   /* The script may replace these values */
   .manual { display: none; }
-  /* JavaScript or the server may replace these values */
-  .github-two-factor {display: none; }
-  .github-email-verified {display: none;}
+  .github-two-factor { display: none; }
+  .github-email-verified { display: none; }
   .github-upgraded { display: none; }
-  .github-profile { display:none; }
-  .github-collaborator {display: none;}
-  .github-repository {display: none;}
-  .github-key {display: none;}
-  .git-clone {display: none;}
-  .git-origin {display: none;}
-  .git-upstream {display: none;}
-  .git-name {display: none;}
-  .git-email {display: none;}
-  .git-push {display: none;}
+  .github-profile { display: none; }
+  .github-collaborator { display: none; }
+  .github-repository { display: none; }
+  .github-key { display: none; }
+  .github-private { display: none; }
+  .git-clone { display: none; }
+  .git-origin { display: none; }
+  .git-upstream { display: none; }
+  .git-name { display: none; }
+  .git-email { display: none; }
+  .git-push { display: none; }
   .no-setup-complete {display: none;}
   
   </style>
@@ -284,15 +284,15 @@
                 <a href="https://en.gravatar.com/connect/?source=_signup"
                 target="actionRequired"
                 title="New to Gravatar? Join with your school email">
-                    <b>Join</b></a>
-                or
+                    <b>Join</b></a>  (New users only)<br>
                 <i class="fa fa-fw fa-lg fa-envelope"></i>
                 <a href="https://en.gravatar.com/emails/new"
                 target="actionRequired"
                 title="Already use Gravatar? Add and verify your school email">
-                    <b>Add &amp; verify email</b></a>
+                    <b>Add email</b></a> (Existing users)
                 <br/>
-                <i class="fa fa-fw fa-lg fa-hand-o-right"></i> Either way, use school email<br/>
+                <i class="fa fa-fw fa-lg fa-hand-o-right"></i>
+                Either way, use school email<br/>
             </div>
             <div class="gravatar-authenticated login-control">
                 <i class="fa fa-fw fa-lg fa-lock"></i> You are signed in
@@ -342,14 +342,15 @@
             <i class="fa fa-fw fa-lg fa-user"></i>
             <a href="https://github.com/join" target="actionRequired"
             title="New to Github? Join with your school email">
-            <b>Join</b></a> or
+            <b>Join</b></a> (New users only)<br>
             <i class="fa fa-fw fa-lg fa-envelope"></i>
             <a href="https://github.com/settings/emails"
             target="actionRequired"
             title="Already use Github? Add and verify your school email">
-                <b>Add &amp; verify email</b></a>
+                <b>Add email</b></a> (Existing users)
         </div>
         <div class="grid_7 no-github-authenticated onboard">
+<!--            <i class="fa fa-fw fa-lg fa-exclamation-circle"></i> -->
             Use your school email for account setup
         </div>
         <div class="clear"></div>
@@ -434,12 +435,21 @@
                     <i class="fa-li fa fa-lg fa-database fail no-github-repository"></i>
                     <a target="actionRequired" href="https://github.com/new"
                     class="no-github-repository">
-                        Create private repository</a><a
+                        Create repository</a><a
                     href="https://github.com/USER_NAME/REPOSITORY"
                     target="actionRequired"
                     class="origin-href github-repository">
                         Created repository</a> <b>REPOSITORY</b>,
-                        a place to submit work that nobody else can see
+                        a place to submit your work
+                </li>
+                <li>
+                    <i class="fa-li fa fa-lg fa-check success github-private"></i>
+                    <i class="fa-li fa fa-lg fa-lock fail no-github-private"></i>
+                    <a target="actionRequired" href="https://github.com/USER_NAME/REPOSITORY/settings">
+                    <span class="no-github-private">Make repository
+                    private</span><span class="github-private">Made repository
+                    private</span></a>,
+                    so that nobody else can see it (scroll to Danger Zone)
                 </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-check success github-collaborator"></i>
@@ -447,10 +457,9 @@
                     <a href="https://github.com/USER_NAME/REPOSITORY/settings/collaboration"
                     id="collaborator-href" target="actionRequired">
                     <span class="no-github-collaborator">
-                    Let the instructor (INSTRUCTOR_GITHUB) collaborate</span><span
-                    class="github-collaborator">The instructor (INSTRUCTOR_GITHUB)
-                    may collaborate</span></a>
-                    on your private repository
+                    Add the instructor</span><span
+                    class="github-collaborator">Added the instructor</span></a>
+                    <b>(INSTRUCTOR_GITHUB)</b> to your repository 
                 </li>
             </ul>
         </div>

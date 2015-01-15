@@ -168,9 +168,6 @@ function setupLocal() {
             controller.update('git-origin', /origin/.test(response.remotes));
             controller.update('git-upstream', /upstream/.test(response.remotes));
             controller.update('git-push', response.push);
-//            alert("hi" + JSON.stringify(response));
-            //console.log(JSON.stringify(response));
-//            controller.update('gravatar-account',true);
         },
         error: function(response) {
             console.log(JSON.stringify(response));
@@ -196,20 +193,6 @@ function setupUser() {
             controller.update('github-profile',false);
         }
     });
-    // Set the company for the instructor's benefit
-    // (if a company isn't already set)
-    // TODO: http://www.whoisxmlapi.com/whois-api-doc.php
-    /*
-    if (response.hasOwnProperty("company") && response.company == "") {
-        Github.setUser({
-            data: {company: ""},
-            success: function(response) {},
-            fail: function(response) {
-            // TODO: tell the user what to do if this breaks
-            }
-        });
-    }
-    */
 }
 function setupEmail() {
     // Setup email
@@ -256,19 +239,28 @@ function setupRepo() {
         repo: model.repo(),
         success: function(response) {
             controller.update('github-repository',true);
+            Github.addCollaborator({
+                repo: model.repo(),
+                collaborator: model.instructor(),
+                success: function(response) {
+                    controller.update('github-collaborator', true);
+                },
+                fail: function(response) {
+                    controller.update('github-collaborator', false);
+                }
+            });
+            Github.privateRepo({
+                repo: model.repo(),
+                success: function(response) {
+                    controller.update('github-private', true);
+                },
+                fail: function(response) {
+                    controller.update('github-private', false);
+                }
+            });
         },
         fail: function(response) {
             controller.update('github-repository',false);
-        }
-    });
-    Github.addCollaborator({
-        repo: model.repo(),
-        collaborator: model.instructor(),
-        success: function(response) {
-            controller.update('github-collaborator', true);
-        },
-        fail: function(response) {
-            controller.update('github-collaborator', false);
         }
     });
 }

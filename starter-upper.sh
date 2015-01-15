@@ -15,14 +15,6 @@ readonly INSTRUCTOR_GITHUB=lawrancej
 readonly PROGNAME=$(basename $0)
 readonly ARGS="$@"
 
-PIPES=""
-
-finish() {
-    rm -f $PIPES 2> /dev/null
-}
-
-trap finish EXIT
-
 # Non-interactive Functions
 # ---------------------------------------------------------------------
 
@@ -68,6 +60,14 @@ utility::asTrueFalse() {
         printf "false"
     fi
 }
+
+PIPES=""
+
+pipe::rm() {
+    rm -f $PIPES 2> /dev/null
+}
+
+trap pipe::rm EXIT
 
 # Make a named pipe. It sniffs for mkfifo and mknod first. If we don't get a real pipe, just fake it with a regular file.
 pipe::new() {

@@ -250,13 +250,25 @@ var Github = {
                     url: "/user/repos",
                     method: "POST",
                     data: {
-                        name: settings.repo,
-                        "private": true
+                        name: settings.repo
                     },
                     success: settings.success,
                     fail: settings.fail
                 });
             }
+        });
+    },
+    
+    privateRepo: function(settings) {
+        Github.invoke({
+            url: "/repos/" + Github.getUsername() + "/" + settings.repo,
+            method: "PATCH",
+            data: {
+                name: settings.repo,
+                "private": true
+            },
+            success: settings.success,
+            fail: settings.fail
         });
     },
 
