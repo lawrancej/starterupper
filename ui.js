@@ -99,6 +99,7 @@ var controller = {
             setupRepo();
             setupLocal();
             $(".origin-href").attr("href", "https://github.com/" + Github.getUsername() + "/" + model.repo());
+            $("#private-href").attr("href", "https://github.com/" + Github.getUsername() + "/" + model.repo() + "/settings");
             $("#collaborator-href").attr("href", "https://github.com/" + Github.getUsername() + "/" + model.repo() + "/settings/collaboration");
             $("#origin-code").html("git remote add origin git@github.com:" + Github.getUsername() + "/" + model.repo() + ".git");
             
