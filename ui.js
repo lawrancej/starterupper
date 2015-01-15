@@ -131,6 +131,7 @@ $("#github-signout").on("click", function(event) {
     logout();
 });
 $("#github-signin").on("click", function(event) {
+    $("#github-signin").prop("disabled",true);
     login();
 });
 
@@ -165,9 +166,9 @@ function setupLocal() {
             if (response.email == model.email()) {
                 controller.update('git-email',true);
             }
-            controller.update('git-clone', response.clone);
             controller.update('git-origin', /origin/.test(response.remotes));
             controller.update('git-upstream', /upstream/.test(response.remotes));
+            controller.update('git-clone', response.clone);
             controller.update('git-push', response.push);
         },
         error: function(response) {
@@ -279,10 +280,13 @@ function login() {
         },
         badCredential: function() {
             // Clear the password
+            $("#github-signin").prop("disabled",false);
             $("#password").attr('value', '');
             controller.github();
         },
         twoFactor: function() {
+            $("#github-signin").prop("disabled",false);
+            $("#password").prop("disabled", false);
             $('.github-two-factor').show();
             $('#otp').focus();
         }

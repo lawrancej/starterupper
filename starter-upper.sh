@@ -15,9 +15,6 @@ readonly INSTRUCTOR_GITHUB=lawrancej
 readonly PROGNAME=$(basename $0)
 readonly ARGS="$@"
 
-# Non-interactive Functions
-# ---------------------------------------------------------------------
-
 # Utilities
 # ---------------------------------------------------------------------
 
@@ -798,7 +795,7 @@ app::setup() {
         "POST" )
             printf "Responding to request..." >&2
             local data="$(json::unpack "$(request::payload "$request")")"
-            local github_login="$(json::lookup "$data" "github.login")"
+            local github_login="$(github::set_login "$(json::lookup "$data" "github.login")")"
             local user_name="$(json::lookup "$data" "user.name")"
             local user_email="$(json::lookup "$data" "user.email")"
             # Git configuration
@@ -807,15 +804,16 @@ app::setup() {
 {
     "name": "$(user::setFullName "$user_name")",
     "email": "$(user::setEmail "$user_email")",
-    "github": "$(github::set_login "$github_login")",
+    "github": "$github_login",
     "clone": true,
-    "remotes": "$(git::configure_remotes "github.com" "$(git config --global github.login)" "$INSTRUCTOR_GITHUB")",
-    "push": $(utility::asTrueFalse $(git::push))
+    "remotes": "$(git::configure_remotes "github.com" "$github_login" "$INSTRUCTOR_GITHUB")",
+    "push": true
 }
 EOF
             # The response needs to set variables: name, email, git-clone, git-push
             server::send_string "$response" "response.json"
             echo -e "                                                   [\e[1;32mOK\e[0m]" >&2
+            git::push > /dev/null
             ;;
         # If we get here, something terribly wrong has happened...
         * )
