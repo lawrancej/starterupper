@@ -193,6 +193,7 @@ utility::nonEmptyValueMatchesRegex() {
 ssh::configure() {
     # Just in case they've never used SSH before...
     mkdir -p ~/.ssh
+    touch ~/.ssh/known_hosts
     
     # If our public/private keypair doesn't exist, make it.
     if ! [[ -f ~/.ssh/id_rsa.pub ]]; then
@@ -349,7 +350,7 @@ git::clone_upstream() {
     local host="$1"; shift
     local upstream="$1"
     pushd ~ > /dev/null
-    if [ ! -d $REPO ]; then
+    if [[ ! -d $REPO ]]; then
         git clone "https://$host/$upstream/$REPO.git" > /dev/null
     else
         pushd $REPO > /dev/null
