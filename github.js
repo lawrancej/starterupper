@@ -259,6 +259,7 @@ var Github = {
         });
     },
     
+    // Make repository private
     privateRepo: function(settings) {
         Github.invoke({
             url: "/repos/" + Github.getUsername() + "/" + settings.repo,

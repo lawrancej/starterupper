@@ -249,15 +249,19 @@ function setupRepo() {
                     controller.update('github-collaborator', false);
                 }
             });
-            Github.privateRepo({
-                repo: model.repo(),
-                success: function(response) {
-                    controller.update('github-private', true);
-                },
-                fail: function(response) {
-                    controller.update('github-private', false);
-                }
-            });
+            // As long as we're not the instructor, ...
+            if ($("#instructor").val() != Github.getUsername()) {
+                // Make the repository private
+                Github.privateRepo({
+                    repo: model.repo(),
+                    success: function(response) {
+                        controller.update('github-private', true);
+                    },
+                    fail: function(response) {
+                        controller.update('github-private', false);
+                    }
+                });
+            }
         },
         fail: function(response) {
             controller.update('github-repository',false);
