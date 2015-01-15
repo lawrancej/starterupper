@@ -294,5 +294,7 @@ function login() {
 }
 function logout() {
     Github.logout();
+    $("#github-signin").prop("disabled",false);
+    $("#otp").attr('value','');
     controller.update('github-authenticated', false);
 }
