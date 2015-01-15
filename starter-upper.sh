@@ -393,9 +393,6 @@ git::push() {
     utility::lastSuccess
 }
 
-
-readonly PIPE=.httpipe
-
 # http://mywiki.wooledge.org/NamedPipes
 # Also, simultaneous connections
 
@@ -624,6 +621,8 @@ server::get_netcat() {
     fi
     printf $netcat
 }
+
+readonly PIPE=.httpipe
 
 # Start the web server, using the supplied routing function
 server::start() {
