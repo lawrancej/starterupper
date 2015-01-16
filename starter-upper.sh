@@ -483,8 +483,8 @@ request::lookup() {
 
 # Return the payload of the request, if any (e.g., for POST requests)
 request::payload() {
-    local request="$1"; shift
-    echo -e "$request" | sed -n -e '/^$/,${p}'
+    local payload="$(echo "$1" | sed -e 's/^.*\\r\\n\\r\\n//')"
+    echo -e "$payload"
 }
 
 # Pipe HTTP request into a string
