@@ -200,27 +200,8 @@ function setupEmail() {
     // Setup email
     Github.getEmail({
         email: model.email(),
-        added: function() {
-            controller.update('github-email-found',true);
-        },
-        verified: function() {
-            controller.update('github-email-verified',true);
-        },
-        unverified: function() {
-            controller.update('github-email-verified',false);
-        },
-        missing: function() {
-            // The user needs to verify their email
-            controller.update('github-email-verified',false);
-            Github.setEmail({
-                email: model.email(),
-                success: function() {
-                    controller.update('github-email-found',true);
-                },
-                fail: function() {
-                    controller.update('github-email-found',false);
-                }
-            });
+        verified: function(status) {
+            controller.update('github-email-verified',status);
         }
     });
 }

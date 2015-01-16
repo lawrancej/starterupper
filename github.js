@@ -131,10 +131,7 @@ var Github = {
     // Get email configuration
     // Github.getEmail({
     // email: "something@domain",
-    // added: function() {/* what do we do when the email has been added? */}
-    // missing: function() {/* what do we do when the email wasn't even added? */}
-    // verified: function() {/* what do we do when verified? */}
-    // unverified: function() {/* what do we do when the email is added, but unverified? */}
+    // verified: function(bool) {/* what do we do when verified? */}
     // fail: function() {/* what do we do when things aren't working? */}
     // })
     getEmail: function(settings) {
@@ -145,17 +142,10 @@ var Github = {
             success: function (response) {
                 for (index in response) {
                     if (response[index].email == settings.email) {
-                        settings.added();
-                        if (response[index].verified) {
-                            settings.verified();
-                            return;
-                        } else {
-                            settings.unverified();
-                            return;
-                        }
+                        settings.verified(response[index].verified);
+                        return;
                     }
                 }
-                settings.missing();
             },
             fail: settings.fail
         });
