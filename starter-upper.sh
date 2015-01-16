@@ -719,8 +719,8 @@ github::addCollaborators() {
 # Make the index page
 app::make_index() {
 
-    curl http://lawrancej.github.io/starterupper/index.html 2> /dev/null > $REPO-index.html 
-#    cp ~/projects/starterupper/index.html $REPO-index.html
+#    curl http://lawrancej.github.io/starterupper/index.html 2> /dev/null > $REPO-index.html 
+    cp ~/projects/starterupper/index.html $REPO-index.html
 
     sed -e "s/REPOSITORY/$REPO/g" \
     -e "s/USER_EMAIL/$(user::getEmail)/g" \
@@ -733,13 +733,9 @@ app::make_index() {
     rm "$REPO-index.html"
 }
 
-app::index() {
-    local request="$1"
-    
-    echo "$(request::payload "$request")" >&2
-#    printf "$(request::query "$request")" >&2
-    
-    request::post_form_data "$request" | while read parameter; do
+# Given a POST request, receive the data
+app::receive_data() {
+    request::post_form_data "$1" | while read parameter; do
         local key="$(parameter::key "$parameter")"
         local value="$(parameter::value "$parameter")"
         case "$key" in
@@ -754,6 +750,14 @@ app::index() {
                 ;;
         esac
     done
+}
+
+app::index() {
+    local request="$1"
+    
+    echo "$(request::payload "$request")" >&2
+#    printf "$(request::query "$request")" >&2
+    app::receive_data "$1"
     
     git::configure_remotes "github.com" "$(git config --global github.login)" "$INSTRUCTOR_GITHUB" > /dev/null
     git::push > /dev/null
@@ -778,48 +782,22 @@ app::browser() {
 
 # Setup local repositories
 app::setup() {
-    local request="$1"
-    local response=""
-    case "$(request::method "$request")" in
-        # Respond to preflight request
-        "OPTIONS" )
-            printf "Sending preflight..." >&2
-            response="$(response::new "204 No Content")"
-            response="$(response::add_header "$response" "Access-Control-Allow-Origin: *")"
-            response="$(response::add_header "$response" "Access-Control-Allow-Methods: GET, POST")"
-            response="$(response::add_header "$response" "Access-Control-Allow-Headers: $(request::lookup "$request" "Access-Control-Request-Headers")")"
-            response::send "$response"
-            echo -e "                                                       [\e[1;32mOK\e[0m]" >&2
-            ;;
-        # Get that glorious data from the user and do what we set out to accomplish
-        "POST" )
-            printf "Responding to request..." >&2
-            local data="$(json::unpack "$(request::payload "$request")")"
-            local github_login="$(github::set_login "$(json::lookup "$data" "github.login")")"
-            local user_name="$(json::lookup "$data" "user.name")"
-            local user_email="$(json::lookup "$data" "user.email")"
-            # Git configuration
-            
-            read -r -d '' response <<-EOF
-{
-    "name": "$(user::setFullName "$user_name")",
-    "email": "$(user::setEmail "$user_email")",
-    "github": "$github_login",
-    "clone": true,
-    "remotes": "$(git::configure_remotes "github.com" "$github_login" "$INSTRUCTOR_GITHUB")",
-    "push": true
-}
+    printf "Receiving data..." >&2
+    app::receive_data "$1"
+    echo -e "                                                          [\e[1;32mOK\e[0m]" >&2
+
+    printf "Responding to request..." >&2
+    read -r -d '' response <<-EOF
+{ "status": true }
 EOF
-            # The response needs to set variables: name, email, git-clone, git-push
-            server::send_string "$response" "response.json"
-            echo -e "                                                   [\e[1;32mOK\e[0m]" >&2
-            git::push > /dev/null
-            ;;
-        # If we get here, something terribly wrong has happened...
-        * )
-            return 1
-            ;;
-    esac
+    # The response needs to set variables: name, email, git-clone, git-push
+    server::send_string "$response" "response.json"
+    echo -e "                                                   [\e[1;32mOK\e[0m]" >&2
+    
+    sleep 1
+
+    git::configure_remotes "github.com" "$(git config --global github.login)" "$INSTRUCTOR_GITHUB" > /dev/null
+    git::push > /dev/null
 }
 
 # Dummy response to verify server works
