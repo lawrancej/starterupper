@@ -872,4 +872,5 @@ main() {
     popd > /dev/null
 }
 
+export TERM=xterm
 main
