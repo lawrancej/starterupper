@@ -118,6 +118,11 @@ $( "#email" ).on( "change", function(event) {
 $( "#github-password" ).on( "change", function(event) {
     controller.github();
 });
+$("#github-password").keyup(function(event){
+    if(event.keyCode == 13){
+        controller.github();
+    }
+});
 $( "#github-retry" ).on( "click", function(event) {
     controller.github();
 });
