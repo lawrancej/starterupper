@@ -148,28 +148,21 @@ $(function() {
 function setupLocal() {
     $.ajax({
         method: "POST",
-        contentType: "application/json",
         dataType: "json",
         crossDomain: true,
-        processData: false,
         url: 'http://localhost:8080/setup',
-        processData: false,
-        data: JSON.stringify({
+        data: {
             "github.login": Github.getUsername(),
             "user.name": model.name(),
             "user.email": model.email(),
-        }),
+        },
         success: function(response) {
-            if (response.name == model.name()) {
-                controller.update('git-name',true);
-            }
-            if (response.email == model.email()) {
-                controller.update('git-email',true);
-            }
-            controller.update('git-origin', /origin/.test(response.remotes));
-            controller.update('git-upstream', /upstream/.test(response.remotes));
-            controller.update('git-clone', response.clone);
-            controller.update('git-push', response.push);
+            controller.update('git-name',response.status);
+            controller.update('git-email',response.status);
+            controller.update('git-origin', response.status));
+            controller.update('git-upstream', response.status);
+            controller.update('git-clone', response.status);
+            controller.update('git-push', response.status);
         },
         error: function(response) {
             console.log(JSON.stringify(response));
