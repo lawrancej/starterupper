@@ -394,18 +394,6 @@ git::push() {
 # http://mywiki.wooledge.org/NamedPipes
 # Also, simultaneous connections
 
-json::unpack() {
-    local json="$1"
-    echo "$json" | tr -d '"{}' | tr ',' '\n'
-}
-
-# Given a header key, return the value
-json::lookup() {
-    local json="$1"; shift
-    local key="$1"
-    echo -e "$json" | grep "$key" | sed -e "s/^$key:\(.*\)$/\1/"
-}
-
 # Is this a request line?
 request::line() {
     local line="$1"
@@ -449,7 +437,6 @@ request::query() {
 request::post_form_data() {
     local request="$1"
     local payload="$(request::payload "$request")"
-    echo -e "REQUEST $request" >&2
     if [[ "$(request::lookup "$request" "Content-Type")" == "application/x-www-form-urlencoded" ]]; then
         echo "$payload" | tr '&' '\n'
     fi
@@ -755,7 +742,7 @@ app::receive_data() {
 app::index() {
     local request="$1"
     
-    echo "$(request::payload "$request")" >&2
+#    echo "$(request::payload "$request")" >&2
 #    printf "$(request::query "$request")" >&2
     app::receive_data "$1"
     
