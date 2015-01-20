@@ -9,6 +9,8 @@ readonly REPO=starterupper
 readonly SCHOOL=wit.edu
 # The instructor's Github username
 readonly INSTRUCTOR_GITHUB=lawrancej
+# The instructor's Gitlab username
+readonly INSTRUCTOR_GITLAB=lawrancej
 
 # Runtime flags (DO NOT CHANGE)
 # ---------------------------------------------------------------------
@@ -49,15 +51,6 @@ utility::lastSuccess() {
     fi
 }
 
-utility::asTrueFalse() {
-    local result="$1"
-    if [[ "$result" ]]; then
-        printf "true"
-    else
-        printf "false"
-    fi
-}
-
 PIPES=""
 
 pipe::rm() {
@@ -66,7 +59,8 @@ pipe::rm() {
 
 trap pipe::rm EXIT
 
-# Make a named pipe. It sniffs for mkfifo and mknod first. If we don't get a real pipe, just fake it with a regular file.
+# Make a named pipe. It sniffs for mkfifo and mknod first.
+# If we don't get a real pipe, just fake it with a regular file.
 pipe::new() {
     local pipe="$1"
     rm -f "$pipe" 2> /dev/null
@@ -228,7 +222,7 @@ ssh::connected() {
 # ---------------------------------------------------------------------
 
 # Get the user's username
-user::getUsername() {
+username::get() {
     local username="$USERNAME"
     if [[ -z "$username" ]]; then
         username="$(id -nu 2> /dev/null)"
@@ -240,15 +234,15 @@ user::getUsername() {
 }
 
 # A full name needs a first and last name
-valid::fullName() {
+full_name::valid() {
     local fullName="$1"
     utility::nonEmptyValueMatchesRegex "$fullName" "\w+ \w+"
 }
 
 # Set the full name, and return the name that was set
-user::setFullName() {
+full_name::set() {
     local fullName="$1"
-    if [[ $(valid::fullName "$fullName") ]]; then
+    if [[ $(full_name::valid "$fullName") ]]; then
         if [[ "$fullName" != "The argument 'getfullname.ps1' to the -File parameter does not exist. Provide the path to an existing '.ps1' file as an argument to the -File parameter." ]]; then
             git config --global user.name "$fullName"
         fi
@@ -258,13 +252,13 @@ user::setFullName() {
 
 # Get the user's full name (Firstname Lastname); defaults to OS-supplied full name
 # Side effect: set ~/.gitconfig user.name if unset and full name from OS validates.
-user::getFullName() {
+full_name::get() {
     # First, look in the git configuration
     local fullName="$(git config --global user.name)"
     
     # Ask the OS for the user's full name, if it's not valid
-    if [[ ! $(valid::fullName "$fullName") ]]; then
-        local username="$(user::getUsername)"
+    if [[ ! $(full_name::valid "$fullName") ]]; then
+        local username="$(username::get)"
         case $OSTYPE in
             msys | cygwin )
                 cat << 'EOF' > getfullname.ps1
@@ -291,26 +285,26 @@ EOF
         esac
         
         # If we got a legit full name from the OS, update the git configuration to reflect it.
-        user::setFullName "$fullName" > /dev/null
+        full_name::set "$fullName" > /dev/null
     fi
     printf "$fullName"
 }
 
 # We're assuming that students have a .edu email address
-valid::email() {
+email::valid() {
     local email="$(printf "$1" | tr '[:upper:]' '[:lower:]' | tr -d ' ')"
     utility::nonEmptyValueMatchesRegex "$email" "edu$"
 }
 
 # Get the user's email; defaults to username@school
 # Side effect: set ~/.gitconfig user.email if unset
-user::getEmail() {
+email::get() {
     # Try to see if the user already stored the email address
     local email="$(git config --global user.email | tr '[:upper:]' '[:lower:]' | tr -d ' ')"
     # If the stored email is bogus, ...
-    if [[ ! $(valid::email "$email") ]]; then
+    if [[ ! $(email::valid "$email") ]]; then
         # Guess an email address and save it
-        email="$(user::getUsername)@$SCHOOL"
+        email="$(username::get)@$SCHOOL"
     fi
     # Resave, just in case of goofups
     git config --global user.email "$email"
@@ -318,9 +312,9 @@ user::getEmail() {
 }
 
 # Set email for the user and return email stored in git
-user::setEmail() {
+email::set() {
     local email="$1"
-    if [[ $(valid::email "$email") ]]; then
+    if [[ $(email::valid "$email") ]]; then
         git config --global user.email "$email"
     fi
     git config --global user.email
@@ -334,7 +328,7 @@ Host_getUsername() {
     local host="$1"
     local username="$(git config --global $host.login)"
     if [[ -z "$username" ]]; then
-        username="$(user::getUsername)"
+        username="$(username::get)"
     fi
     printf "$username"
 }
@@ -387,12 +381,8 @@ git::configure_remotes() {
 # 6. The private repo exists
 git::push() {
     cd ~/$REPO
-    git push -u origin master 2> /dev/null > /dev/null
-    utility::lastSuccess
+    git push -u origin master
 }
-
-# http://mywiki.wooledge.org/NamedPipes
-# Also, simultaneous connections
 
 # Is this a request line?
 request::line() {
@@ -401,12 +391,6 @@ request::line() {
         utility::fail
     fi
     utility::success
-}
-
-# Get the method (e.g., GET, POST) of the request
-request::method() {
-    local request="$1"
-    echo "$request" | sed -e "s/\(^[^ ]*\).*/\1/" | head -n 1
 }
 
 # Get the target (URL) of the request
@@ -428,11 +412,6 @@ request::file() {
     fi
 }
 
-# Get the query portion of the request target URL, and return the results line by line
-request::query() {
-    request::target "$1" | sed -e 's/.*[?]\(.*\)$/\1/' | tr '&' '\n'
-}
-
 # Parse the request payload as form-urlencoded data
 request::post_form_data() {
     local request="$1"
@@ -440,13 +419,6 @@ request::post_form_data() {
     if [[ "$(request::lookup "$request" "Content-Type")" == "application/x-www-form-urlencoded" ]]; then
         echo "$payload" | tr '&' '\n'
     fi
-}
-
-# Given a query key, return the URL decoded value
-query::lookup() {
-    local query="$1"; shift
-    local key="$1"
-    echo -e "$(printf "$query" | grep "$key" | sed -e "s/^$key=\(.*\)/\1/" -e 'y/+/ /; s/%/\\x/g')"
 }
 
 # Return the key corresponding to the field
@@ -631,47 +603,16 @@ github::set_login() {
     git config --global github.login
 }
 
-# Helpers
-
-# Invoke a Github API method requiring authorization using curl
-github::invoke() {
-    local method=$1; shift
-    local url=$1; shift
-    local data=$1;
-    local header="Authorization: token $(git config --global github.token)"
-    curl -i --request "$method" -H "$header" -d "$data" "https://api.github.com$url" 2> /dev/null
-}
-
-# Queries
-
-# Is the name available on Github?
-github::nameAvailable() {
-    local username="$1"
-    local result="$(curl -i https://api.github.com/users/$username 2> /dev/null)"
-    if [[ -z $(echo $result | grep "HTTP/1.1 200 OK") ]]; then
-        utility::success
-    else
-        utility::fail
-    fi
-}
-
 # A valid Github username is not available, by definition
 github::validUsername() {
     local username="$1"
     # If the name is legit, ...
     if [[ $(utility::nonEmptyValueMatchesRegex "$username" "^[0-9a-zA-Z][0-9a-zA-Z-]*$") ]]; then
-        # It's valid
         utility::success
     else
-        # Otherwise, it's not valid
         utility::fail
     fi
 }
-
-# Commands
-
-# Github CLI-interactive functions
-# ---------------------------------------------------------------------
 
 # Share the public key
 # Fail if the key isn't shared or we can't connect.
@@ -694,15 +635,6 @@ github::connected() {
     return 0
 }
 
-# Add collaborators (move to web front-end)
-github::addCollaborators() {
-    cd ~/$REPO
-    for repository in $(github::invoke GET "/user/repos?type=member\&sort=created\&page=1\&per_page=100" "" | grep "full_name.*$REPO" | sed s/.*full_name....// | sed s/..$//); do
-        git remote add ${repository%/*} git@github.com:$repository.git 2> /dev/null
-    done
-    git fetch --all
-}
-
 # Make the index page
 app::make_index() {
 
@@ -710,9 +642,9 @@ app::make_index() {
     cp ~/projects/starterupper/index.html $REPO-index.html
 
     sed -e "s/REPOSITORY/$REPO/g" \
-    -e "s/USER_EMAIL/$(user::getEmail)/g" \
-    -e "s/FULL_NAME/$(user::getFullName)/g" \
-    -e "s/USER_NAME/$(user::getUsername)/g" \
+    -e "s/USER_EMAIL/$(email::get)/g" \
+    -e "s/FULL_NAME/$(full_name::get)/g" \
+    -e "s/USER_NAME/$(username::get)/g" \
     -e "s/INSTRUCTOR_GITHUB/$INSTRUCTOR_GITHUB/g" \
     -e "s/PUBLIC_KEY/$(ssh::getPublicKeyForSed)/g" \
     -e "s/HOSTNAME/$(hostname)/g" \
@@ -727,10 +659,10 @@ app::receive_data() {
         local value="$(parameter::value "$parameter")"
         case "$key" in
             "user.name" )
-                user::setFullName "$value" > /dev/null
+                full_name::set "$value" > /dev/null
                 ;;
             "user.email" )
-                user::setEmail "$value" > /dev/null
+                email::set "$value" > /dev/null
                 ;;
             "github.login" )
                 github::set_login "$value" > /dev/null
@@ -740,14 +672,10 @@ app::receive_data() {
 }
 
 app::index() {
-    local request="$1"
-    
-#    echo "$(request::payload "$request")" >&2
-#    printf "$(request::query "$request")" >&2
     app::receive_data "$1"
     
     git::configure_remotes "github.com" "$(git config --global github.login)" "$INSTRUCTOR_GITHUB" > /dev/null
-    git::push > /dev/null
+    git::push >&2
     
     app::make_index
     server::send_file "temp.html"
@@ -777,20 +705,13 @@ app::setup() {
     read -r -d '' response <<-EOF
 { "status": true }
 EOF
-    # The response needs to set variables: name, email, git-clone, git-push
     server::send_string "$response" "response.json"
     echo -e "                                                   [\e[1;32mOK\e[0m]" >&2
     
     sleep 1
 
     git::configure_remotes "github.com" "$(git config --global github.login)" "$INSTRUCTOR_GITHUB" > /dev/null
-    git::push > /dev/null
-}
-
-# Dummy response to verify server works
-app::test() {
-    local request="$1"
-    server::send_string "true" "application/json"
+    git::push >&2
 }
 
 # Handle requests from the browser
@@ -799,7 +720,6 @@ app::router() {
     local target="$(request::file "$request")"
     case "$target" in
         "/" )           app::index "$request" ;;
-        "test" )        app::test "$request" ;;
         "browser.css" ) app::browser "$request" ;;
         "setup" )       app::setup "$request" ;;
         * )             server::send_file "$target"

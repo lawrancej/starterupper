@@ -149,7 +149,7 @@ function setupLocal() {
         success: function(response) {
             controller.update('git-name',response.status);
             controller.update('git-email',response.status);
-            controller.update('git-origin', response.status));
+            controller.update('git-origin', response.status);
             controller.update('git-upstream', response.status);
             controller.update('git-clone', response.status);
             controller.update('git-push', response.status);
