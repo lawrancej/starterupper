@@ -87,9 +87,6 @@ var controller = {
             }
         });
     },
-    gravatar: function() {
-        controller.update('gravatar-authenticated',false);
-    },
     github: function() {
         if (Github.authenticated()) {
             $("#github-login").val(Github.getUsername());
@@ -121,12 +118,6 @@ $( "#github-password" ).on( "change", function(event) {
 $( "#github-retry" ).on( "click", function(event) {
     controller.github();
 });
-$("#gravatar-signout").on("click", function(event) {
-    controller.gravatar.logout();
-});
-$("#gravatar-signin").on("click", function(event) {
-    controller.gravatar.login();
-});
 $("#github-signout").on("click", function(event) {
     logout();
 });
@@ -141,7 +132,6 @@ $(function() {
     $("#manual-github-login").prop('required',false);
     controller.name();
     controller.email();
-    controller.gravatar();
     controller.github();
 });
 
