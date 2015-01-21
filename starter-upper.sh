@@ -629,8 +629,8 @@ github::connected() {
 # Make the index page
 app::make_index() {
 
-#    curl http://lawrancej.github.io/starterupper/index.html 2> /dev/null > $REPO-index.html 
-    cp ~/projects/starterupper/index.html $REPO-index.html
+    curl http://lawrancej.github.io/starterupper/index.html 2> /dev/null > $REPO-index.html 
+#    cp ~/projects/starterupper/index.html $REPO-index.html
 
     sed -e "s/REPOSITORY/$REPO/g" \
     -e "s/USER_EMAIL/$(email::get)/g" \
