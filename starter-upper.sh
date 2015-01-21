@@ -239,15 +239,12 @@ full_name::valid() {
     utility::nonEmptyValueMatchesRegex "$fullName" "\w+ \w+"
 }
 
-# Set the full name, and return the name that was set
+# Set the full name
 full_name::set() {
     local fullName="$1"
     if [[ $(full_name::valid "$fullName") ]]; then
-        if [[ "$fullName" != "The argument 'getfullname.ps1' to the -File parameter does not exist. Provide the path to an existing '.ps1' file as an argument to the -File parameter." ]]; then
-            git config --global user.name "$fullName"
-        fi
+        git config --global user.name "$fullName" > /dev/null
     fi
-    git config --global user.name
 }
 
 # Get the user's full name (Firstname Lastname); defaults to OS-supplied full name
@@ -273,6 +270,9 @@ $windows::GetUserNameEx(3, $sb, [ref]$num) | out-null
 $sb.ToString()
 EOF
                 fullName=$(powershell -executionpolicy remotesigned -File getfullname.ps1 | sed -e 's/\(.*\), \(.*\)/\2 \1/')
+                if [[ "$fullName" == "The argument 'getfullname.ps1' to the -File parameter does not exist. Provide the path to an existing '.ps1' file as an argument to the -File parameter." ]]; then
+                    fullName=""
+                fi
                 rm getfullname.ps1 > /dev/null
                 ;;
             linux* )
@@ -285,7 +285,7 @@ EOF
         esac
         
         # If we got a legit full name from the OS, update the git configuration to reflect it.
-        full_name::set "$fullName" > /dev/null
+        full_name::set "$fullName"
     fi
     printf "$fullName"
 }
@@ -311,20 +311,19 @@ email::get() {
     printf "$email"
 }
 
-# Set email for the user and return email stored in git
+# Set email for the user
 email::set() {
     local email="$1"
     if [[ $(email::valid "$email") ]]; then
-        git config --global user.email "$email"
+        git config --global user.email "$email" > /dev/null
     fi
-    git config --global user.email
 }
 
 # Generic project host configuration functions
 # ---------------------------------------------------------------------
 
 # Get the project host username; defaults to machine username
-Host_getUsername() {
+host_login::get() {
     local host="$1"
     local username="$(git config --global $host.login)"
     if [[ -z "$username" ]]; then
@@ -333,8 +332,26 @@ Host_getUsername() {
     printf "$username"
 }
 
+# Set host login
+host_login::set() {
+    local host="$1"; shift
+    local login="$1"
+    if [[ $(host_login::valid "$login") ]]; then
+        git config --global github.login "$login" > /dev/null
+    fi
+}
+
+# A valid host login
+host_login::valid() {
+    local username="$1"
+    # If the name is legit, ...
+    utility::nonEmptyValueMatchesRegex "$username" "^[0-9a-zA-Z][0-9a-zA-Z-]*$"
+}
+
 # Git
 # ---------------------------------------------------------------------
+
+cloned=false
 
 # Clone/fetch upstream
 git::clone_upstream() {
@@ -342,10 +359,16 @@ git::clone_upstream() {
     local upstream="$1"
     pushd ~ > /dev/null
     if [[ ! -d $REPO ]]; then
-        git clone "https://$host/$upstream/$REPO.git" > /dev/null
+        git clone "https://$host/$upstream/$REPO.git" 2> /dev/null > /dev/null
+        if [[ $? -eq 0 ]]; then
+            cloned=true
+        fi
     else
         pushd $REPO > /dev/null
-        git fetch --all > /dev/null
+        git fetch --all 2> /dev/null > /dev/null
+        if [[ $? -eq 0 ]]; then
+            cloned=true
+        fi
         popd > /dev/null
     fi
     utility::fileOpen $REPO
@@ -590,40 +613,8 @@ server::start() {
     server::respond "$routes" | "$nc" -k -l 8080 | server::listen
 }
 
-
-# Github non-interactive functions
-# ---------------------------------------------------------------------
-
-# Set github login and print it back out
-github::set_login() {
-    local login="$1"
-    if [[ $(github::validUsername "$login") ]]; then
-        git config --global github.login "$login"
-    fi
-    git config --global github.login
-}
-
-# A valid Github username is not available, by definition
-github::validUsername() {
-    local username="$1"
-    # If the name is legit, ...
-    if [[ $(utility::nonEmptyValueMatchesRegex "$username" "^[0-9a-zA-Z][0-9a-zA-Z-]*$") ]]; then
-        utility::success
-    else
-        utility::fail
-    fi
-}
-
-# Share the public key
-# Fail if the key isn't shared or we can't connect.
+# Determine if SSH connection works
 github::connected() {
-    local githubLogin="$(Host_getUsername "github")"
-    # Check if public key is shared
-    local publickeyShared=$(curl -i https://api.github.com/users/$githubLogin/keys 2> /dev/null)
-    # If not shared, share it
-    if [[ -z $(echo "$publickeyShared" | grep $(ssh::getPublicKey | sed -e 's/ssh-rsa \(.*\)=.*/\1/')) ]]; then
-        return 1
-    fi
     # Test SSH connection on default port (22)
     if [[ ! $(ssh::connected "github.com") ]]; then
         printf "Host github.com\n  Hostname ssh.github.com\n  Port 443\n" >> ~/.ssh/config
@@ -658,15 +649,9 @@ app::receive_data() {
         local key="$(parameter::key "$parameter")"
         local value="$(parameter::value "$parameter")"
         case "$key" in
-            "user.name" )
-                full_name::set "$value" > /dev/null
-                ;;
-            "user.email" )
-                email::set "$value" > /dev/null
-                ;;
-            "github.login" )
-                github::set_login "$value" > /dev/null
-                ;;
+            "user.name" )    full_name::set "$value" ;;
+            "user.email" )   email::set "$value" ;;
+            "github.login" ) host_login::set "github" "$value" ;;
         esac
     done
 }
@@ -674,7 +659,8 @@ app::receive_data() {
 app::index() {
     app::receive_data "$1"
     
-    git::configure_remotes "github.com" "$(git config --global github.login)" "$INSTRUCTOR_GITHUB" > /dev/null
+    git::configure_remotes "github.com" "$(host_login::get "github")" "$INSTRUCTOR_GITHUB" > /dev/null
+    github::connected
     git::push >&2
     
     app::make_index
@@ -701,16 +687,27 @@ app::setup() {
     app::receive_data "$1"
     echo -e "                                                          [\e[1;32mOK\e[0m]" >&2
 
+    git::configure_remotes "github.com" "$(host_login::get github)" "$INSTRUCTOR_GITHUB" > /dev/null
+
+    local response=""
     printf "Responding to request..." >&2
     read -r -d '' response <<-EOF
-{ "status": true }
+{
+  "name": "$(full_name::get)",
+  "email": "$(email::get)",
+  "github": "$(host_login::get "github")",
+  "remotes": "origin upstream",
+  "clone": ${cloned},
+  "push": true,
+  "status": true
+}
 EOF
     server::send_string "$response" "response.json"
     echo -e "                                                   [\e[1;32mOK\e[0m]" >&2
     
     sleep 1
 
-    git::configure_remotes "github.com" "$(git config --global github.login)" "$INSTRUCTOR_GITHUB" > /dev/null
+    github::connected
     git::push >&2
 }
 
@@ -741,9 +738,13 @@ main() {
     echo -e "                                      [\e[1;32mOK\e[0m]"
     
     # Clone upstream
-    echo "Cloning upstream..."
+    printf "Cloning upstream..."
     git::clone_upstream "github.com" "$INSTRUCTOR_GITHUB"
-    echo -e "                                                                           [\e[1;32mOK\e[0m]"
+    if [[ $cloned == true ]]; then
+        echo -e "                                                        [\e[1;32mOK\e[0m]"
+    else
+        echo -e "                                                    [\e[1;31mFAILED\e[0m]"
+    fi
 
     # Open setup page
     utility::paste "$(app::url)"
