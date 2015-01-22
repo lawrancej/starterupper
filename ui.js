@@ -147,12 +147,37 @@ function setupLocal() {
             "user.email": model.email(),
         },
         success: function(response) {
-            controller.update('git-name',response.status);
-            controller.update('git-email',response.status);
-            controller.update('git-origin', response.status);
-            controller.update('git-upstream', response.status);
-            controller.update('git-clone', response.status);
-            controller.update('git-push', response.status);
+            var value = "## Configure git";
+            if (response.name != model.name()) {
+                value += "\ngit config --global user.name \"" + model.name() + "\"";
+            }
+            if (response.email != model.email()) {
+                value += "\ngit config --global user.email " + model.email();
+            }
+            if (response.email == model.email() && response.name == model.name()) {
+                value += " (DONE)";
+            }
+            value += "\n## Clone repository";
+            if (!response.clone) {
+                value += "\ncd && git clone https://github.com/" + model.instructor() + "/" + model.repo() + ".git";
+                value += "\ncd " + model.repo();
+                value += "\ngit submodule update --init --recursive";
+            } else {
+                value += " (DONE)";
+                value += "\ncd ~/" + model.repo();
+            }
+            value += "\n## Configure remote repositories";
+            if (response.github != Github.getUsername()) {
+                value += "\ngit remote add upstream https://github.com/" + model.instructor() + "/" + model.repo() + ".git";
+                value += "\ngit remote rm origin";
+                value += "\ngit remote add origin git@github.com:" + Github.getUsername() + "/" + model.repo() + ".git";
+            } else {
+                value += " (DONE)";
+            }
+            value += "\n## Push to origin (Check status in command prompt window)";
+            value += "\ngit push -u origin master";
+            $("#command-line").val(value);
+            controller.update('git-status',response.status);
         },
         error: function(response) {
             console.log(JSON.stringify(response));

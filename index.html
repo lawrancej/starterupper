@@ -56,12 +56,7 @@
   .github-repository { display: none; }
   .github-key { display: none; }
   .github-private { display: none; }
-  .git-clone { display: none; }
-  .git-origin { display: none; }
-  .git-upstream { display: none; }
-  .git-name { display: none; }
-  .git-email { display: none; }
-  .git-push { display: none; }
+  .git-status { display: none; }
   .no-setup-complete {display: none;}
   
   </style>
@@ -487,20 +482,20 @@
         <div class="grid_10">
             <ul class="fa-ul" style="margin-left: 0px;">
                 <li>
-                    <i class="fa fa-desktop fa-lg fa-li fail no-git-name"></i>
-                    <i class="fa fa-lg fa-li fa-check success git-name"></i>
-                    <textarea rows="14" cols="80" readonly># Configure git
+                    <i class="fa fa-desktop fa-lg fa-li fail no-git-status"></i>
+                    <i class="fa fa-lg fa-li fa-check success git-status"></i>
+                    <textarea id="command-line" rows="14" cols="80" readonly>## Configure git
 git config --global user.name "FULL_NAME"
 git config --global user.email USER_EMAIL
-# Clone repository
+## Clone repository
 cd && git clone https://github.com/INSTRUCTOR_GITHUB/REPOSITORY.git
 cd REPOSITORY
 git submodule update --init --recursive
-# Configure remote repositories
+## Configure remote repositories
 git remote add upstream https://github.com/INSTRUCTOR_GITHUB/REPOSITORY.git
 git remote rm origin
 git remote add origin git@github.com:USER_NAME/REPOSITORY.git
-# Push to origin
+## Push to origin
 git push -u origin master</textarea>
                 </li>
             </ul>

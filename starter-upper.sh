@@ -698,9 +698,7 @@ app::setup() {
   "name": "$(full_name::get)",
   "email": "$(email::get)",
   "github": "$(host_login::get "github")",
-  "remotes": "origin upstream",
   "clone": ${cloned},
-  "push": true,
   "status": true
 }
 EOF
