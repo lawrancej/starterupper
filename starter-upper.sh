@@ -363,14 +363,16 @@ git::clone_upstream() {
         if [[ $? -eq 0 ]]; then
             cloned=true
         fi
-    else
-        pushd $REPO > /dev/null
-        git fetch --all 2> /dev/null > /dev/null
-        if [[ $? -eq 0 ]]; then
-            cloned=true
-        fi
-        popd > /dev/null
     fi
+    
+    pushd $REPO > /dev/null
+    git submodule update --init --recursive > /dev/null
+    git fetch --all 2> /dev/null > /dev/null
+    if [[ $? -eq 0 ]]; then
+        cloned=true
+    fi
+    popd > /dev/null
+    
     utility::fileOpen $REPO
     popd > /dev/null
 }
@@ -629,8 +631,8 @@ github::connected() {
 # Make the index page
 app::make_index() {
 
-    curl http://lawrancej.github.io/starterupper/index.html 2> /dev/null > $REPO-index.html 
-#    cp ~/projects/starterupper/index.html $REPO-index.html
+#    curl http://lawrancej.github.io/starterupper/index.html 2> /dev/null > $REPO-index.html 
+    cp ~/projects/starterupper/index.html $REPO-index.html
 
     sed -e "s/REPOSITORY/$REPO/g" \
     -e "s/USER_EMAIL/$(email::get)/g" \
