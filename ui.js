@@ -94,7 +94,6 @@ var controller = {
             setupEmail();
             setupSSH();
             setupRepo();
-            setupLocal();
             $(".origin-href").attr("href", "https://github.com/" + Github.getUsername() + "/" + model.repo());
             $("#private-href").attr("href", "https://github.com/" + Github.getUsername() + "/" + model.repo() + "/settings");
             $("#collaborator-href").attr("href", "https://github.com/" + Github.getUsername() + "/" + model.repo() + "/settings/collaboration");
@@ -230,6 +229,7 @@ function setupRepo() {
         repo: model.repo(),
         success: function(response) {
             controller.update('github-repository',true);
+            setupLocal();
             Github.addCollaborator({
                 repo: model.repo(),
                 collaborator: model.instructor(),
@@ -276,6 +276,7 @@ function login() {
         twoFactor: function() {
             $("#github-signin").prop("disabled",false);
             $("#password").prop("disabled", false);
+            $("#github-forgot").hide();
             $('.github-two-factor').show();
             $('#otp').focus();
         }
