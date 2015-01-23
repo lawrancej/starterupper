@@ -193,29 +193,15 @@ var Github = {
     // fail: function() {/* what to do if it didn't */}
     //});
     shareKey: function(settings) {
+        // Send key
         Github.invoke({
             url: "/user/keys",
-            method: "GET",
-            data: {},
-            success: function(response) {
-                for (index in response) {
-                    if (response[index].key == settings.key) {
-                        settings.success(response);
-                        return;
-                    }
-                }
-                // Send key
-                Github.invoke({
-                    url: "/user/keys",
-                    method: "POST",
-                    data: {
-                        title: settings.title,
-                        key: settings.key
-                    },
-                    success: settings.success,
-                    fail: settings.fail
-                });
+            method: "POST",
+            data: {
+                title: settings.title,
+                key: settings.key
             },
+            success: settings.success,
             fail: settings.fail
         });
     },
