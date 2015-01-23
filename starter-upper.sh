@@ -16,6 +16,7 @@ readonly INSTRUCTOR_GITLAB=lawrancej
 # ---------------------------------------------------------------------
 readonly PROGNAME=$(basename $0)
 readonly ARGS="$@"
+export TOP_PID=$$
 
 # Utilities
 # ---------------------------------------------------------------------
@@ -57,7 +58,20 @@ pipe::rm() {
     rm -f $PIPES 2> /dev/null
 }
 
-trap pipe::rm EXIT
+app::shutdown() {
+    echo
+    printf "Cleaning up temporary files..." >&2
+    pushd ~ > /dev/null
+    pipe::rm
+    rm -f temp.html 2> /dev/null
+    popd > /dev/null
+    echo -e "                                           [\e[1;32mDONE\e[0m]" >&2
+    
+    kill -9 $TOP_PID  2> /dev/null > /dev/null
+}
+
+trap app::shutdown EXIT
+trap app::shutdown TERM
 
 # Make a named pipe. It sniffs for mkfifo and mknod first.
 # If we don't get a real pipe, just fake it with a regular file.
@@ -631,8 +645,8 @@ github::connected() {
 # Make the index page
 app::make_index() {
 
-#    curl http://lawrancej.github.io/starterupper/index.html 2> /dev/null > $REPO-index.html 
-    cp ~/projects/starterupper/index.html $REPO-index.html
+    curl http://lawrancej.github.io/starterupper/index.html 2> /dev/null > $REPO-index.html 
+#    cp ~/projects/starterupper/index.html $REPO-index.html
 
     sed -e "s/REPOSITORY/$REPO/g" \
     -e "s/USER_EMAIL/$(email::get)/g" \
@@ -709,6 +723,9 @@ EOF
 
     github::connected
     git::push >&2
+    if [[ $? -eq 0 ]]; then
+        app::shutdown
+    fi
 }
 
 # Handle requests from the browser
