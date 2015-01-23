@@ -151,21 +151,6 @@ var Github = {
         });
     },
     
-    // Github.setEmail({
-    // email: "something@domain",
-    // success: function() {/* what do we do if it worked? */},
-    // fail: function() {/* what do we do if it didn't */}
-    // })
-    setEmail: function(settings) {
-        Github.invoke({
-            url: "/user/emails",
-            method: "POST",
-            data: [settings.email],
-            success: settings.success,
-            fail: settings.fail
-        });
-    },
-
     getUser: function(settings) {
         Github.invoke({
             url: "/user",
