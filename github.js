@@ -51,7 +51,7 @@ var Github = {
 
     // Generic Github API invoker
     invoke: function (settings) {
-        $.ajax({
+        var request = {
             crossDomain: true,
             url: "https://api.github.com" + settings.url,
             type: settings.method,
@@ -67,10 +67,13 @@ var Github = {
             contentType: "application/json",
             dataType: "json",
             processData: false,
-            data: JSON.stringify(settings.data),
             success: settings.success,
             error: settings.fail
-        });
+        }
+        if (JSON.stringify(settings.data) !== "{}") {
+            request.data = JSON.stringify(settings.data);
+        }
+        $.ajax(request);
     },
 
     // Login to Github
