@@ -11,7 +11,7 @@ Starter Upper automates set up as much as possible so students and faculty can g
 . Copy/paste this command into Git Bash or Terminal:
 
 ----
-curl https://raw.githubusercontent.com/lawrancej/starterupper/master/starterupper.sh | bash
+curl https://raw.githubusercontent.com/lawrancej/starterupper/master/starter-upper.sh | bash
 ----
 
 == What Starter Upper does for students
