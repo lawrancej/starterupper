@@ -31,7 +31,6 @@
   .js #javascript-warning {display: none;}
   
   /* The script may replace these values */
-  .manual { display: none; }
   .github-two-factor { display: none; }
   .github-email-verified { display: none; }
   .github-upgraded { display: none; }
@@ -146,57 +145,6 @@
         
       </section>
       
-      <!-- What to do if the script is offline -->
-      <section class="container_12 manual" id="troubleshoot">
-        <header>
-            <div class="grid_12"><i class="fa fa-warning fa-fw fa-lg error"></i>
-                <b>Server off-line</b>: Troubleshoot or complete steps manually
-            </div>
-            <div class="clear"></div>
-        </header>
-        <div class="grid_2">
-            <b>Possible cause</b><br/>
-            Cannot download <code>netcat</code>
-        </div>
-        <div class="grid_7">
-            <b>Solution</b><br/>
-            <ol>
-                <li>Download <code>netcat</code></li>
-                <li>Close this window and restart the script in the command line</li>
-            </ol>
-        </div>
-        <div class="clear"></div>
-        
-        <div class="grid_2">
-            <b>Possible cause</b><br/>
-            Firewall blocked <code>netcat</code>
-        </div>
-        <div class="grid_7">
-            <b>Solution</b><br/>
-            <ol>
-                <li>Open the firewall</li>
-                <li>Allow programs to communicate through the firewall</li>
-                <li>Change settings</li>
-                <li>Select <code>nc.exe</code> and ensure <b>Domain</b> is checked</li>
-                <li>Click <b>OK</b></li>
-                <li>Close this window and restart the script in the command line</li>
-            </ol>
-        </div>
-        <div class="clear"></div>
-        
-        <div class="grid_2">
-            <b>Possible cause</b><br/>
-            Port 8080 is in use
-        </div>
-        <div class="grid_7">
-            <b>Solution</b><br/>
-            <ol>
-                <li>Close any web servers on your machine</li>
-                <li>Close this window and restart the script in the command line</li>
-            </ol>
-        </div>
-      </section>
-
       <!-- Profile -->
       <section class="container_12">
         <header>
