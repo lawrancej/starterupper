@@ -210,6 +210,10 @@ ssh::configure() {
     ssh-keyscan -t rsa bitbucket.org github.com gitlab.com ssh.github.com \
     altssh.bitbucket.org 2>&1 | sort -u - ~/.ssh/known_hosts | uniq > ~/.ssh/tmp_hosts
     cat ~/.ssh/tmp_hosts >> ~/.ssh/known_hosts
+    
+    # Sanity check
+    [[ -f ~/.ssh/id_rsa.pub ]] && [[ -f ~/.ssh/known_hosts ]]
+    return $?
 }
 
 # Get the user's public key
@@ -748,11 +752,31 @@ main() {
     # Go into the home directory
     pushd ~ > /dev/null
     
-    # Make web page
-    printf "Please wait, gathering information..."
+    # Search for software
+    
+    # SSH key setup
+    printf "Please wait, configuring SSH keys..."
     ssh::configure
+    if [[ $? -eq 0 ]]; then
+        echo -e "                                       [\e[1;32mOK\e[0m]"
+    else
+        echo -e "                                   [\e[1;31mFAILED\e[0m]"
+        echo -e "Type this in another terminal: \e[1;35mssh-keygen -t rsa -N ''\e[0m"
+    fi
+    
+    # Make web page
+    printf "Gathering information..."
     app::make_index
-    echo -e "                                      [\e[1;32mOK\e[0m]"
+    
+    local fullName="$(full_name::get)"
+    
+    if [[ $(full_name::valid "$fullName") ]]; then
+        echo -e "                                                   [\e[1;32mOK\e[0m]"
+        echo "Hello, $fullName."
+    else
+        echo -e "                                               [\e[1;31mFAILED\e[0m]"
+        echo "I'm sorry, I didn't get your name."
+    fi
     
     # Clone upstream
     printf "Cloning upstream..."
