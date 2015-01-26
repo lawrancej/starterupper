@@ -266,16 +266,19 @@ function login() {
         otp: $("#otp").val(),
         authenticated: function(login) {
             controller.github();
+            $("#password").removeAttr('style');
         },
         badCredential: function() {
             // Clear the password
             $("#github-signin").prop("disabled",false);
             $("#password").attr('value', '');
+            $("#password").css('border-color','red');
             controller.github();
         },
         twoFactor: function() {
             $("#github-signin").prop("disabled",false);
             $("#password").prop("disabled", false);
+            $("#password").removeAttr('style');
             $("#github-forgot").hide();
             $('.github-two-factor').show();
             $('#otp').focus();
