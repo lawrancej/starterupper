@@ -348,7 +348,7 @@
                     <a target="actionRequired" href="https://github.com/new"
                     class="no-github-repository">
                         Create repository</a><a
-                    href="https://github.com/USER_NAME/REPOSITORY"
+                    href="https://github.com/GITHUB_LOGIN/REPOSITORY"
                     target="actionRequired"
                     class="origin-href github-repository">
                         Created repository</a> <b>REPOSITORY</b>,
@@ -357,7 +357,7 @@
                 <li>
                     <i class="fa-li fa fa-lg fa-check success github-collaborator"></i>
                     <i class="fa-li fa fa-lg fa-users fail no-github-collaborator"></i>
-                    <a href="https://github.com/USER_NAME/REPOSITORY/settings/collaboration"
+                    <a href="https://github.com/GITHUB_LOGIN/REPOSITORY/settings/collaboration"
                     id="collaborator-href" target="actionRequired">
                     <span class="no-github-collaborator">
                     Add the instructor</span><span
@@ -386,7 +386,7 @@
                     <i class="fa-li fa fa-lg fa-check success github-private"></i>
                     <i class="fa-li fa fa-lg fa-eye fail no-github-private"></i>
                     <a target="actionRequired" id="private-href"
-                    href="https://github.com/USER_NAME/REPOSITORY/settings">
+                    href="https://github.com/GITHUB_LOGIN/REPOSITORY/settings">
                     <span class="no-github-private">Make repository
                     private</span><span class="github-private">Made repository
                     private</span></a>,
@@ -401,7 +401,7 @@
             <i class="fa fa-git-square fa-fw fa-lg error"></i>
 <b>Git</b>: Configure your <b>local</b> repository (<a href="REPOSITORY" target="_blank"><code>~/REPOSITORY</code></a>),
           <b>origin</b> (<a class="origin-href"
-          href="https://github.com/USER_NAME/REPOSITORY"
+          href="https://github.com/GITHUB_LOGIN/REPOSITORY"
           target="_blank">your private repository</a>) and 
           <b>upstream</b> (<a href="https://github.com/INSTRUCTOR_GITHUB/REPOSITORY"
           target="_blank">course repository</a>)</div>
@@ -426,7 +426,7 @@ git submodule update --init --recursive
 ## Configure remote repositories
 git remote add upstream https://github.com/INSTRUCTOR_GITHUB/REPOSITORY.git
 git remote rm origin
-git remote add origin git@github.com:USER_NAME/REPOSITORY.git
+git remote add origin git@github.com:GITHUB_LOGIN/REPOSITORY.git
 ## Push to origin
 git push -u origin master</textarea>
                 </li>
