@@ -31,6 +31,11 @@ utility::fileSize() {
     printf "$theSize"
 }
 
+# Do something quietly
+quietly() {
+    $@ 2> /dev/null > /dev/null
+}
+
 # "return" failure
 utility::fail() {
     echo -n
@@ -41,15 +46,6 @@ utility::fail() {
 utility::success() {
     printf true
     return 0
-}
-
-# Return whether the last command was successful
-utility::lastSuccess() {
-    if [[ $? -eq 0 ]]; then
-        utility::success
-    else
-        utility::fail
-    fi
 }
 
 PIPES=""
@@ -63,11 +59,11 @@ app::shutdown() {
     printf "Cleaning up temporary files..." >&2
     pushd ~ > /dev/null
     pipe::rm
-    rm -f temp.html 2> /dev/null
+    quietly rm -f temp.html
     popd > /dev/null
     echo -e "                                           [\e[1;32mDONE\e[0m]" >&2
     
-    kill -9 $TOP_PID  2> /dev/null > /dev/null
+    quietly kill -9 $TOP_PID
 }
 
 trap app::shutdown EXIT
