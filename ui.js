@@ -75,7 +75,7 @@ var controller = {
             value += " (DONE)";
         }
         value += "\n## Clone repository";
-        if (!$("#cloned").val()) {
+        if ($("#cloned").val() == "false") {
             value += "\ncd && git clone https://github.com/" + model.instructor() + "/" + model.repo() + ".git";
             value += "\ncd " + model.repo();
             value += "\ngit submodule update --init --recursive";
