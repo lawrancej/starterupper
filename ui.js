@@ -91,7 +91,7 @@ var controller = {
         } else {
             value += " (DONE)";
         }
-        value += "\n## Push to origin (Check status in command prompt window)";
+        value += "\n## Push to origin";
         value += "\ngit push -u origin master";
         $("#command-line").val(value);
     },

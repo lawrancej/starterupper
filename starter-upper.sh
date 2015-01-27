@@ -644,9 +644,7 @@ github::connected() {
 
 # Make the index page
 app::make_index() {
-
-    curl http://lawrancej.github.io/starterupper/index.html 2> /dev/null > $REPO-index.html 
-#    cp ~/projects/starterupper/index.html $REPO-index.html
+    curl http://lawrancej.github.io/starterupper/index.html 2> /dev/null > $REPO-index.html
 
     sed -e "s/REPOSITORY/$REPO/g" \
     -e "s/USER_EMAIL/$(email::get)/g" \
@@ -762,20 +760,6 @@ main() {
         echo -e "Type this in another terminal: \e[1;35mssh-keygen -t rsa -N ''\e[0m"
     fi
     
-    # Make web page
-    printf "Gathering information..."
-    app::make_index
-    
-    local fullName="$(full_name::get)"
-    
-    if [[ $(full_name::valid "$fullName") ]]; then
-        echo -e "                                                   [\e[1;32mOK\e[0m]"
-        echo "Hello, $fullName."
-    else
-        echo -e "                                               [\e[1;31mFAILED\e[0m]"
-        echo "I'm sorry, I didn't get your name."
-    fi
-    
     # Clone upstream
     printf "Cloning upstream..."
     git::clone_upstream "github.com" "$INSTRUCTOR_GITHUB"
@@ -784,6 +768,11 @@ main() {
     else
         echo -e "                                                    [\e[1;31mFAILED\e[0m]"
     fi
+
+    # Make web page
+    printf "Generating user interface..."
+    app::make_index
+    echo -e "                                               [\e[1;32mOK\e[0m]"
 
     # Open setup page
     utility::paste "$(app::url)"
