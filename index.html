@@ -153,92 +153,63 @@
             <div class="grid_12">
                 <i class="fa fa-user fa-fw fa-lg"></i>
                 <b>Profile</b>:
-                Confirm your full name and school email address
+                Confirm your name, email, and update your photo
             </div>
             <div class="clear"></div>
         </header>
         
-        <!-- Full name -->
+        <!-- Confirm profile -->
         <div class="grid_2 subheading">
-            <label for="name">Full name</label>
+            <a href="https://en.gravatar.com/gravatars/new"
+            target="actionRequired"
+            title="Update profile photo">
+            <img id="visible-gravatar"
+            src="http://www.gravatar.com/avatar/EMAIL_HASH?d=retro&s=140"
+            title="Update profile photo" alt="Update profile photo" width="140" height="140" />
+            </a>
         </div>
-        <div class="grid_3">
-            <input id="name" type="text" name="name" value="FULL_NAME"
-            placeholder="Full name" pattern="[^ ]+( [^ ]+)+" required
-            title="Full name (first and last name)" autocomplete="on" /><br/>
-        </div>
-        <div class="grid_7">
-            Include your first and last name
-        </div>
-        <div class="clear"></div>
-        
-        <!-- Email -->
-        <div class="grid_2 subheading">
-            <label for="email">School email</label>
-        </div>
-        <div class="grid_3">
-            <input id="email" type="email" name="email" value="USER_EMAIL"
-            placeholder="School email address" required
-            autofocus autocomplete="on" title="School email address (ends with .edu)" />
-        </div>
-        <div class="grid_7">
-            Use your <code>.edu</code> email address
-        </div>
-        <div class="clear"></div>
-     </section>
-     
-     <!-- Gravatar -->
-     <section class="container_12">
-        <header>
-        <div class="grid_12">
-            <i class="fa fa-camera fa-fw fa-lg"></i>
-            <b>Gravatar</b>: 
-            Create or update your profile picture
-            to help the instructor learn names
-        </div>
-        <div class="clear"></div>
-        </header>
-        
-        <div class="grid_2 subheading onboard no-gravatar-account">
-            Setup account
-        </div>
-        <div class="grid_3 onboard no-gravatar-account">
+        <div class="grid_4">
           <ul class="fa-ul" style="margin-left: 0px;">
             <li>
+                <i class="fa fa-li fa-lg fa-user"></i>
+                <input id="name" type="text" name="name" value="FULL_NAME"
+                placeholder="Full name" pattern="[^ ]+( [^ ]+)+" required
+                title="Full name (first and last name)" autocomplete="on" />
+            </li>
+            <li>
+                <i class="fa fa-li fa-lg fa-envelope"></i>
+                <input id="email" type="email" name="email" value="USER_EMAIL"
+                placeholder="School email address" required autofocus
+                autocomplete="on" title="School email address (ends with .edu)" />
+            </li>
+            <li class="onboard no-gravatar-account">
+                <i class="fa fa-li fa-lg fa-gear"></i>
+                Setup a Gravatar (profile photo)
+            </li>
+            <li class="onboard no-gravatar-account">
                 <i class="fa fa-li fa-lg fa-user"></i>
                 <a href="https://en.gravatar.com/connect/?source=_signup"
                 target="actionRequired"
                 title="New to Gravatar? Join with your school email">
-                    <b>Join</b></a>  (New users only)
+                    <b>Join Gravatar</b></a> (New users only)
             </li>
-            <li>
+            <li class="onboard no-gravatar-account">
                 <i class="fa fa-li fa-lg fa-envelope"></i>
                 <a href="https://en.gravatar.com/emails/new"
                 target="actionRequired"
                 title="Already use Gravatar? Add and verify your school email">
-                    <b>Add email</b></a> (Existing users)
+                    <b>Add school email</b></a> (Gravatar users)
             </li>
-          </ul>
-        </div>
-        <div class="grid_7 onboard no-gravatar-account">
-            Use your school email for account setup
-        </div>
-        <div class="clear"></div>
-        <div class="grid_2 subheading">Profile picture</div>
-        <div class="grid_3">
-          <ul class="fa-ul" style="margin-left: 0px;">
             <li>
                 <i class="fa fa-li fa-lg fa-camera"></i>
                 <a href="https://en.gravatar.com/gravatars/new"
-                target="actionRequired"
-                title="Update picture">
-                <img id="visible-gravatar"
-                src="http://www.gravatar.com/avatar/EMAIL_HASH?d=retro&s=140"
-                title="Update picture" alt="Update picture" width="70" height="70" />
-                </a>
+                target="actionRequired" title="Update profile photo">Update profile photo</a>
+            </li>
+          </ul>
         </div>
-      </section>
-      
+        <div class="clear"></div>
+     </section>
+     
       <!-- Github -->
       <section class="container_12">
         <header>
