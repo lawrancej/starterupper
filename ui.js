@@ -87,7 +87,7 @@ var controller = {
         if ($("#stored-github").val() != Github.getUsername()) {
             value += "\ngit remote add upstream https://github.com/" + model.instructor() + "/" + model.repo() + ".git";
             value += "\ngit remote rm origin";
-            value += "\ngit remote add origin git@github.com:" + Github.getUsername() + "/" + model.repo() + ".git";
+            value += "\ngit remote add origin git@github.com:" + ((Github.getUsername() == null) ? $("#stored-github").val() : Github.getUsername()) + "/" + model.repo() + ".git";
         } else {
             value += " (DONE)";
         }
