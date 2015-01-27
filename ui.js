@@ -71,7 +71,10 @@ var controller = {
         if ($("#stored-email").val() != model.email()) {
             value += "\ngit config --global user.email " + model.email();
         }
-        if ($("#stored-email").val() == model.email() && $("#stored-name").val() == model.name()) {
+        if ($("#stored-email").val() == model.email() &&
+            $("#stored-name").val() == model.name() &&
+            model.email() != "" &&
+            model.name() != "") {
             value += " (DONE)";
         }
         value += "\n## Clone repository";
