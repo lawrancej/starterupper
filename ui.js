@@ -62,13 +62,46 @@ var controller = {
         $(((value) ? "." : ".no-")+klass).show();
         $(((value) ? ".no-" : ".")+klass).hide();
     },
+    // Update command-line
+    updateCommands: function() {
+        var value = "## Configure git";
+        if ($("#stored-name").val() != model.name()) {
+            value += "\ngit config --global user.name \"" + model.name() + "\"";
+        }
+        if ($("#stored-email").val() != model.email()) {
+            value += "\ngit config --global user.email " + model.email();
+        }
+        if ($("#stored-email").val() == model.email() && $("#stored-name").val() == model.name()) {
+            value += " (DONE)";
+        }
+        value += "\n## Clone repository";
+        if (!$("#cloned").val()) {
+            value += "\ncd && git clone https://github.com/" + model.instructor() + "/" + model.repo() + ".git";
+            value += "\ncd " + model.repo();
+            value += "\ngit submodule update --init --recursive";
+        } else {
+            value += " (DONE)";
+            value += "\ncd ~/" + model.repo();
+        }
+        value += "\n## Configure remote repositories";
+        if ($("#stored-github").val() != Github.getUsername()) {
+            value += "\ngit remote add upstream https://github.com/" + model.instructor() + "/" + model.repo() + ".git";
+            value += "\ngit remote rm origin";
+            value += "\ngit remote add origin git@github.com:" + Github.getUsername() + "/" + model.repo() + ".git";
+        } else {
+            value += " (DONE)";
+        }
+        value += "\n## Push to origin (Check status in command prompt window)";
+        value += "\ngit push -u origin master";
+        $("#command-line").val(value);
+    },
     // Update name view on change
     name: function() {
-        $( "#git-config-name" ).html('git config --global user.name "' + model.name() + '"');
+        controller.updateCommands();
     },
     // Update email view on change
     email: function() {
-        $( "#git-config-email" ).html('git config --global user.email ' + model.email());
+        controller.updateCommands();
         
         $("#visible-gravatar").attr('src', 'http://www.gravatar.com/avatar/' + model.gravatarId() + '?d=retro&s=140');
         $.ajax({
@@ -89,7 +122,7 @@ var controller = {
     },
     github: function() {
         if (Github.authenticated()) {
-            $("#github-login").val(Github.getUsername());
+            controller.updateCommands();
             setupUser();
             setupEmail();
             setupSSH();
@@ -97,7 +130,6 @@ var controller = {
             $(".origin-href").attr("href", "https://github.com/" + Github.getUsername() + "/" + model.repo());
             $("#private-href").attr("href", "https://github.com/" + Github.getUsername() + "/" + model.repo() + "/settings");
             $("#collaborator-href").attr("href", "https://github.com/" + Github.getUsername() + "/" + model.repo() + "/settings/collaboration");
-            $("#origin-code").html("git remote add origin git@github.com:" + Github.getUsername() + "/" + model.repo() + ".git");
             
             controller.update('github-authenticated', true);
         } else {
@@ -128,7 +160,6 @@ $("#github-signin").on("click", function(event) {
 $(function() {
     $("#name").val(model.name());
     $("#email").val(model.email());
-    $("#manual-github-login").prop('required',false);
     controller.name();
     controller.email();
     controller.github();
@@ -146,36 +177,11 @@ function setupLocal() {
             "user.email": model.email(),
         },
         success: function(response) {
-            var value = "## Configure git";
-            if (response.name != model.name()) {
-                value += "\ngit config --global user.name \"" + model.name() + "\"";
-            }
-            if (response.email != model.email()) {
-                value += "\ngit config --global user.email " + model.email();
-            }
-            if (response.email == model.email() && response.name == model.name()) {
-                value += " (DONE)";
-            }
-            value += "\n## Clone repository";
-            if (!response.clone) {
-                value += "\ncd && git clone https://github.com/" + model.instructor() + "/" + model.repo() + ".git";
-                value += "\ncd " + model.repo();
-                value += "\ngit submodule update --init --recursive";
-            } else {
-                value += " (DONE)";
-                value += "\ncd ~/" + model.repo();
-            }
-            value += "\n## Configure remote repositories";
-            if (response.github != Github.getUsername()) {
-                value += "\ngit remote add upstream https://github.com/" + model.instructor() + "/" + model.repo() + ".git";
-                value += "\ngit remote rm origin";
-                value += "\ngit remote add origin git@github.com:" + Github.getUsername() + "/" + model.repo() + ".git";
-            } else {
-                value += " (DONE)";
-            }
-            value += "\n## Push to origin (Check status in command prompt window)";
-            value += "\ngit push -u origin master";
-            $("#command-line").val(value);
+            $("#stored-name").val(response.name);
+            $("#stored-email").val(response.email);
+            $("#stored-github").val(response.github);
+            $("#cloned").val();
+            controller.updateCommands();
             controller.update('git-status',response.status);
         },
         error: function(response) {

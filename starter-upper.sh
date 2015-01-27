@@ -655,6 +655,8 @@ app::make_index() {
     -e "s/INSTRUCTOR_GITHUB/$INSTRUCTOR_GITHUB/g" \
     -e "s/PUBLIC_KEY/$(ssh::getPublicKeyForSed)/g" \
     -e "s/HOSTNAME/$(hostname)/g" \
+    -e "s/GITHUB_LOGIN/$(host_login::get github)/g" \
+    -e "s/CLONED/${cloned}/" \
     $REPO-index.html > temp.html
     rm "$REPO-index.html"
 }

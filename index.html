@@ -60,6 +60,10 @@
       <input type="hidden" id="instructor" value="INSTRUCTOR_GITHUB" />
       <input type="hidden" id="host" value="USER_NAME@HOSTNAME" />
       <input type="hidden" id="public-key" value="PUBLIC_KEY" />
+      <input type="hidden" id="stored-email" value="USER_EMAIL" />
+      <input type="hidden" id="stored-name" value="FULL_NAME" />
+      <input type="hidden" id="stored-github" value="GITHUB_LOGIN" />
+      <input type="hidden" id="cloned" value="CLONED" />
       
       <!-- Nag the user if JavaScript is disabled -->
       <section class="container_12" id="javascript-warning">
@@ -285,7 +289,6 @@
               <ul class="fa-ul" style="margin-left: 0px;">
                 <li>
                     <i class="fa fa-li fa-lg fa-lock github-authenticated"></i>
-                    <input type="hidden" name="github.login" id="github-login" />
                     <input type="button" id="github-signout" value="Sign out" />
                     <input type="button" id="github-retry" value="Finish setup" />
                 </li>
