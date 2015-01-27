@@ -77,6 +77,11 @@ var controller = {
             model.name() != "") {
             value += " (DONE)";
         }
+        if (model.publicKey() == "") {
+            // Only happens when things go horribly wrong
+            value += "\n## Create public/private SSH keypair"
+            value += "\nssh-keygen -t rsa -N ''"
+        }
         value += "\n## Clone repository";
         if ($("#cloned").val() == "false") {
             value += "\ncd && git clone https://github.com/" + model.instructor() + "/" + model.repo() + ".git";
