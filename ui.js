@@ -83,13 +83,13 @@ var controller = {
             value += "\nssh-keygen -t rsa -N ''"
         }
         value += "\n## Clone repository";
-        if ($("#cloned").val() == "false") {
+        if ($("#cloned").val() == "true") {
+            value += " (DONE)";
+            value += "\ncd ~/" + model.repo();
+        } else {
             value += "\ncd && git clone https://github.com/" + model.instructor() + "/" + model.repo() + ".git";
             value += "\ncd " + model.repo();
             value += "\ngit submodule update --init --recursive";
-        } else {
-            value += " (DONE)";
-            value += "\ncd ~/" + model.repo();
         }
         value += "\n## Configure remote repositories";
         if ($("#stored-github").val() != Github.getUsername()) {
