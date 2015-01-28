@@ -294,35 +294,47 @@
         <div class="clear"></div>
      </section>
      
-      <!-- Github -->
+      <!-- Remote repositories and collaborators -->
       <section class="container_12">
         <header>
-          <div class="grid_10">
-            <i class="fa fa-github fa-fw fa-lg"></i>
-            <b>Github</b>:
-            Create &amp; upgrade your account to create a private repository
-            for work submission at no charge
+          <div class="grid_6">
+            <i class="fa fa-code-fork fa-fw fa-lg"></i>
+            <b>Remote setup</b>: Configure repositories &amp; collaborators
+          </div>
+          <div class="grid_6">
+<!--
+            <span class="fa-stack fa-lg">
+                <i class="fa fa-square fa-stack-2x"></i>
+                <i class="fa fa-terminal fa-stack-1x fa-inverse"></i>
+            </span>
+            -->
+            <i class="fa fa-desktop fa-lg fa-fw fail no-git-status"></i>
+            <i class="fa fa-lg fa-fw fa-check success git-status"></i>
+            <b>Local setup</b>: Configure <b>local</b> repository
+            (<a href="REPOSITORY" target="_blank"><code>~/REPOSITORY</code></a>)
           </div>
           <div class="clear"></div>
         </header>
         
-        <div class="grid_2 subheading">
-            Setup checklist<br/>
-            <span class="no-github-authenticated">(Sign in to complete)</span>
-        </div>
-        <div class="grid_10">
+        <div class="grid_6">
             <ul class="fa-ul" style="margin-left: 0px;">
+                <li>
+                    <i class="fa-li fa fa-lg fa-check success git-status"></i>
+                    <i class="fa-li fa fa-lg fa-book fail no-git-status"></i>
+                    <a href="https://github.com/INSTRUCTOR_GITHUB/REPOSITORY"
+                    target="_blank">Clone <b>upstream</b> course repository</a> (REPOSITORY)
+                </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-check success github-repository"></i>
                     <i class="fa-li fa fa-lg fa-database fail no-github-repository"></i>
                     <a target="actionRequired" href="https://github.com/new"
                     class="no-github-repository">
-                        Create repository</a><a
+                        Create <b>origin</b> repository</a><a
                     href="https://github.com/GITHUB_LOGIN/REPOSITORY"
                     target="actionRequired"
                     class="origin-href github-repository">
-                        Created repository</a> <b>REPOSITORY</b>,
-                        a place to submit your work
+                        Created <b>origin</b> repository</a> <b>REPOSITORY</b>
+                        for work submission
                 </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-check success github-collaborator"></i>
@@ -332,7 +344,7 @@
                     <span class="no-github-collaborator">
                     Add the instructor</span><span
                     class="github-collaborator">Added the instructor</span></a>
-                    <b>(INSTRUCTOR_GITHUB)</b> to your repository 
+                    <b>(INSTRUCTOR_GITHUB)</b> to your repository
                 </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-check success github-private"></i>
@@ -346,29 +358,8 @@
                 </li>
             </ul>
         </div>
-      </section>
-      <section class="container_12">
-        <header>
-          <div class="grid_10">
-            <i class="fa fa-git-square fa-fw fa-lg error"></i>
-<b>Git</b>: Configure your <b>local</b> repository (<a href="REPOSITORY" target="_blank"><code>~/REPOSITORY</code></a>),
-          <b>origin</b> (<a class="origin-href"
-          href="https://github.com/GITHUB_LOGIN/REPOSITORY"
-          target="_blank">your private repository</a>) and 
-          <b>upstream</b> (<a href="https://github.com/INSTRUCTOR_GITHUB/REPOSITORY"
-          target="_blank">course repository</a>)</div>
-          <div class="clear"></div>
-        </header>
-        <div class="clear"></div>
-        <div class="grid_2 subheading">
-            Local setup
-        </div>
-        <div class="grid_10">
-            <ul class="fa-ul" style="margin-left: 0px;">
-                <li>
-                    <i class="fa fa-desktop fa-lg fa-li fail no-git-status"></i>
-                    <i class="fa fa-lg fa-li fa-check success git-status"></i>
-                    <textarea id="command-line" rows="14" cols="80" readonly>## Configure git
+        <div class="grid_6">
+            <textarea id="command-line" rows="14" cols="80" readonly>## Configure git
 git config --global user.name "FULL_NAME"
 git config --global user.email USER_EMAIL
 ## Clone repository
@@ -381,8 +372,6 @@ git remote rm origin
 git remote add origin git@github.com:GITHUB_LOGIN/REPOSITORY.git
 ## Push to origin
 git push -u origin master</textarea>
-                </li>
-            </ul>
         </div>
       </section>
       <section class="container_12">
