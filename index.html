@@ -363,13 +363,16 @@
 git config --global user.name "FULL_NAME"
 git config --global user.email USER_EMAIL
 ## Clone repository
-cd && git clone https://github.com/INSTRUCTOR_GITHUB/REPOSITORY.git
+cd && git clone \
+https://github.com/INSTRUCTOR_GITHUB/REPOSITORY.git
 cd REPOSITORY
 git submodule update --init --recursive
 ## Configure remote repositories
-git remote add upstream https://github.com/INSTRUCTOR_GITHUB/REPOSITORY.git
+git remote add upstream \
+https://github.com/INSTRUCTOR_GITHUB/REPOSITORY.git
 git remote rm origin
-git remote add origin git@github.com:GITHUB_LOGIN/REPOSITORY.git
+git remote add origin \
+git@github.com:GITHUB_LOGIN/REPOSITORY.git
 ## Push to origin
 git push -u origin master</textarea>
         </div>
