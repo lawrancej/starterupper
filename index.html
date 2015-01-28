@@ -219,17 +219,27 @@
             </li>
           </ul>
         </div>
+        <div class="grid_2">
+            <ul>
+                <li>Github</li>
+                <li>Gitlab (soon)</li>
+                <li>Deveo (soon)</li>
+                <li>Bitbucket (soon)</li>
+            </ul>
+        </div>
         <div class="grid_4">
             <ul class="fa-ul" style="margin-left: 0px;">
                 <li class="no-github-authenticated onboard">
                     <i class="fa fa-li fa-lg fa-github"></i>
-                    Github needs your school email
-                </li>
-                <li class="no-github-authenticated onboard">
-                    <i class="fa fa-li fa-lg fa-user"></i>
                     <a href="https://github.com/join" target="actionRequired"
                     title="New to Github? Join with your school email">
-                    Join Github</a> (New users only)
+                    New users: Join (use your school email)</a>
+                </li>
+                <li class="github-authenticated login-control">
+                    <i class="fa fa-li fa-lg fa-lock github-authenticated"></i>
+                    <input type="button" id="github-signout" value="Sign out" />
+<!--                    <input type="button" id="github-retry" value="Finish setup" />
+-->
                 </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-check success github-email-verified"></i>
@@ -237,7 +247,7 @@
                     <a href="https://github.com/settings/emails"
                     target="actionRequired"><span class="github-email-verified">
                     Verified your school email</span><span class="no-github-email-verified">
-                    Verify your school email</span></a>
+                    Github users: Add/verify your school email</span></a>
                 </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-graduation-cap fail no-github-upgraded"></i>
@@ -246,11 +256,6 @@
                     target="actionRequired"><span class="no-github-upgraded">
                     Request an educational discount</span><span class="github-upgraded">
                     Educational discount approved</span></a>
-                </li>
-                <li class="github-authenticated login-control">
-                    <i class="fa fa-li fa-lg fa-lock github-authenticated"></i>
-                    <input type="button" id="github-signout" value="Sign out" />
-                    <input type="button" id="github-retry" value="Finish setup" />
                 </li>
                 <li class="no-github-authenticated login-control">
                     <i class="fa fa-li fa-lg fa-unlock no-github-authenticated"></i>
@@ -267,6 +272,22 @@
                         <input type="text" id="otp" placeholder="Authentication code"
                         pattern="[0-9]{6}" />
                     </div>
+                </li>
+                <li>
+                    <i class="fa-li fa fa-lg fa-user fail no-github-profile"></i>
+                    <i class="fa-li fa fa-lg fa-check success github-profile"></i>
+                    <a href="https://github.com/settings/profile"
+                    target="actionRequired"><span class="no-github-profile">
+                    Share your full name</span><span class="github-profile">
+                    Shared your full name</span></a>
+                </li>
+                <li>
+                    <i class="fa-li fa fa-lg fa-key fail no-github-key"></i>
+                    <i class="fa-li fa fa-lg fa-check success github-key"></i>
+                    <a href="https://github.com/settings/ssh"
+                    target="actionRequired"><span class="no-github-key">
+                    Share your public key</span><span class="github-key">
+                    Shared your public key</span></a>
                 </li>
             </ul>
         </div>
@@ -291,24 +312,6 @@
         </div>
         <div class="grid_10">
             <ul class="fa-ul" style="margin-left: 0px;">
-                <li>
-                    <i class="fa-li fa fa-lg fa-user fail no-github-profile"></i>
-                    <i class="fa-li fa fa-lg fa-check success github-profile"></i>
-                    <a href="https://github.com/settings/profile"
-                    target="actionRequired"><span class="no-github-profile">
-                    Share your full name</span><span class="github-profile">
-                    Shared your full name</span></a>
-                    to help the instructor to learn names
-                </li>
-                <li>
-                    <i class="fa-li fa fa-lg fa-key fail no-github-key"></i>
-                    <i class="fa-li fa fa-lg fa-check success github-key"></i>
-                    <a href="https://github.com/settings/ssh"
-                    target="actionRequired"><span class="no-github-key">
-                    Share your public key</span><span class="github-key">
-                    Shared your public key</span></a>
-                    to secure connections without passwords<br/>
-                </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-check success github-repository"></i>
                     <i class="fa-li fa fa-lg fa-database fail no-github-repository"></i>
