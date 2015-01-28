@@ -150,10 +150,15 @@
       <!-- Profile -->
       <section class="container_12">
         <header>
-            <div class="grid_12">
+            <div class="grid_6">
                 <i class="fa fa-user fa-fw fa-lg"></i>
                 <b>Profile</b>:
                 Confirm your name, email, and update your photo
+            </div>
+            <div class="grid_6">
+                <i class="fa fa-gear fa-fw fa-lg"></i>
+                <b>Accounts</b>:
+                Setup accounts on git project hosts for work submission
             </div>
             <div class="clear"></div>
         </header>
@@ -174,13 +179,20 @@
                 <i class="fa fa-li fa-lg fa-user"></i>
                 <input id="name" type="text" name="name" value="FULL_NAME"
                 placeholder="Full name" pattern="[^ ]+( [^ ]+)+" required
-                title="Full name (first and last name)" autocomplete="on" />
+                title="Your full name (first and last name)" autocomplete="on" />
             </li>
             <li>
                 <i class="fa fa-li fa-lg fa-envelope"></i>
                 <input id="email" type="email" name="email" value="USER_EMAIL"
                 placeholder="School email address" required autofocus
-                autocomplete="on" title="School email address (ends with .edu)" />
+                autocomplete="on"
+                title="Your school email address (ends with .edu)" />
+            </li>
+            <li>
+                <i class="fa fa-li fa-lg fa-key"></i>
+                <input type="text" value="PUBLIC_KEY" readonly
+                placeholder="ERROR: Key unset. FIX: ssh-keygen -t rsa" 
+                title="Your public SSH key secures connections without passwords" />
             </li>
             <li class="onboard no-gravatar-account">
                 <i class="fa fa-li fa-lg fa-gear"></i>
@@ -207,67 +219,40 @@
             </li>
           </ul>
         </div>
-        <div class="clear"></div>
-     </section>
-     
-      <!-- Github -->
-      <section class="container_12">
-        <header>
-          <div class="grid_10">
-            <i class="fa fa-github fa-fw fa-lg"></i>
-            <b>Github</b>:
-            Create &amp; upgrade your account to create a private repository
-            for work submission at no charge
-          </div>
-          <div class="clear"></div>
-        </header>
-        
-        <div class="clear"></div>
-        <div class="grid_2 no-github-authenticated onboard subheading">
-            Setup account
-        </div>
-        <div class="grid_3 no-github-authenticated onboard">
+        <div class="grid_4">
             <ul class="fa-ul" style="margin-left: 0px;">
-                <li>
+                <li class="no-github-authenticated onboard">
+                    <i class="fa fa-li fa-lg fa-github"></i>
+                    Github needs your school email
+                </li>
+                <li class="no-github-authenticated onboard">
                     <i class="fa fa-li fa-lg fa-user"></i>
                     <a href="https://github.com/join" target="actionRequired"
                     title="New to Github? Join with your school email">
-                    <b>Join</b></a> (New users only)
+                    Join Github</a> (New users only)
                 </li>
                 <li>
-                    <i class="fa fa-li fa-lg fa-envelope"></i>
+                    <i class="fa-li fa fa-lg fa-check success github-email-verified"></i>
+                    <i class="fa-li fa fa-lg fa-envelope fail no-github-email-verified"></i>
                     <a href="https://github.com/settings/emails"
-                    target="actionRequired"
-                    title="Already use Github? Add and verify your school email">
-                        <b>Add email</b></a> (Existing users)
+                    target="actionRequired"><span class="github-email-verified">
+                    Verified your school email</span><span class="no-github-email-verified">
+                    Verify your school email</span></a>
                 </li>
-            </ul>
-        </div>
-        <div class="grid_7 no-github-authenticated onboard">
-            Use your school email for account setup
-        </div>
-        <div class="clear"></div>
-        <div class="grid_2 subheading">
-            <div class="github-authenticated login-control">
-                You're signed in
-            </div>
-            <div class="no-github-authenticated login-control">
-                You're not signed in
-            </div>
-        </div>
-        <div class="grid_4">
-            <div class="github-authenticated login-control">
-              <ul class="fa-ul" style="margin-left: 0px;">
                 <li>
+                    <i class="fa-li fa fa-lg fa-graduation-cap fail no-github-upgraded"></i>
+                    <i class="fa-li fa fa-lg fa-check success github-upgraded"></i>
+                    <a href="https://education.github.com/discount_requests/new"
+                    target="actionRequired"><span class="no-github-upgraded">
+                    Request an educational discount</span><span class="github-upgraded">
+                    Educational discount approved</span></a>
+                </li>
+                <li class="github-authenticated login-control">
                     <i class="fa fa-li fa-lg fa-lock github-authenticated"></i>
                     <input type="button" id="github-signout" value="Sign out" />
                     <input type="button" id="github-retry" value="Finish setup" />
                 </li>
-              </ul>
-            </div>
-            <div class="no-github-authenticated login-control">
-              <ul class="fa-ul" style="margin-left: 0px;">
-                <li>
+                <li class="no-github-authenticated login-control">
                     <i class="fa fa-li fa-lg fa-unlock no-github-authenticated"></i>
                     <input type="password" id="github-password"
                     placeholder="Github password" pattern=".{7,}"
@@ -283,10 +268,23 @@
                         pattern="[0-9]{6}" />
                     </div>
                 </li>
-              </ul>
-            </div>
+            </ul>
         </div>
         <div class="clear"></div>
+     </section>
+     
+      <!-- Github -->
+      <section class="container_12">
+        <header>
+          <div class="grid_10">
+            <i class="fa fa-github fa-fw fa-lg"></i>
+            <b>Github</b>:
+            Create &amp; upgrade your account to create a private repository
+            for work submission at no charge
+          </div>
+          <div class="clear"></div>
+        </header>
+        
         <div class="grid_2 subheading">
             Setup checklist<br/>
             <span class="no-github-authenticated">(Sign in to complete)</span>
@@ -307,11 +305,9 @@
                     <i class="fa-li fa fa-lg fa-check success github-key"></i>
                     <a href="https://github.com/settings/ssh"
                     target="actionRequired"><span class="no-github-key">
-                    Share your public key (below)</span><span class="github-key">
-                    Shared your public key (below)</span></a>
+                    Share your public key</span><span class="github-key">
+                    Shared your public key</span></a>
                     to secure connections without passwords<br/>
-                    <input type="text" value="PUBLIC_KEY" style="width: 500px;" readonly
-                    placeholder="ERROR: Key unset. FIX: ssh-keygen -t rsa" />
                 </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-check success github-repository"></i>
@@ -334,24 +330,6 @@
                     Add the instructor</span><span
                     class="github-collaborator">Added the instructor</span></a>
                     <b>(INSTRUCTOR_GITHUB)</b> to your repository 
-                </li>
-                <li>
-                    <i class="fa-li fa fa-lg fa-check success github-email-verified"></i>
-                    <i class="fa-li fa fa-lg fa-envelope fail no-github-email-verified"></i>
-                    <a href="https://github.com/settings/emails"
-                    target="actionRequired"><span class="github-email-verified">
-                    Verified your school email</span><span class="no-github-email-verified">
-                    Verify your school email</span></a>
-                    to get an educational discount
-                </li>
-                <li>
-                    <i class="fa-li fa fa-lg fa-graduation-cap fail no-github-upgraded"></i>
-                    <i class="fa-li fa fa-lg fa-check success github-upgraded"></i>
-                    <a href="https://education.github.com/discount_requests/new"
-                    target="actionRequired"><span class="no-github-upgraded">
-                    Request an educational discount</span><span class="github-upgraded">
-                    Educational discount approved</span></a>
-                    to create private repositories for free
                 </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-check success github-private"></i>
