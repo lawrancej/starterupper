@@ -1,56 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Git and Hosting Setup</title>
-  <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-  <!-- Suppress favicon -->
-  <link rel="shortcut icon" href="#" />
-  <link rel="stylesheet" href="http://lawrancej.github.io/starterupper/reset.css" />
-  <link rel="stylesheet" href="http://lawrancej.github.io/starterupper/text.css" />
-  <link rel="stylesheet" href="http://lawrancej.github.io/starterupper/960.css" />
-  <style>
-  ul { margin-bottom: 0px; }
-  .subheading { text-align: right; }
-  .error { color:red; }
-  .success { color:green; }
-  .fail { color:black; }
-  header {
-    display: block;
-    border-bottom: 1px solid lightgray;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-  }
-  section { margin-bottom:5px; }
-  input[type="text"] { width:200px; }
-  input[type="email"] { width:200px; }
-  input[type="password"] { width:120px; }
-  .js #javascript-warning {display: none;}
+<meta charset="utf-8" />
+<title>Git and Hosting Setup</title>
+<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<!-- Suppress favicon -->
+<link rel="shortcut icon" href="#" />
+<link rel="stylesheet" href="http://lawrancej.github.io/starterupper/reset.css" />
+<link rel="stylesheet" href="http://lawrancej.github.io/starterupper/text.css" />
+<link rel="stylesheet" href="http://lawrancej.github.io/starterupper/960.css" />
+<style>
+ul { margin-bottom: 0px; }
+.subheading { text-align: right; }
+.error { color:red; }
+.success { color:green; }
+.fail { color:black; }
+header {
+  display: block; border-bottom: 1px solid lightgray; margin-top: 10px;
+  margin-bottom: 10px; padding-bottom: 5px;
+}
+section { margin-bottom:5px; }
+input[type="text"] { width:200px; }
+input[type="email"] { width:200px; }
+input[type="password"] { width:120px; }
+.js #javascript-warning {display: none;}
+
+/* The script may replace these values */
+.github-two-factor { display: none; }
+.github-email-verified { display: none; }
+.github-upgraded { display: none; }
+.github-profile { display: none; }
+.github-collaborator { display: none; }
+.github-repository { display: none; }
+.github-key { display: none; }
+.github-private { display: none; }
+.git-status { display: none; }
+/* The server may replace these values */
+.github-authenticated {display: none;}
+
+
+.gitlab-email-verified { display: none; }
+.gitlab-upgraded { display: none; }
+.gitlab-profile { display: none; }
+.gitlab-collaborator { display: none; }
+.gitlab-repository { display: none; }
+.gitlab-key { display: none; }
+.gitlab-authenticated {display: none;}
   
-  /* The script may replace these values */
-  .github-two-factor { display: none; }
-  .github-email-verified { display: none; }
-  .github-upgraded { display: none; }
-  .github-profile { display: none; }
-  .github-collaborator { display: none; }
-  .github-repository { display: none; }
-  .github-key { display: none; }
-  .github-private { display: none; }
-  .git-status { display: none; }
-  
-  </style>
-  <noscript>
-    <link rel="stylesheet" href="http://localhost:8080/browser.css" />
-    <style>
-    /* The server may replace these values */
-    .github-authenticated {display: none;}
-    </style>
-  </noscript>
-  <script>
-  // Borrowed from Modernizr, switch no-js to js if javascript is available
-  document.documentElement.className=document.documentElement.className.replace(/\bno-js\b/,'') + ' js';
-  </script>
+/* Shamelessly adapted from http://css-tricks.com/examples/CSSTabs/ */
+.css-tabs { min-height: 140px; position: relative; width: 100%; }
+/* Horizontal tabs */
+.css-tabs > div { display: inline; }
+/* Tab style */
+.css-tabs > div > a {
+  margin-left: -1px; position: relative; left: 1px; text-decoration: none;
+  color: black; background: white; display: block; float: left; 
+  padding: 0px 10px; border: 1px solid #ccc; border-bottom: 1px solid white;
+}
+.css-tabs > div:not(:target) > a { border-bottom: 0; background: #ddd; }
+.css-tabs > div:target > a { background: white; }
+/* Content area style */
+.css-tabs > div > div {
+  background: white; z-index: -2; left: 0; top: 20px; bottom: 0; right: 0;
+  padding: 0px; border-top: 1px solid #ccc;
+}
+.css-tabs > div:not(:target) > div { position: absolute }
+.css-tabs > div:target > div { position: absolute; z-index: 0; }  
+</style>
+<noscript>
+  <link rel="stylesheet" href="http://localhost:8080/browser.css" />
+</noscript>
+<script>
+// Borrowed from Modernizr, switch no-js to js if javascript is available
+document.documentElement.className=document.documentElement.className.replace(/\bno-js\b/,'') + ' js';
+</script>
 </head>
 <body>
   <article>
@@ -182,7 +205,7 @@
                 title="Your full name (first and last name)" autocomplete="on" />
             </li>
             <li>
-                <i class="fa fa-li fa-lg fa-envelope"></i>
+                <i class="fa fa-li fa-lg fa-envelope-o"></i>
                 <input id="email" type="email" name="email" value="USER_EMAIL"
                 placeholder="School email address" required autofocus
                 autocomplete="on"
@@ -206,7 +229,7 @@
                     <b>Join Gravatar</b></a> (New users only)
             </li>
             <li class="onboard no-gravatar-account">
-                <i class="fa fa-li fa-lg fa-envelope"></i>
+                <i class="fa fa-li fa-lg fa-envelope-o"></i>
                 <a href="https://en.gravatar.com/emails/new"
                 target="actionRequired"
                 title="Already use Gravatar? Add and verify your school email">
@@ -219,21 +242,28 @@
             </li>
           </ul>
         </div>
-        <div class="grid_2">
-            <ul>
-                <li>Github</li>
-                <li>Gitlab (soon)</li>
-                <li>Deveo (soon)</li>
-                <li>Bitbucket (soon)</li>
-            </ul>
-        </div>
-        <div class="grid_4">
+        <div class="grid_6 css-tabs">
+            <div id="bitbucket">
+            <a href="#bitbucket"><i class="fa fa-fw fa-lg fa-bitbucket"></i>Bitbucket</a>
+            <div>
+            Bitbucket is coming soon
+            </div>
+            </div>
+            <div id="deveo">
+            <a href="#deveo"><i class="fa fa-fw fa-lg fa-git"></i>Deveo</a>
+            <div>
+            Deveo is coming soon
+            </div>
+            </div>
+            <div id="github">
+            <a href="#github"><i class="fa fa-fw fa-lg fa-github"></i>Github</a>
+            <div>
             <ul class="fa-ul" style="margin-left: 0px;">
                 <li class="no-github-authenticated onboard">
                     <i class="fa fa-li fa-lg fa-github"></i>
-                    <a href="https://github.com/join" target="actionRequired"
-                    title="New to Github? Join with your school email">
-                    New users: Join (use your school email)</a>
+                    <a href="https://github.com/join"
+                    target="actionRequired">
+                    <b>New to Github?</b> Join with your school email</a>
                 </li>
                 <li class="github-authenticated login-control">
                     <i class="fa fa-li fa-lg fa-lock github-authenticated"></i>
@@ -243,11 +273,11 @@
                 </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-check success github-email-verified"></i>
-                    <i class="fa-li fa fa-lg fa-envelope fail no-github-email-verified"></i>
+                    <i class="fa-li fa fa-lg fa-envelope-o fail no-github-email-verified"></i>
                     <a href="https://github.com/settings/emails"
                     target="actionRequired"><span class="github-email-verified">
                     Verified your school email</span><span class="no-github-email-verified">
-                    Github users: Add/verify your school email</span></a>
+                    <b>Use Github?</b> Add/verify your school email</span></a>
                 </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-graduation-cap fail no-github-upgraded"></i>
@@ -264,7 +294,6 @@
                     title="Github password (must be 7+ characters)" required />
                     <input type="button" id="github-signin" value="Sign in" 
                     title="Sign in to automate setup steps below" />
-                    <br/>
                     <a href="https://github.com/password_reset" target="actionRequired"
                     class="no-github-authenticated" id="github-forgot">Forgot password?</a>
                     
@@ -286,10 +315,63 @@
                     <i class="fa-li fa fa-lg fa-check success github-key"></i>
                     <a href="https://github.com/settings/ssh"
                     target="actionRequired"><span class="no-github-key">
-                    Share your public key</span><span class="github-key">
-                    Shared your public key</span></a>
+                    Share your public SSH key</span><span class="github-key">
+                    Shared your public SSH key</span></a>
                 </li>
             </ul>
+            </div></div>
+            <div id="gitlab">
+            <a href="#gitlab"><i class="fa fa-fw fa-lg fa-git-square"></i>Gitlab</a>
+            <div>
+            <ul class="fa-ul" style="margin-left: 0px;">
+                <li class="no-gitlab-authenticated onboard">
+                    <i class="fa fa-li fa-lg fa-git-square"></i>
+                    <a href="https://gitlab.com/users/sign_up"
+                    target="actionRequired">
+                    <b>New to Gitlab?</b> Join with your school email</a>
+                </li>
+                <li class="gitlab-authenticated login-control">
+                    <i class="fa fa-li fa-lg fa-lock gitlab-authenticated"></i>
+                    <input type="button" id="gitlab-signout" value="Sign out" />
+                </li>
+                <li>
+                    <i class="fa-li fa fa-lg fa-check success gitlab-email-verified"></i>
+                    <i class="fa-li fa fa-lg fa-envelope-o fail no-gitlab-email-verified"></i>
+                    <a href="https://gitlab.com/profile/emails"
+                    target="actionRequired"><span class="gitlab-email-verified">
+                    Verified your school email</span><span class="no-gitlab-email-verified">
+                    <b>Use Gitlab?</b> Add/verify your school email</span></a>
+                    <!-- https://gitlab.com/users/confirmation/new resend confirmation email -->
+                </li>
+                <li class="no-gitlab-authenticated login-control">
+                    <i class="fa fa-li fa-lg fa-unlock no-gitlab-authenticated"></i>
+                    <input type="password" id="gitlab-password"
+                    placeholder="Gitlab password" pattern=".{7,}"
+                    title="Gitlab password (must be 7+ characters)" required />
+                    <input type="button" id="gitlab-signin" value="Sign in" 
+                    title="Sign in to automate setup steps below" />
+                    <a href="https://gitlab.com/users/password/new" target="actionRequired"
+                    class="no-gitlab-authenticated" id="gitlab-forgot">Forgot password?</a>
+                </li>
+                <li>
+                    <i class="fa-li fa fa-lg fa-user fail no-gitlab-profile"></i>
+                    <i class="fa-li fa fa-lg fa-check success gitlab-profile"></i>
+                    <a href="https://gitlab.com/profile"
+                    target="actionRequired"><span class="no-gitlab-profile">
+                    Share your full name</span><span class="gitlab-profile">
+                    Shared your full name</span></a>
+                </li>
+                <li>
+                    <i class="fa-li fa fa-lg fa-key fail no-gitlab-key"></i>
+                    <i class="fa-li fa fa-lg fa-check success gitlab-key"></i>
+                    <a href="https://gitlab.com/profile/keys"
+                    target="actionRequired"><span class="no-gitlab-key">
+                    Share your public SSH key</span><span class="gitlab-key">
+                    Shared your public SSH key</span></a>
+                </li>
+            </ul>
+            </div>
+            </div>
         </div>
         <div class="clear"></div>
      </section>
