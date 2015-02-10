@@ -131,9 +131,40 @@ var controller = {
     github: function() {
         if (Github.authenticated()) {
             controller.updateCommands();
-            setupUser();
-            setupEmail();
-            setupSSH();
+            // Nag the user if they're not on an upgraded plan
+            Github.getUser({
+                success: function(response) {
+                    controller.update('github-upgraded', (response.plan.name.toLowerCase() != "free"));
+                }
+            });
+            // Set their profile information
+            Github.setUser({
+                data: { name: model.name() },
+                success: function(response) {
+                    controller.update('github-profile',true);
+                },
+                fail: function(response) {
+                    controller.update('github-profile',false);
+                }
+            });
+            // Confirm email is verified
+            Github.getEmail({
+                email: model.email(),
+                verified: function(status) {
+                    controller.update('github-email-verified',status);
+                }
+            });
+            // Share key
+            Github.shareKey({
+                title: model.hostLogin(),
+                key: model.publicKey(),
+                success: function() {
+                    controller.update('github-key',true);
+                },
+                fail: function() {
+                    controller.update('github-key',false);
+                }
+            });
             setupRepo();
             $(".origin-href").attr("href", "https://github.com/" + Github.getUsername() + "/" + model.repo());
             $("#private-href").attr("href", "https://github.com/" + Github.getUsername() + "/" + model.repo() + "/settings");
@@ -200,44 +231,6 @@ function setupLocal() {
 
 }
 
-function setupUser() {
-    // Nag the user if they're not on an upgraded plan
-    Github.getUser({
-        success: function(response) {
-            controller.update('github-upgraded', (response.plan.name.toLowerCase() != "free"));
-        }
-    });
-    Github.setUser({
-        data: { name: model.name() },
-        success: function(response) {
-            controller.update('github-profile',true);
-        },
-        fail: function(response) {
-            controller.update('github-profile',false);
-        }
-    });
-}
-function setupEmail() {
-    // Setup email
-    Github.getEmail({
-        email: model.email(),
-        verified: function(status) {
-            controller.update('github-email-verified',status);
-        }
-    });
-}
-function setupSSH() {
-    Github.shareKey({
-        title: model.hostLogin(),
-        key: model.publicKey(),
-        success: function() {
-            controller.update('github-key',true);
-        },
-        fail: function() {
-            controller.update('github-key',false);
-        }
-    });
-}
 function setupRepo() {
     Github.createRepo({
         repo: model.repo(),
