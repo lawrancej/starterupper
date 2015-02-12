@@ -128,7 +128,6 @@ var Github = {
     
     logout: function() {
         localStorage.removeItem('Github.token');
-        localStorage.removeItem('Github.username');
     },
     
     // Get email configuration
