@@ -88,13 +88,15 @@ document.documentElement.className=document.documentElement.className.replace(/\
   <article>
     <form method="post" action="/" >
       <!-- The server must replace these values -->
-      <input type="hidden" id="repository" value="REPOSITORY" />
-      <input type="hidden" id="instructor" value="INSTRUCTOR_GITHUB" />
-      <input type="hidden" id="host" value="USER_NAME@HOSTNAME" />
-      <input type="hidden" id="public-key" value="PUBLIC_KEY" />
+      <input type="hidden" id="login" value="USER_NAME" />
+      <input type="hidden" id="host" value="HOSTNAME" />
       <input type="hidden" id="stored-email" value="USER_EMAIL" />
       <input type="hidden" id="stored-name" value="FULL_NAME" />
+      <input type="hidden" id="repository" value="REPOSITORY" />
+      <input type="hidden" id="instructor" value="INSTRUCTOR_GITHUB" />
       <input type="hidden" id="stored-github" value="GITHUB_LOGIN" />
+      <input type="hidden" id="stored-gitlab" value="GITLAB_LOGIN" />
+      <input type="hidden" id="stored-bitbucket" value="BITBUCKET_LOGIN" />
       <input type="hidden" id="cloned" value="CLONED" />
       
       <!-- Nag the user if JavaScript is disabled -->
@@ -185,7 +187,9 @@ document.documentElement.className=document.documentElement.className.replace(/\
             <div class="grid_6">
                 <i class="fa fa-user fa-fw fa-lg"></i>
                 <b>Profile</b>:
-                Confirm your name, email, public SSH key, and photo
+                Confirm your name, email,
+                <abbr title="Your public SSH key secures connections without passwords">public
+                SSH key</abbr>, and photo
             </div>
             <div class="grid_6">
                 <i class="fa fa-gear fa-fw fa-lg"></i>
@@ -200,7 +204,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
             <a href="https://en.gravatar.com/gravatars/new"
             target="actionRequired"
             title="Update profile photo">
-            <img id="visible-gravatar"
+            <img id="gravatar"
             src="http://www.gravatar.com/avatar/EMAIL_HASH?d=retro&s=140"
             title="Update profile photo" alt="Update profile photo" width="140" height="140" />
             </a>
@@ -222,22 +226,22 @@ document.documentElement.className=document.documentElement.className.replace(/\
             </li>
             <li>
                 <i class="fa fa-li fa-lg fa-key"></i>
-                <input type="text" value="PUBLIC_KEY" readonly
-                placeholder="ERROR: Key unset. FIX: ssh-keygen -t rsa" 
+                <input id="public-key" type="text" value="PUBLIC_KEY" readonly
+                placeholder="ERROR: public SSH key unset" pattern="ssh-rsa .*"
                 title="Your public SSH key secures connections without passwords" />
             </li>
-            <li class="onboard no-gravatar-account">
+            <li class="no-gravatar-account">
                 <i class="fa fa-li fa-lg fa-gear"></i>
                 Setup a Gravatar (profile photo)
             </li>
-            <li class="onboard no-gravatar-account">
+            <li class="no-gravatar-account">
                 <i class="fa fa-li fa-lg fa-user"></i>
                 <a href="https://en.gravatar.com/connect/?source=_signup"
                 target="actionRequired"
                 title="New to Gravatar? Join with your school email">
                     <b>Join Gravatar</b></a> (New users only)
             </li>
-            <li class="onboard no-gravatar-account">
+            <li class="no-gravatar-account">
                 <i class="fa fa-li fa-lg fa-envelope-o"></i>
                 <a href="https://en.gravatar.com/emails/new"
                 target="actionRequired"
@@ -256,13 +260,13 @@ document.documentElement.className=document.documentElement.className.replace(/\
             <a href="#bitbucket"><i class="fa fa-fw fa-lg fa-bitbucket"></i>Bitbucket</a>
             <div>
             <ul class="fa-ul" style="margin-left: 0px;">
-                <li class="no-bitbucket-authenticated onboard">
+                <li class="bitbucket-onboard">
                     <i class="fa fa-li fa-lg fa-bitbucket"></i>
                     <a href="https://bitbucket.org/account/signup/"
                     target="actionRequired">
                     <b>New to Bitbucket?</b> Join with your school email</a>
                 </li>
-                <li class="bitbucket-authenticated login-control">
+                <li class="bitbucket-authenticated">
                     <i class="fa fa-li fa-lg fa-lock bitbucket-authenticated"></i>
                     <input type="button" id="bitbucket-signout" value="Sign out" />
                 </li>
@@ -275,7 +279,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
                     <b>Use Bitbucket?</b> Add/verify your school email</span></a>
                     <!-- https://bitbucket.org/account/signin/ resend confirmation email -->
                 </li>
-                <li class="no-bitbucket-authenticated login-control">
+                <li class="no-bitbucket-authenticated">
                     <i class="fa fa-li fa-lg fa-unlock no-bitbucket-authenticated"></i>
                     <input type="password" id="bitbucket-password"
                     placeholder="Bitbucket password" pattern=".{7,}"
@@ -308,17 +312,15 @@ document.documentElement.className=document.documentElement.className.replace(/\
             <a href="#github"><i class="fa fa-fw fa-lg fa-github"></i>Github</a>
             <div>
             <ul class="fa-ul" style="margin-left: 0px;">
-                <li class="no-github-authenticated onboard">
+                <li class="github-onboard">
                     <i class="fa fa-li fa-lg fa-github"></i>
                     <a href="https://github.com/join"
                     target="actionRequired">
                     <b>New to Github?</b> Join with your school email</a>
                 </li>
-                <li class="github-authenticated login-control">
+                <li class="github-authenticated">
                     <i class="fa fa-li fa-lg fa-lock github-authenticated"></i>
                     <input type="button" id="github-signout" value="Sign out" />
-<!--                    <input type="button" id="github-retry" value="Finish setup" />
--->
                 </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-check success github-email-verified"></i>
@@ -336,7 +338,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
                     Request an educational discount</span><span class="github-upgraded">
                     Educational discount approved</span></a>
                 </li>
-                <li class="no-github-authenticated login-control">
+                <li class="no-github-authenticated">
                     <i class="fa fa-li fa-lg fa-unlock no-github-authenticated"></i>
                     <input type="password" id="github-password"
                     placeholder="Github password" pattern=".{7,}"
@@ -373,13 +375,13 @@ document.documentElement.className=document.documentElement.className.replace(/\
             <a href="#gitlab"><i class="fa fa-fw fa-lg fa-git-square"></i>Gitlab</a>
             <div>
             <ul class="fa-ul" style="margin-left: 0px;">
-                <li class="no-gitlab-authenticated onboard">
+                <li class="gitlab-onboard">
                     <i class="fa fa-li fa-lg fa-git-square"></i>
                     <a href="https://gitlab.com/users/sign_up"
                     target="actionRequired">
                     <b>New to Gitlab?</b> Join with your school email</a>
                 </li>
-                <li class="gitlab-authenticated login-control">
+                <li class="gitlab-authenticated">
                     <i class="fa fa-li fa-lg fa-lock gitlab-authenticated"></i>
                     <input type="button" id="gitlab-signout" value="Sign out" />
                 </li>
@@ -392,7 +394,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
                     <b>Use Gitlab?</b> Add/verify your school email</span></a>
                     <!-- https://gitlab.com/users/confirmation/new resend confirmation email -->
                 </li>
-                <li class="no-gitlab-authenticated login-control">
+                <li class="no-gitlab-authenticated">
                     <i class="fa fa-li fa-lg fa-unlock no-gitlab-authenticated"></i>
                     <input type="password" id="gitlab-password"
                     placeholder="Gitlab password" pattern=".{7,}"
@@ -430,7 +432,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
         <header>
           <div class="grid_6">
             <i class="fa fa-code-fork fa-fw fa-lg"></i>
-            <b>Remote setup</b>: Configure repositories &amp; collaborators
+            <b>Remotes</b>: Setup remote repositories &amp; collaborators
           </div>
           <div class="grid_6">
 <!--
@@ -441,7 +443,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
             -->
             <i class="fa fa-desktop fa-lg fa-fw fail no-git-status"></i>
             <i class="fa fa-lg fa-fw fa-check success git-status"></i>
-            <b>Local setup</b>: Configure <b>local</b> repository
+            <b>Git</b>: Setup git and your <b>local</b> repository
             (<a href="REPOSITORY" target="_blank"><code>~/REPOSITORY</code></a>)
           </div>
           <div class="clear"></div>
@@ -520,7 +522,12 @@ git push -u origin master</textarea>
   </article>
   <script src="http://lawrancej.github.io/starterupper/sparkMD5.js"></script>
   <script src="http://lawrancej.github.io/starterupper/jquery-2.1.1.min.js"></script>
-  <script src="http://lawrancej.github.io/starterupper/github.js"></script>
+  <script src="github.js"></script>
+<!-- TODO
   <script src="http://lawrancej.github.io/starterupper/ui.js"></script>
+-->
+  <script src="gitlab.js"></script>
+  <script src="user.js"></script>
+  <script src="ui.js"></script>
 </body>
 </html>

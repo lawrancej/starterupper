@@ -14,8 +14,8 @@ readonly INSTRUCTOR_GITLAB=lawrancej
 
 # Runtime flags (DO NOT CHANGE)
 # ---------------------------------------------------------------------
-readonly PROGNAME=$(basename $0)
-readonly ARGS="$@"
+readonly PROGNAME="$(basename "$0")"
+readonly ARGS=( "$@" )
 export TOP_PID=$$
 
 # Utilities
@@ -28,12 +28,12 @@ utility::fileSize() {
     if [[ -z "$theSize" ]]; then
         theSize="0"
     fi
-    printf "$theSize"
+    printf "%s" "$theSize"
 }
 
 # Do something quietly
 quietly() {
-    $@ 2> /dev/null > /dev/null
+    "$@" 2> /dev/null > /dev/null
 }
 
 # "return" failure
@@ -56,7 +56,7 @@ pipe::rm() {
 
 app::shutdown() {
     echo
-    printf "Cleaning up temporary files..." >&2
+    printf "%s" "Cleaning up temporary files..." >&2
     pushd ~ > /dev/null
     pipe::rm
     quietly rm -f temp.html
@@ -212,9 +212,9 @@ ssh::configure() {
     return $?
 }
 
-# Get the user's public key
+# Get the user's public key, ignoring the trailing comment
 ssh::getPublicKey() {
-    cat ~/.ssh/id_rsa.pub | sed s/==.*$/==/ # Ignore the trailing comment
+    sed -e 's/==.*$/==/' ~/.ssh/id_rsa.pub
 }
 
 ssh::getPublicKeyForSed() {
@@ -224,7 +224,7 @@ ssh::getPublicKeyForSed() {
 # Test connection
 ssh::connected() {
     local hostDomain="$1"; shift
-    local sshTest=$(ssh -oStrictHostKeyChecking=no git@$hostDomain 2>&1)
+    quietly ssh -oStrictHostKeyChecking=no "git@$hostDomain"
     if [[ 255 -eq $? ]]; then
         utility::fail
     else
@@ -244,7 +244,7 @@ username::get() {
     if [[ -z "$username" ]]; then
         username="$(whoami 2> /dev/null)"
     fi
-    printf "$username"
+    printf "%s" "$username"
 }
 
 # A full name needs a first and last name
@@ -283,17 +283,17 @@ $num=[uint32]256
 $windows::GetUserNameEx(3, $sb, [ref]$num) | out-null
 $sb.ToString()
 EOF
-                fullName=$(powershell -executionpolicy remotesigned -File getfullname.ps1 | sed -e 's/\(.*\), \(.*\)/\2 \1/')
+                fullName="$(powershell -executionpolicy remotesigned -File getfullname.ps1 | sed -e 's/\(.*\), \(.*\)/\2 \1/')"
                 if [[ "$fullName" == "The argument 'getfullname.ps1' to the -File parameter does not exist. Provide the path to an existing '.ps1' file as an argument to the -File parameter." ]]; then
                     fullName=""
                 fi
                 rm getfullname.ps1 > /dev/null
                 ;;
             linux* )
-                fullName=$(getent passwd "$username" | cut -d ':' -f 5 | cut -d ',' -f 1)
+                fullName="$(getent passwd "$username" | cut -d ':' -f 5 | cut -d ',' -f 1)"
                 ;;
             darwin* )
-                fullName=$(dscl . read /Users/`whoami` RealName | grep -v RealName | cut -c 2-)
+                fullName="$(dscl . read "/Users/$(whoami)" RealName | grep -v RealName | cut -c 2-)"
                 ;;
             *) fullName="" ;;
         esac
@@ -301,12 +301,12 @@ EOF
         # If we got a legit full name from the OS, update the git configuration to reflect it.
         full_name::set "$fullName"
     fi
-    printf "$fullName"
+    printf "%s" "$fullName"
 }
 
 # We're assuming that students have a .edu email address
 email::valid() {
-    local email="$(printf "$1" | tr '[:upper:]' '[:lower:]' | tr -d ' ')"
+    local email="$(printf "%s" "$1" | tr '[:upper:]' '[:lower:]' | tr -d ' ')"
     utility::nonEmptyValueMatchesRegex "$email" "edu$"
 }
 
@@ -322,7 +322,7 @@ email::get() {
     fi
     # Resave, just in case of goofups
     git config --global user.email "$email"
-    printf "$email"
+    printf "%s" "$email"
 }
 
 # Set email for the user
@@ -336,14 +336,11 @@ email::set() {
 # Generic project host configuration functions
 # ---------------------------------------------------------------------
 
-# Get the project host username; defaults to machine username
+# Get the project host username
 host_login::get() {
     local host="$1"
-    local username="$(git config --global $host.login)"
-    if [[ -z "$username" ]]; then
-        username="$(username::get)"
-    fi
-    printf "$username"
+    local username="$(git config --global "$host.login")"
+    printf "%s" "$username"
 }
 
 # Set host login
@@ -379,7 +376,7 @@ git::clone_upstream() {
         fi
     fi
     
-    pushd $REPO > /dev/null
+    pushd "$REPO" > /dev/null
     git submodule update --init --recursive > /dev/null
     git fetch --all 2> /dev/null > /dev/null
     if [[ $? -eq 0 ]]; then
@@ -387,7 +384,7 @@ git::clone_upstream() {
     fi
     popd > /dev/null
     
-    utility::fileOpen $REPO
+    utility::fileOpen "$REPO"
     popd > /dev/null
 }
 
@@ -400,7 +397,7 @@ git::configure_remotes() {
     local upstream="https://$hostDomain/$upstreamLogin/$REPO.git"
     
     # Configure remotes
-    cd ~/$REPO
+    cd ~/"$REPO"
     git remote rm origin 2> /dev/null
     git remote rm upstream 2> /dev/null
     git remote add origin "$origin"
@@ -419,7 +416,7 @@ git::configure_remotes() {
 # 5. SSH key is in known_hosts
 # 6. The private repo exists
 git::push() {
-    cd ~/$REPO
+    cd ~/"$REPO"
     git push -u origin master
 }
 
@@ -447,7 +444,7 @@ request::file() {
         printf "/"
     # Remove attempts to look outside the current folder, strip off the leading slash and the query
     else
-        printf "$target" | sed -e 's/[.][.]//g' -e 's/^[/]*//g' -e 's/[?].*$//'
+        printf "%s" "$target" | sed -e 's/[.][.]//g' -e 's/^[/]*//g' -e 's/[?].*$//'
     fi
 }
 
@@ -529,7 +526,7 @@ response::add_file_headers() {
     local file="$1"
     response="$response\r\nContent-Length: $(utility::fileSize "$file")"
     response="$response\r\nContent-Encoding: binary"
-    response="$response\r\nContent-Type: $(utility::MIMEType $file)"
+    response="$response\r\nContent-Type: $(utility::MIMEType "$file")"
     echo "$response"
 }
 
@@ -570,7 +567,7 @@ server::send_string() {
     local str="$1"; shift
     local type="$1"; shift
     local response="$(response::new "200 OK")"
-    response="$(response::add_string_headers "$response" "$str" "$(utility::MIMEType $type)")"
+    response="$(response::add_string_headers "$response" "$str" "$(utility::MIMEType "$type")")"
     response="$response\r\nAccess-Control-Allow-Origin: *"
     response::send "$response"
     echo "$str"
@@ -615,7 +612,7 @@ server::get_netcat() {
         netcat="nc"
         rm ncat.zip
     fi
-    printf $netcat
+    printf "%s" "$netcat"
 }
 
 readonly PIPE=.httpipe
@@ -644,18 +641,22 @@ github::connected() {
 
 # Make the index page
 app::make_index() {
-    curl http://lawrancej.github.io/starterupper/index.html 2> /dev/null > $REPO-index.html
+#    curl http://lawrancej.github.io/starterupper/index.html 2> /dev/null > $REPO-index.html
+    cp ~/projects/starterupper/index.html "$REPO-index.html"
+    cp ~/projects/starterupper/*.js .
 
     sed -e "s/REPOSITORY/$REPO/g" \
+    -e "s/PUBLIC_KEY/$(ssh::getPublicKeyForSed)/g" \
     -e "s/USER_EMAIL/$(email::get)/g" \
     -e "s/FULL_NAME/$(full_name::get)/g" \
     -e "s/USER_NAME/$(username::get)/g" \
     -e "s/INSTRUCTOR_GITHUB/$INSTRUCTOR_GITHUB/g" \
-    -e "s/PUBLIC_KEY/$(ssh::getPublicKeyForSed)/g" \
     -e "s/HOSTNAME/$(hostname)/g" \
     -e "s/GITHUB_LOGIN/$(host_login::get github)/g" \
+    -e "s/GITLAB_LOGIN/$(host_login::get gitlab)/g" \
+    -e "s/BITBUCKET_LOGIN/$(host_login::get bitbucket)/g" \
     -e "s/CLONED/${cloned}/" \
-    $REPO-index.html > temp.html
+    "$REPO-index.html" > temp.html
     rm "$REPO-index.html"
 }
 
@@ -741,15 +742,12 @@ app::router() {
 }
 
 app::url() {
-    printf "file://$(pwd | sed -e "s/^\\/c/\\/c:/")/temp.html"
+    printf "%s" "file://$(pwd | sed -e "s/^\\/c/\\/c:/")/temp.html"
 }
 
-main() {
-    # Go into the home directory
-    pushd ~ > /dev/null
-    
+app::init() {
     # Search for software
-    
+
     # SSH key setup
     printf "Please wait, configuring SSH keys..."
     ssh::configure
@@ -759,7 +757,6 @@ main() {
         echo -e "                                   [\e[1;31mFAILED\e[0m]"
         echo -e "Type this in another terminal: \e[1;35mssh-keygen -t rsa -N ''\e[0m"
     fi
-    
     # Clone upstream
     printf "Cloning upstream..."
     git::clone_upstream "github.com" "$INSTRUCTOR_GITHUB"
@@ -768,7 +765,14 @@ main() {
     else
         echo -e "                                                    [\e[1;31mFAILED\e[0m]"
     fi
+}
 
+main() {
+    # Go into the home directory
+    pushd ~ > /dev/null
+    
+    # Perform setup steps
+    # app::init
     # Make web page
     printf "Generating user interface..."
     app::make_index

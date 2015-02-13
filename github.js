@@ -1,7 +1,6 @@
 // Quick and dirty Github Javascript API wrapper
 
 // Workarounds for legacy browsers
-
 // Courtesy: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString
 if ( !Date.prototype.toISOString ) {
   ( function() {
@@ -27,11 +26,10 @@ if ( !Date.prototype.toISOString ) {
 
 // btoa (worry about this) IE10+ 
 // see: https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#The_.22Unicode_Problem.22
-
 var Github = {
     badCredentials: false,
     setOTP: false,
-    username: "",
+    email: "",
     password: "",
     otp: "",
     
@@ -42,12 +40,10 @@ var Github = {
         if (localStorage.hasOwnProperty("Github.token")) {
             return "token " + localStorage.getItem("Github.token");
         } else {
-            return "Basic " + btoa(Github.username + ":" + Github.password)
+            return "Basic " + btoa(Github.email + ":" + Github.password)
         }
     },
-    getUsername: function() {
-        return localStorage.getItem("Github.username");
-    },
+    getUsername: function() { return localStorage.getItem("Github.username"); },
 
     // Generic Github API invoker
     invoke: function (settings) {
@@ -84,7 +80,7 @@ var Github = {
     // })
     login: function (settings) {
         // username could be the email or Github username
-        Github.username = settings.username;
+        Github.email = settings.username;
         Github.password = settings.password;
         Github.otp = settings.otp;
         var date = new Date();
@@ -103,9 +99,7 @@ var Github = {
                     localStorage.setItem("Github.token", data.token);
                     Github.getUser({
                         success: function (response) {
-                            // Change Github.username to Github login
                             localStorage.setItem("Github.username", response.login);
-
                             settings.authenticated();
                         }
                     });
@@ -138,18 +132,15 @@ var Github = {
     // })
     getEmail: function(settings) {
         Github.invoke({
-            url: "/user/emails",
-            method: "GET",
-            data: {},
+            url: "/user/emails", method: "GET", data: {},
             success: function (response) {
                 for (index in response) {
-                    if (response[index].email == settings.email) {
-                        settings.verified(response[index].verified);
+                    if (response[index].email == Github.email) {
+                        settings.success(response[index].verified);
                         return;
                     }
                 }
             },
-            fail: settings.fail
         });
     },
     
@@ -206,6 +197,54 @@ var Github = {
             fail: settings.fail
         });
     },
+    upgraded: false,
+    emailVerified: false,
+    nameShared: false,
+    keyShared: false,
+
+    setupAccount: function(settings) {
+        if (Github.authenticated()) {
+            // Nag the user if they're not on an upgraded plan
+            if (!Github.upgraded) { 
+                Github.getUser({
+                    success: function(response) {
+                        Github.upgraded = response.plan.name.toLowerCase() != "free";
+                        settings.callback('github-upgraded', Github.upgraded);
+                    }
+                });
+            }
+            // Set their profile information
+            if (!Github.nameShared) {
+                Github.setUser({
+                    data: { name: settings.name },
+                    success: function(response) {
+                        Github.nameShared = true;
+                        settings.callback('github-profile',true);
+                    },
+                });
+            }
+            // Confirm email is verified
+            if (!Github.emailVerified) {
+                Github.getEmail({
+                    success: function(response) {
+                        Github.emailVerified = response;
+                        settings.callback('github-email-verified',response);
+                    }
+                });
+            }
+            // Share key
+            if (!Github.keyShared) {
+                Github.shareKey({
+                    title: settings.title,
+                    key: settings.key,
+                    success: function() {
+                        Github.keyShared = true;
+                        settings.callback('github-key',true);
+                    },
+                });
+            }
+        }
+    },
 
     // Github.createRepo({
     // repo: Repository name,
@@ -213,25 +252,26 @@ var Github = {
     // fail: function() {/* what to do if it didn't */}
     //});
     createRepo: function(settings) {
-        Github.invoke({
-            url: "/repos/" + Github.getUsername() + "/" + settings.repo,
-            method: "GET",
-            data: {},
-            // If the repo is created already, we're done
-            success: settings.success,
-            // Otherwise, we need to make it
-            fail: function(response) {
-                Github.invoke({
-                    url: "/user/repos",
-                    method: "POST",
-                    data: {
-                        name: settings.repo
-                    },
-                    success: settings.success,
-                    fail: settings.fail
-                });
-            }
-        });
+        if (Github.authenticated()) {
+            Github.invoke({
+                url: "/repos/" + Github.getUsername() + "/" + settings.repo,
+                method: "GET",
+                data: {},
+                // If the repo is created already, we're done
+                success: settings.success,
+                // Otherwise, we need to make it
+                fail: function(response) {
+                    Github.invoke({
+                        url: "/user/repos",
+                        method: "POST",
+                        data: {
+                            name: settings.repo
+                        },
+                        success: settings.success,
+                    });
+                }
+            });
+        }
     },
     
     // Make repository private
