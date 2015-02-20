@@ -65,11 +65,16 @@ function validateUser() {
 function updateView(event) {
     validateUser();
 
+    // Gravatar
     $("#gravatar").attr('src', 'http://www.gravatar.com/avatar/' + user.gravatar.value() + '?d=retro&s=140');
     user.gravatar.checkValid(function(status) {
         controller.update('gravatar-account',status);
     });
 
+    // Github
+    // Don't allow sign-in unless their email is valid
+    $("#github-signin").prop("disabled", !user.email.isValid());
+    // Setup account details
     Github.setupAccount({
         title: user.get("login") + "@" + user.get("host"),
         key: user.get("key"),
@@ -77,18 +82,35 @@ function updateView(event) {
         email: user.get("email"),
         callback: controller.update,
     });
-    controller.update("github-onboard",!localStorage.hasOwnProperty("Github.username"));
+    // Onboarding/authentication status
+    controller.update("github-onboard", !Github.existingUser());
     controller.update('github-authenticated', Github.authenticated());
-    $("#github-signin").prop("disabled", !user.email.isValid());
-    if (localStorage.hasOwnProperty("Github.username")) {
+    // Update URLs
+    if (Github.existingUser()) {
         $(".origin-href").attr("href", "https://github.com/" + Github.getUsername() + "/" + model.repo());
         $("#private-href").attr("href", "https://github.com/" + Github.getUsername() + "/" + model.repo() + "/settings");
         $("#collaborator-href").attr("href", "https://github.com/" + Github.getUsername() + "/" + model.repo() + "/settings/collaboration");
     }
 
+    // Gravatar
+    // Don't allow sign-in unless their email is valid
     $("#gitlab-signin").prop("disabled", !user.email.isValid());
+    // Setup account details
+    Gitlab.setupAccount({
+        title: user.get("login") + "@" + user.get("host"),
+        key: user.get("key"),
+        name: user.get("name"),
+        email: user.get("email"),
+        callback: controller.update,
+    });
+    // Onboarding/authentication status
+    controller.update("gitlab-onboard", !Gitlab.existingUser());
+    controller.update('gitlab-authenticated', Gitlab.authenticated());
+
+    // Bitbucket
     $("#bitbucket-signin").prop("disabled", !user.email.isValid());
 
+    
     updateCommands();
 };
 
@@ -104,6 +126,7 @@ var controller = {
 $( "#name" ).on( "change", updateView );
 $( "#email" ).on( "change", updateView );
 $( "#github-password" ).on( "change", updateView );
+$( "#gitlab-password" ).on( "change", updateView );
 
 $("#github-signout").on("click", function(event) {
     Github.logout();
@@ -141,6 +164,23 @@ $("#github-signin").on("click", function(event) {
     });
 });
 
+$("#gitlab-signin").on("click", function(event) {
+    $("#gitlab-signin").prop("disabled",true);
+    Gitlab.login({
+        email: user.email.value(),
+        password: $("#gitlab-password").val(),
+        authenticated: function(login) {
+            updateView();
+        },
+        badCredential: function() {
+            $("#gitlab-signin").prop("disabled",false);
+            $("#gitlab-password").val('');
+            $("#gitlab-password").css('border-color','red');
+            updateView();
+        },
+    });
+});
+
 $(function() {
     // Show values from local storage, if available
     $("#name").val(user.get("name"));
@@ -173,6 +213,7 @@ function setupLocal() {
     });
 }
 
+// TODO: move this to Github.js
 function setupRepo() {
     Github.createRepo({
         repo: model.repo(),

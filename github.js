@@ -44,6 +44,7 @@ var Github = {
         }
     },
     getUsername: function() { return localStorage.getItem("Github.username"); },
+    existingUser: function() { return localStorage.hasOwnProperty("Github.username"); },
 
     // Generic Github API invoker
     invoke: function (settings) {
@@ -135,7 +136,7 @@ var Github = {
             url: "/user/emails", method: "GET", data: {},
             success: function (response) {
                 for (index in response) {
-                    if (response[index].email == Github.email) {
+                    if (response[index].email == settings.email) {
                         settings.success(response[index].verified);
                         return;
                     }
@@ -226,6 +227,7 @@ var Github = {
             // Confirm email is verified
             if (!Github.emailVerified) {
                 Github.getEmail({
+                    email: settings.email,
                     success: function(response) {
                         Github.emailVerified = response;
                         settings.callback('github-email-verified',response);
