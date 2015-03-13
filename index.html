@@ -256,6 +256,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
           </ul>
         </div>
         <div class="grid_6 css-tabs">
+        <!--
             <div id="bitbucket">
             <a href="#bitbucket"><i class="fa fa-fw fa-lg fa-bitbucket"></i>Bitbucket</a>
             <div>
@@ -277,7 +278,6 @@ document.documentElement.className=document.documentElement.className.replace(/\
                     target="actionRequired"><span class="bitbucket-email-verified">
                     Verified your school email</span><span class="no-bitbucket-email-verified">
                     <b>Use Bitbucket?</b> Add/verify your school email</span></a>
-                    <!-- https://bitbucket.org/account/signin/ resend confirmation email -->
                 </li>
                 <li class="no-bitbucket-authenticated">
                     <i class="fa fa-li fa-lg fa-unlock no-bitbucket-authenticated"></i>
@@ -308,6 +308,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
             </ul>
             </div>
             </div>
+            -->
             <div id="github">
             <a href="#github"><i class="fa fa-fw fa-lg fa-github"></i>Github</a>
             <div>
@@ -441,7 +442,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
                 <i class="fa fa-terminal fa-stack-1x fa-inverse"></i>
             </span>
             -->
-            <i class="fa fa-desktop fa-lg fa-fw fail no-git-status"></i>
+            <i class="fa fa-download fa-lg fa-fw fail no-git-status"></i>
             <i class="fa fa-lg fa-fw fa-check success git-status"></i>
             <b>Git</b>: Setup git and your <b>local</b> repository
             (<a href="REPOSITORY" target="_blank"><code>~/REPOSITORY</code></a>)
@@ -508,6 +509,82 @@ git remote add origin \
 git@github.com:GITHUB_LOGIN/REPOSITORY.git
 ## Push to origin
 git push -u origin master</textarea>
+        </div>
+      </section>
+      <section class="container_12">
+        <header>
+          <div class="grid_6">
+            <i class="fa fa-upload fa-fw fa-lg"></i>
+            <b>Next steps</b>: Submit work using git
+          </div>
+          <div class="grid_6">
+            <i class="fa fa-life-ring fa-fw fa-lg"></i>
+            <b>Git Help</b>: Free resources to learn git
+          </div>
+          <div class="clear"></div>
+        </header>
+        <div class="grid_6">
+            <textarea rows="10" cols="50" style="width:465px;" readonly>## Go into your repository
+cd ~/REPOSITORY
+## Do your work
+## Track changes you made in your repository
+git add .
+## Record changes locally
+git commit -m "Finished work"
+## Submit work
+git push origin master</textarea>
+        </div>
+        <div class="grid_6 css-tabs">
+          <div id="books">
+          <a href="#books"><i class="fa fa-fw fa-lg fa-book"></i> Books</a>
+          <div>
+          <ul>
+            <li><a href="http://blog.anvard.org/conversational-git/">Conversational Git</a></li>
+            <li><a href="https://github.com/pluralsight/git-internals-pdf/raw/master/drafts/peepcode-git.pdf" target="help">Git Internals (PDF)</a></li>
+            <li><a href="http://cbx33.github.io/gitt/index.html" target="help">Git In The Trenches</a></li>
+            <li><a href="http://www-cs-students.stanford.edu/~blynn/gitmagic/" target="help">Git Magic</a></li>
+            <li><a href="http://chimera.labs.oreilly.com/books/1230000000561/index.html" target="help">Git Pocket Guide</a></li>
+            <li><a href="http://git-scm.com/book/en/v2" target="help">Pro Git</a></li>
+          </ul>
+          </div>
+          </div>
+          <div id="references">
+          <a href="#references"><i class="fa fa-fw fa-lg fa-bookmark-o"></i> References</a>
+          <div>
+          <ul>
+            <li><a href="http://eagain.net/articles/git-for-computer-scientists/">Git for Computer Scientists</a></li>
+            <li><a href="http://ftp.newartisans.com/pub/git.from.bottom.up.pdf" target="help">Git from the bottom up (PDF)</li>
+            <li><a href="http://gitref.org/" target="help">Git Reference</a></li>
+            <li><a href="https://github.com/tiimgreen/github-cheat-sheet" target="help">Github Cheat Sheet</a></li>
+            <li><a href="http://marklodato.github.io/visual-git-guide/index-en.html" target="help">A Visual Git Reference</a></li>
+            <li><a href="http://onlywei.github.io/explain-git-with-d3/#freeplay" target="help">Visualizing Git Concepts with D3</a></li>
+          </ul>
+          </div>
+          </div>
+          <div id="tutorials">
+          <a href="#tutorials"><i class="fa fa-fw fa-lg fa-graduation-cap"></i> Tutorials</a>
+          <div>
+          <ul>
+            <li><a href="http://mrchlblng.me/2014/09/practical-git-introduction/" target="help">A practical git introduction</a></li>
+            <li><a href="http://rogerdudler.github.io/git-guide/" target="help">git - the simple guide</a></li>
+            <li><a href="http://gitimmersion.com/" target="help">Git Immersion</a></li>
+            <li><a href="https://www.atlassian.com/git/" target="help">Getting Git Right</a></li>
+            <li><a href="http://think-like-a-git.net/" target="help">Think like (a) Git - A guide for the perplexed</li>
+            <li><a href="https://try.github.com/" target="help">Try Git</a></li>
+          </ul>
+          </div>
+          </div>
+          <div id="troubleshooting">
+          <a href="#troubleshooting"><i class="fa fa-fw fa-lg fa-frown-o"></i> Troubleshooting</a>
+          <div>
+          <ul>
+            <li><a href="http://ibrokegit.com/" target="help">I Broke Git</a></li>
+            <li><a href="http://blackbe.lt/common-git-problems-and-solutions/">Common Git Problems and Solutions</a></li>
+            <li><a href="http://41j.com/blog/2015/02/common-git-screwupsquestions-solutions/" target="help">Most common git screw-ups/questions and solutions</a></li>
+            <li><a href="http://www.google.com/" target="help">Copy/paste the error message into Google</a></li>
+          </ul>
+          </div>
+          </div>
         </div>
       </section>
       <section class="container_12">
