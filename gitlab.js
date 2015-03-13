@@ -128,6 +128,9 @@ var Gitlab = {
     keyShared: false,
 
     setupAccount: function(settings) {
+        // Onboarding/authentication status
+        settings.callback("gitlab-onboard", !Gitlab.existingUser());
+        settings.callback('gitlab-authenticated', Gitlab.authenticated());
         if (Gitlab.authenticated()) {
             // Nag the user if they didn't share their name or email
             if (!Gitlab.nameShared || !Gitlab.emailVerified) { 

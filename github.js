@@ -204,6 +204,10 @@ var Github = {
     keyShared: false,
 
     setupAccount: function(settings) {
+        // Onboarding/authentication status
+        settings.callback("github-onboard", !Github.existingUser());
+        settings.callback('github-authenticated', Github.authenticated());
+    
         if (Github.authenticated()) {
             // Nag the user if they're not on an upgraded plan
             if (!Github.upgraded) { 
