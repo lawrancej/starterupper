@@ -32,6 +32,7 @@ var Github = {
     email: "",
     password: "",
     otp: "",
+    collaborators : {},
     
     authenticated: function () {
         return localStorage.hasOwnProperty("Github.token") && localStorage.hasOwnProperty("Github.username");
@@ -61,14 +62,16 @@ var Github = {
                     Github.setOTP=false;
                 }
             },
-            contentType: "application/json",
+            contentType: ("wwwForm" in settings) ? 'application/x-www-form-urlencoded; charset=UTF-8' : "application/json",
             dataType: "json",
-            processData: false,
+            processData: ("wwwForm" in settings),
             success: settings.success,
             error: settings.fail
         }
-        if (JSON.stringify(settings.data) !== "{}") {
+        if (JSON.stringify(settings.data) !== "{}" && request.contentType === "application/json") {
             request.data = JSON.stringify(settings.data);
+        } else if (request.contentType !== "application/json") {
+            request.data = settings.data;
         }
         $.ajax(request);
     },
@@ -316,6 +319,40 @@ var Github = {
                     fail: settings.fail
                 });
             }
+        });
+    },
+    
+    getCollaborators: function(settings) {
+        Github.invoke({
+            method: "GET",
+            url: "/user/repos",
+            data: {
+                "type" : "member",
+                "sort" : "created",
+                "page" : settings.page,
+                "per_page" : 100,
+            },
+            success: function(response) {
+                for (var i = 0; i < response.length; i++) {
+                    if (response[i].name == model.repo()) {
+                        if (response[i].owner.login in Github.collaborators) {
+                            return;
+                        }
+                        Github.collaborators[response[i].owner.login] = response[i].owner.login;
+                    }
+                }
+                if (response.length > 0) {
+                    Github.getCollaborators({
+                        page: settings.page + 1,
+                        success: settings.success,
+                        fail: settings.fail,
+                    });
+                } else {
+                    settings.success(Github.collaborators);
+                }
+            },
+            fail: settings.fail,
+            wwwForm: true,
         });
     }
 }

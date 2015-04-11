@@ -1,9 +1,4 @@
-var model = {
-    // Name of the repository
-    repo: function()       { return $("#repository").val(); },
-    // Who's the instructor? (i.e., github login)
-    instructor: function() { return $("#instructor").val(); },
-};
+
 
 function updateCommands() {
     var value = "## Configure git";
@@ -97,6 +92,13 @@ function updateView(event) {
         $("#private-href").attr("href", "https://github.com/" + Github.getUsername() + "/" + model.repo() + "/settings");
         $("#collaborator-href").attr("href", "https://github.com/" + Github.getUsername() + "/" + model.repo() + "/settings/collaboration");
     }
+    Github.getCollaborators({
+        page: 1,
+        success: function(collaborators) {
+            alert(JSON.stringify(collaborators));
+        },
+        fail: function() {}
+    });
     
     updateCommands();
 };
