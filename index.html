@@ -341,10 +341,14 @@ document.documentElement.className=document.documentElement.className.replace(/\
           <div id="overview">
           <a href="#overview"><i class="fa fa-fw fa-lg fa-question-circle"></i></a>
           <div>
-          Git is a <i>version control system</i>: git stores snapshots (<i>commits</i>) of tracked files in a folder (<i>repository</i>) over time.
-          Git is <i>distributed</i>: every copy (<i>fork</i>) of a git repository contains full commit history.
-          Git tracks diverging time-lines in project history as <i>branches</i>, and offers a way <i>merge</i> branches, enabling collaboration:
-          an outsider may <i>fork</i> a git repository, <i>commit</i> changes, and ask the original author to download (<i>fetch</i>), review, and even <i>merge</i> in those changes.
+          Git stores snapshots of a folder over time in a <i>repository</i>,
+          allowing work to go on simultaneously in different directions
+          as <i>branches</i>, while offering a way <i>merge</i> those
+          branches together.
+          Collaborators copy (<i>fork</i>) a git repository, record
+          (<i>commit</i>) changes, <i>push</i> their work, then ask the
+          original author(s) to <i>fetch</i>, <i>checkout</i>, and
+          <i>merge</i> in those changes.
           </div>
           </div>
         </div>
@@ -583,13 +587,11 @@ document.documentElement.className=document.documentElement.className.replace(/\
             <a href="#hosts"><i class="fa fa-fw fa-lg fa-question-circle"></i></a>
             <div>
             <div class="grid_6">
-              Bitbucket, Github and Gitlab can host git repositories
-              <i>privately</i> at no cost so students and faculty may collaborate;
-              however, these project hosts require that you use (and
-              verify) your school email. Github also requires
-              that students apply for an educational discount first.<br>
-              Sharing your public SSH key secures network connections with the
-              project host without entering passwords.
+              Project hosts including Github and Gitlab require that you use (and verify) your school
+              email to share your work privately with faculty.
+              Github also requires you to apply for an educational discount.
+              Sharing your public SSH key secures network connections without
+              passwords.
             </div>
             <div class="grid_6">
               Git keeps a list of <i>remote repositories</i> on your machine,
@@ -624,21 +626,20 @@ document.documentElement.className=document.documentElement.className.replace(/\
           <div class="clear"></div>
         </header>
         <div class="grid_6">
-            <textarea id="command-line" rows="10" cols="50" style="width:465px;" readonly>## Configure git
+            <textarea id="command-line" rows="10" cols="50" style="width:465px;" readonly>## Copy/paste into Terminal or Git Bash
 git config --global user.name "FULL_NAME"
 git config --global user.email USER_EMAIL
-## Clone repository
-cd && git clone \
-https://github.com/INSTRUCTOR_GITHUB/REPOSITORY.git
+printf "\n" | ssh-keygen -t rsa -N ''
+cd ~
+git init REPOSITORY
 cd REPOSITORY
-git submodule update --init --recursive
-## Configure remote repositories
 git remote add upstream \
 https://github.com/INSTRUCTOR_GITHUB/REPOSITORY.git
-git remote rm origin
 git remote add origin \
 git@github.com:GITHUB_LOGIN/REPOSITORY.git
-## Push to origin
+git fetch --all
+git merge upstream/master
+git submodule update --init --recursive
 git push -u origin master</textarea>
         </div>
         <div class="grid_6">

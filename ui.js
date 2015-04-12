@@ -1,41 +1,44 @@
 
 
 function updateCommands() {
-    var value = "## Configure git";
+    var value = "## Copy/paste into Terminal or Git Bash";
+    // Configure git
     if (user.name.changed() && user.name.isValid()) {
         value += "\ngit config --global user.name \"" + user.get("name") + "\"";
     }
     if (user.email.changed() && user.email.isValid()) {
         value += "\ngit config --global user.email " + user.get("email");
     }
-    if (!user.name.changed() && !user.email.changed() && user.email.isValid() && user.name.isValid()) {
-        value += " (DONE)";
-    }
+    // Create public/private SSH keypair
     if (!user.key.isValid()) {
-        value += "\n## Create public/private SSH key pair"
         value += "\nprintf \"\\n\" | ssh-keygen -t rsa -N ''"
     }
-    value += "\n## Clone repository";
-    if ($("#cloned").val() == "true") {
-        value += " (DONE)";
-        value += "\ncd ~/" + model.repo();
-    } else {
-        value += "\ncd && git clone \\";
-        value += "\nhttps://github.com/" + model.instructor() + "/" + model.repo() + ".git";
-        value += "\ncd " + model.repo();
-        value += "\ngit submodule update --init --recursive";
+    // Enter home directory
+    value += "\ncd ~";
+    // Create repository
+    if ($("#cloned").val() != "true") {
+        value += "\ngit init " + model.repo();
     }
-    value += "\n## Configure remote repositories";
+    // Enter repository
+    value += "\ncd " + model.repo();
+    // Configure remote repositories
     if ($("#stored-github").val() != Github.getUsername()) {
         value += "\ngit remote add upstream \\";
         value += "\nhttps://github.com/" + model.instructor() + "/" + model.repo() + ".git";
-        value += "\ngit remote rm origin";
         value += "\ngit remote add origin \\";
         value += "\ngit@github.com:" + ((Github.getUsername() == null) ? user.get("login") : Github.getUsername()) + "/" + model.repo() + ".git";
-    } else {
-        value += " (DONE)";
     }
-    value += "\n## Push to origin";
+    // Add extra collaborators
+    for (var key in Github.collaborators) {
+        value += "\ngit remote add " + key + " \\\ngit@github.com:" + key + "/" + model.repo() + ".git";
+    }
+    // Fetch everything
+    if ($("#cloned").val() != "true") {
+        value += "\ngit fetch --all";
+        value += "\ngit merge upstream/master";
+        value += "\ngit submodule update --init --recursive";
+    }
+    // Push to origin
     value += "\ngit push -u origin master";
     $("#command-line").val(value);
 }
@@ -95,7 +98,7 @@ function updateView(event) {
     Github.getCollaborators({
         page: 1,
         success: function(collaborators) {
-            alert(JSON.stringify(collaborators));
+            updateCommands();
         },
         fail: function() {}
     });
