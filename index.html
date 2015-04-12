@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="http://lawrancej.github.io/starterupper/text.css" />
 <link rel="stylesheet" href="http://lawrancej.github.io/starterupper/960.css" />
 <style>
+hr {margin-bottom: 10px; margin-top: 10px;}
 ul { margin-bottom: 0px; }
 .subheading { text-align: right; }
 .error { color:red; }
@@ -18,6 +19,13 @@ ul { margin-bottom: 0px; }
 header {
   display: block; border-bottom: 1px solid lightgray; margin-top: 10px;
   margin-bottom: 10px; padding-bottom: 5px;
+}
+div.navigation {
+  border-top: 1px solid lightgray; margin-top: 10px; margin-bottom: 10px;
+  margin-left: 0px; margin-right: 0px; padding-right:0px;
+}
+div.navigation > ul > li {
+    display: inline;
 }
 section { margin-bottom:5px; }
 input[type="text"] { width:200px; }
@@ -55,26 +63,8 @@ input[type="password"] { width:120px; }
 .bitbucket-key { display: none; }
 .bitbucket-authenticated {display: none;}
 
-  
-/* Shamelessly adapted from http://css-tricks.com/examples/CSSTabs/ */
-.css-tabs { min-height: 150px; position: relative; width: 100%; }
-/* Horizontal tabs */
-.css-tabs > div { display: inline; }
-/* Tab style */
-.css-tabs > div > a {
-  margin-left: -1px; position: relative; left: 1px; text-decoration: none;
-  color: black; background: white; display: block; float: left; 
-  padding: 0px 10px; border: 1px solid #ccc; border-bottom: 1px solid white;
-}
-.css-tabs > div:not(:target) > a { border-bottom: 0; background: #ddd; }
-.css-tabs > div:target > a { background: white; }
-/* Content area style */
-.css-tabs > div > div {
-  background: white; z-index: -2; left: 0; top: 20px; bottom: 0; right: 0;
-  padding: 0px; border-top: 1px solid #ccc;
-}
-.css-tabs > div:not(:target) > div { position: absolute }
-.css-tabs > div:target > div { position: absolute; z-index: 0; }  
+section:not(:target) { display: none; }
+section:target { display: block; }
 </style>
 <noscript>
   <link rel="stylesheet" href="http://localhost:8080/browser.css" />
@@ -180,10 +170,14 @@ document.documentElement.className=document.documentElement.className.replace(/\
         <div class="clear chrome"></div>
         
       </section>
-      
       <!-- Profile -->
-      <section class="container_12">
+      <section class="container_12" id="profile">
         <header>
+            <div class="grid_6">
+                <i class="fa fa-rocket fa-fw fa-lg"></i>
+                <b>Starter Upper</b>:
+                Setup git and project hosting quickly
+            </div>
             <div class="grid_6">
                 <i class="fa fa-user fa-fw fa-lg"></i>
                 <b>Profile</b>:
@@ -191,14 +185,22 @@ document.documentElement.className=document.documentElement.className.replace(/\
                 <abbr title="Your public SSH key secures connections without passwords">public
                 SSH key</abbr>, and photo
             </div>
-            <div class="grid_6">
-              <i class="fa fa-life-ring fa-fw fa-lg"></i>
-              <b>Learn Git</b> with these free resources
-            </div>
             <div class="clear"></div>
         </header>
-        
-        <!-- Confirm profile -->
+        <div class="grid_6">
+            <p>
+                In this course, we'll use <code>git</code> and project hosts
+                to submit work and receive feedback. Don't worry, we can do
+                this: first, verify that the information to the
+                right is accurate, and make changes as necessary. I think I
+                got the name right, but I guessed your email. Also,
+                help me out by creating a Gravatar profile picture so I can
+                learn names.
+            </p>
+            <p>
+                If everything looks fine, proceed using the navigation links below.
+            </p>
+        </div>
         <div class="grid_2 subheading">
             <a href="https://en.gravatar.com/gravatars/new"
             target="actionRequired"
@@ -254,94 +256,29 @@ document.documentElement.className=document.documentElement.className.replace(/\
             </li>
           </ul>
         </div>
-        <div class="grid_6 css-tabs">
-          <div id="books">
-          <a href="#books"><i class="fa fa-fw fa-lg fa-book"></i> Books</a>
-          <div>
-          <div style="display: table-cell;">
-          <ul>
-            <li><a href="http://mrchlblng.me/2014/09/practical-git-introduction/" target="help">A practical git introduction</a></li>
-            <li><a href="http://blog.anvard.org/conversational-git/" target="help">Conversational Git</a></li>
-            <li><a href="http://ftp.newartisans.com/pub/git.from.bottom.up.pdf" target="help">Git from the bottom up (PDF)</a></li>
-            <li><a href="https://github.com/pluralsight/git-internals-pdf/releases/download/v2.0/peepcode-git.pdf" target="help">Git Internals (PDF)</a></li>
-          </ul>
-          </div>
-          <div style="display: table-cell;">
-          <ul>
-            <li><a href="http://cbx33.github.io/gitt/index.html" target="help">Git In The Trenches</a></li>
-            <li><a href="http://www-cs-students.stanford.edu/~blynn/gitmagic/" target="help">Git Magic</a></li>
-            <li><a href="http://chimera.labs.oreilly.com/books/1230000000561/index.html" target="help">Git Pocket Guide</a></li>
-            <li><a href="http://git-scm.com/book/en/v2" target="help">Pro Git</a></li>
-          </ul>
-          </div>
-          </div>
-          </div>
-          <div id="guides">
-          <a href="#guides"><i class="fa fa-fw fa-lg fa-graduation-cap"></i> Guides</a>
-          <div>
-          <div style="display: table-cell;">
-          <ul>
-            <li><a href="http://backlogtool.com/git-guide/en/" target="help">Git Beginner's Guide for Dummies</a></li>
-            <li><a href="http://rogerdudler.github.io/git-guide/" target="help">git - the simple guide</a></li>
-            <li><a href="http://gitimmersion.com/" target="help">Git Immersion</a></li>
-            <li><a href="https://www.atlassian.com/git/" target="help">Getting Git Right</a></li>
-          </ul>
-          </div>
-          <div style="display: table-cell;">
-          <ul>
-            <li><a href="http://pcottle.github.io/learnGitBranching/?demo" target="help">Learn Git Branching</a></li>
-            <li><a href="http://rypress.com/tutorials/git/index" target="help">Ry's Git Tutorial</a></li>
-            <li><a href="http://think-like-a-git.net/" target="help">Think like (a) Git</a></li>
-            <li><a href="https://try.github.com/" target="help">Try Git</a></li>
-          </ul>
-          </div>
-          </div>
-          </div>
-          <div id="references">
-          <a href="#references"><i class="fa fa-fw fa-lg fa-bookmark-o"></i> Reference</a>
-          <div>
-          <div style="display: table-cell;">
-          <ul>
-            <li><a href="http://git-scm.com/docs" target="help">Git Documentation</a></li>
-            <li><a href="http://eagain.net/articles/git-for-computer-scientists/" target="help">Git for Computer Scientists</a></li>
-            <li><a href="http://gitref.org/" target="help">Git Reference</a></li>
-            <li><a href="https://github.com/tiimgreen/github-cheat-sheet" target="help">Github Cheat Sheet</a></li>
-          </ul>
-          </div>
-         <div style="display: table-cell;">
-          <ul>
-            <li><a href="https://training.github.com/kit/downloads/github-git-cheat-sheet.pdf" target="help">Github Git Cheat Sheet</a></li>
-            <li><a href="http://ndpsoftware.com/git-cheatsheet.html" target="help">Visual Git Cheat Sheet</a></li>
-            <li><a href="http://marklodato.github.io/visual-git-guide/index-en.html" target="help">A Visual Git Reference</a></li>
-            <li><a href="http://onlywei.github.io/explain-git-with-d3/#freeplay" target="help">Visualizing Git Concepts with D3</a></li>
-          </ul>
-          </div>
-           </div>
-          </div>
-          <div id="troubleshooting">
-          <a href="#troubleshooting"><i class="fa fa-fw fa-lg fa-frown-o"></i> Troubleshoot</a>
-          <div>
-          <div style="display: table-cell;">
-          <ul>
-            <li><a href="http://blackbe.lt/common-git-problems-and-solutions/" target="help">Common Git Problems</a></li>
-            <li><a href="http://justinhileman.info/article/git-pretty/" target="help">Git Pretty</a></li>
-            <li><a href="http://ibrokegit.com/" target="help">I Broke Git</a></li>
-            <li><a href="http://41j.com/blog/2015/02/common-git-screwupsquestions-solutions/" target="help">Most common git screw-ups</a></li>
-          </ul>
-          </div>
-          <div style="display: table-cell;">
-          <ul>
-            <li><a href="http://www.google.com/" target="help">Paste error messages into Google</a></li>
-            <li><code>git status</code></li>
-            <li><code>gitk --all &</code></li>
-          </ul>
-          </div>
-          </div>
-          </div>
-          <div id="overview">
-          <a href="#overview"><i class="fa fa-fw fa-lg fa-question-circle"></i></a>
-          <div>
-          Git stores snapshots of a folder over time in a <i>repository</i>,
+        <div class="clear"></div>
+        <div class="navigation">
+        <ul>
+            <li>Introduction</li>
+            <li><a href="#learn-git">Learn git</a></li>
+            <li><a href="#account-setup">Account setup</a></li>
+            <li>Local setup</li>
+        </ul>
+        </div>
+      </section>
+      
+      <!-- Learn git -->
+      <section class="container_12" id="learn-git">
+        <header>
+            <div class="grid_6">
+              <i class="fa fa-life-ring fa-fw fa-lg"></i>
+              <b>Learn Git</b> with these free resources
+            </div>
+            <div class="clear"></div>
+        </header>
+        
+        <div class="grid_12">
+          <p>Git stores snapshots of a folder over time in a <i>repository</i>,
           allowing work to go on simultaneously in different directions
           as <i>branches</i>, while offering a way <i>merge</i> those
           branches together.
@@ -349,14 +286,119 @@ document.documentElement.className=document.documentElement.className.replace(/\
           (<i>commit</i>) changes, <i>push</i> their work, then ask the
           original author(s) to <i>fetch</i>, <i>checkout</i>, and
           <i>merge</i> in those changes.
+          </p>
+          <p>
+            Don't worry if none of that made sense just yet:
+            <a href="#account-setup">setup accounts on Github and Gitlab</a> next.
+          </p>
+          <p>
+            All links open in a new tab.
+          </p>
+        </div>
+        <div class="clear"></div>
+        <header>
+            <div class="grid_6">
+                <i class="fa fa-fw fa-lg fa-book"></i> Git Books
+            </div>
+            <div class="grid_6">
+                <i class="fa fa-fw fa-lg fa-graduation-cap"></i> Git Tutorials
+            </div>
+            <div class="clear"></div>
+        </header>
+        <div class="grid_6">
+          <div style="display: table-cell;">
+          <ul>
+            <li><a href="http://mrchlblng.me/2014/09/practical-git-introduction/" target="_blank">A practical git introduction</a></li>
+            <li><a href="http://blog.anvard.org/conversational-git/" target="_blank">Conversational Git</a></li>
+            <li><a href="http://ftp.newartisans.com/pub/git.from.bottom.up.pdf" target="_blank">Git from the bottom up (PDF)</a></li>
+            <li><a href="https://github.com/pluralsight/git-internals-pdf/releases/download/v2.0/peepcode-git.pdf" target="_blank">Git Internals (PDF)</a></li>
+          </ul>
           </div>
+          <div style="display: table-cell;">
+          <ul>
+            <li><a href="http://cbx33.github.io/gitt/index.html" target="_blank">Git In The Trenches</a></li>
+            <li><a href="http://www-cs-students.stanford.edu/~blynn/gitmagic/" target="_blank">Git Magic</a></li>
+            <li><a href="http://chimera.labs.oreilly.com/books/1230000000561/index.html" target="_blank">Git Pocket Guide</a></li>
+            <li><a href="http://git-scm.com/book/en/v2" target="_blank">Pro Git</a></li>
+          </ul>
+          </div>
+        </div>
+        <div class="grid_6">
+          <div style="display: table-cell;">
+          <ul>
+            <li><a href="http://backlogtool.com/git-guide/en/" target="_blank">Git Beginner's Guide for Dummies</a></li>
+            <li><a href="http://rogerdudler.github.io/git-guide/" target="_blank">git - the simple guide</a></li>
+            <li><a href="http://gitimmersion.com/" target="_blank">Git Immersion</a></li>
+            <li><a href="https://www.atlassian.com/git/" target="_blank">Getting Git Right</a></li>
+          </ul>
+          </div>
+          <div style="display: table-cell;">
+          <ul>
+            <li><a href="http://pcottle.github.io/learnGitBranching/?demo" target="_blank">Learn Git Branching</a></li>
+            <li><a href="http://rypress.com/tutorials/git/index" target="_blank">Ry's Git Tutorial</a></li>
+            <li><a href="http://think-like-a-git.net/" target="_blank">Think like (a) Git</a></li>
+            <li><a href="https://try.github.com/" target="_blank">Try Git</a></li>
+          </ul>
           </div>
         </div>
         <div class="clear"></div>
-     </section>
+        <header>
+            <div class="grid_6">
+                <i class="fa fa-fw fa-lg fa-bookmark-o"></i> Git References
+            </div>
+            <div class="grid_6">
+                <i class="fa fa-fw fa-lg fa-frown-o"></i> Git Troubleshooting
+            </div>
+            <div class="clear"></div>
+        </header>
+        <div class="grid_6">
+          <div style="display: table-cell;">
+          <ul>
+            <li><a href="http://git-scm.com/docs" target="_blank">Git Documentation</a></li>
+            <li><a href="http://eagain.net/articles/git-for-computer-scientists/" target="_blank">Git for Computer Scientists</a></li>
+            <li><a href="http://gitref.org/" target="_blank">Git Reference</a></li>
+            <li><a href="https://github.com/tiimgreen/github-cheat-sheet" target="_blank">Github Cheat Sheet</a></li>
+          </ul>
+          </div>
+        <div style="display: table-cell;">
+          <ul>
+            <li><a href="https://training.github.com/kit/downloads/github-git-cheat-sheet.pdf" target="_blank">Github Git Cheat Sheet</a></li>
+            <li><a href="http://ndpsoftware.com/git-cheatsheet.html" target="_blank">Visual Git Cheat Sheet</a></li>
+            <li><a href="http://marklodato.github.io/visual-git-guide/index-en.html" target="_blank">A Visual Git Reference</a></li>
+            <li><a href="http://onlywei.github.io/explain-git-with-d3/#freeplay" target="_blank">Visualizing Git Concepts with D3</a></li>
+          </ul>
+          </div>
+        </div>
+        <div class="grid_6">
+          <div style="display: table-cell;">
+          <ul>
+            <li><a href="http://blackbe.lt/common-git-problems-and-solutions/" target="_blank">Common Git Problems</a></li>
+            <li><a href="http://justinhileman.info/article/git-pretty/" target="_blank">Git Pretty</a></li>
+            <li><a href="http://ibrokegit.com/" target="_blank">I Broke Git</a></li>
+            <li><a href="http://41j.com/blog/2015/02/common-git-screwupsquestions-solutions/" target="_blank">Most common git screw-ups</a></li>
+          </ul>
+          </div>
+          <div style="display: table-cell;">
+          <ul>
+            <li><a href="http://www.google.com/" target="_blank">Paste error messages into Google</a></li>
+            <li><code>git status</code></li>
+            <li><code>gitk --all &</code></li>
+          </ul>
+          </div>
+          </div>
+          </div>
+        <div class="grid_12 navigation">
+        <ul>
+            <li><a href="#profile">Introduction</a></li>
+            <li>Learn git</li>
+            <li><a href="#account-setup">Account setup</a></li>
+            <li>Local setup</li>
+        </ul>
+        </div>
+      </section>
      
       <!-- Remote repositories and collaborators -->
-      <section class="container_12">
+      <section class="container_12" id="account-setup">
         <header>
           <div class="grid_6">
               <i class="fa fa-gear fa-fw fa-lg"></i>
@@ -369,7 +411,22 @@ document.documentElement.className=document.documentElement.className.replace(/\
           </div>
           <div class="clear"></div>
         </header>
-        <div class="css-tabs">
+        <div class="grid_6">
+          Project hosts including Github and Gitlab require that you use (and verify) your school
+          email to share your work privately with faculty.
+          Github also requires you to apply for an educational discount.
+          Sharing your public SSH key secures network connections without
+          passwords.
+        </div>
+        <div class="grid_6">
+          Git keeps a list of <i>remote repositories</i> on your machine,
+          so that you can submit (<i>push</i>) your work, and access collaborators'
+          work (<i>fetch</i>, <i>merge</i>, or <i>pull</i>).<br>
+          The command <code>git remote -v</code> lists all remote repositories,
+          including <code>origin</code> (your personal repository) as well as
+          <code>upstream</code> (the course repository), upon successful set up.
+        </div>
+        <div class="clear"></div>
         <!--
             <div id="bitbucket">
             <a href="#bitbucket"><i class="fa fa-fw fa-lg fa-bitbucket"></i>Bitbucket</a>
@@ -423,117 +480,130 @@ document.documentElement.className=document.documentElement.className.replace(/\
             </div>
             </div>
             -->
-            <div id="github">
-            <a href="#github"><i class="fa fa-fw fa-lg fa-github"></i>Github</a>
-            <div>
-            <div class="grid_6">
-            <ul class="fa-ul" style="margin-left: 0px;">
-                <li class="github-onboard">
-                    <i class="fa fa-li fa-lg fa-github"></i>
-                    <a href="https://github.com/join"
-                    target="actionRequired">
-                    <b>New to Github?</b> Join with your school email</a>
-                </li>
-                <li class="github-authenticated">
-                    <i class="fa fa-li fa-lg fa-lock github-authenticated"></i>
-                    <input type="button" id="github-signout" value="Sign out" />
-                </li>
-                <li>
-                    <i class="fa-li fa fa-lg fa-check success github-email-verified"></i>
-                    <i class="fa-li fa fa-lg fa-envelope-o fail no-github-email-verified"></i>
-                    <a href="https://github.com/settings/emails"
-                    target="actionRequired"><span class="github-email-verified">
-                    Verified your school email</span><span class="no-github-email-verified">
-                    <b>Use Github?</b> Add/verify your school email</span></a>
-                </li>
-                <li>
-                    <i class="fa-li fa fa-lg fa-graduation-cap fail no-github-upgraded"></i>
-                    <i class="fa-li fa fa-lg fa-check success github-upgraded"></i>
-                    <a href="https://education.github.com/discount_requests/new"
-                    target="actionRequired"><span class="no-github-upgraded">
-                    Request an educational discount</span><span class="github-upgraded">
-                    Educational discount approved</span></a>
-                </li>
-                <li class="no-github-authenticated">
-                    <i class="fa fa-li fa-lg fa-unlock no-github-authenticated"></i>
-                    <input type="password" id="github-password"
-                    placeholder="Github password" pattern=".{7,}"
-                    title="Github password (must be 7+ characters)" required />
-                    <input type="button" id="github-signin" value="Sign in" 
-                    title="Sign in to automate setup steps below" />
-                    <a href="https://github.com/password_reset" target="actionRequired"
-                    class="no-github-authenticated" id="github-forgot">Forgot password?</a>
-                    
-                    <div class="github-two-factor">
-                        <input type="text" id="otp" placeholder="Authentication code"
-                        pattern="[0-9]{6}" />
-                    </div>
-                </li>
-                <li>
-                    <i class="fa-li fa fa-lg fa-user fail no-github-profile"></i>
-                    <i class="fa-li fa fa-lg fa-check success github-profile"></i>
-                    <a href="https://github.com/settings/profile"
-                    target="actionRequired"><span class="no-github-profile">
-                    Share your full name</span><span class="github-profile">
-                    Shared your full name</span></a>
-                </li>
-                <li>
-                    <i class="fa-li fa fa-lg fa-key fail no-github-key"></i>
-                    <i class="fa-li fa fa-lg fa-check success github-key"></i>
-                    <a href="https://github.com/settings/ssh"
-                    target="actionRequired"><span class="no-github-key">
-                    Share your public SSH key</span><span class="github-key">
-                    Shared your public SSH key</span></a>
-                </li>
-            </ul>
-            </div>
-                    <div class="grid_6">
-            <ul class="fa-ul" style="margin-left: 0px;">
-                <li>
-                    <i class="fa-li fa fa-lg fa-check success git-status"></i>
-                    <i class="fa-li fa fa-lg fa-book fail no-git-status"></i>
-                    <a href="https://github.com/INSTRUCTOR_GITHUB/REPOSITORY"
-                    target="_blank">Clone <b>upstream</b> course repository</a> (REPOSITORY)
-                </li>
-                <li>
-                    <i class="fa-li fa fa-lg fa-check success github-repository"></i>
-                    <i class="fa-li fa fa-lg fa-database fail no-github-repository"></i>
-                    <a target="actionRequired" href="https://github.com/new"
-                    class="no-github-repository">
-                        Create <b>origin</b> repository</a><a
-                    href="https://github.com/GITHUB_LOGIN/REPOSITORY"
-                    target="actionRequired"
-                    class="origin-href github-repository">
-                        Created <b>origin</b> repository</a> <b>REPOSITORY</b>
-                        for work submission
-                </li>
-                <li>
-                    <i class="fa-li fa fa-lg fa-check success github-collaborator"></i>
-                    <i class="fa-li fa fa-lg fa-users fail no-github-collaborator"></i>
-                    <a href="https://github.com/GITHUB_LOGIN/REPOSITORY/settings/collaboration"
-                    id="collaborator-href" target="actionRequired">
-                    <span class="no-github-collaborator">
-                    Add the instructor</span><span
-                    class="github-collaborator">Added the instructor</span></a>
-                    <b>(INSTRUCTOR_GITHUB)</b> to your repository
-                </li>
-                <li>
-                    <i class="fa-li fa fa-lg fa-check success github-private"></i>
-                    <i class="fa-li fa fa-lg fa-eye fail no-github-private"></i>
-                    <a target="actionRequired" id="private-href"
-                    href="https://github.com/GITHUB_LOGIN/REPOSITORY/settings">
-                    <span class="no-github-private">Make repository
-                    private</span><span class="github-private">Made repository
-                    private</span></a>,
-                    so nobody else can see it (Danger Zone)
-                </li>
-            </ul>
+        <header>
+          <div class="grid_6">
+              <i class="fa fa-fw fa-lg fa-github"></i> <b>Github</b> account setup
+          </div>
+          <div class="grid_6">
+              <i class="fa fa-fw fa-lg fa-github"></i> <b>Github</b> remote repository &amp; collaborator  setup
+          </div>
+          <div class="clear"></div>
+        </header>
+        <div class="grid_6">
+        <ul class="fa-ul" style="margin-left: 0px;">
+            <li class="github-onboard">
+                <i class="fa fa-li fa-lg fa-github"></i>
+                <a href="https://github.com/join"
+                target="actionRequired">
+                <b>New to Github?</b> Join with your school email</a>
+            </li>
+            <li class="github-authenticated">
+                <i class="fa fa-li fa-lg fa-lock github-authenticated"></i>
+                <input type="button" id="github-signout" value="Sign out" />
+            </li>
+            <li>
+                <i class="fa-li fa fa-lg fa-check success github-email-verified"></i>
+                <i class="fa-li fa fa-lg fa-envelope-o fail no-github-email-verified"></i>
+                <a href="https://github.com/settings/emails"
+                target="actionRequired"><span class="github-email-verified">
+                Verified your school email</span><span class="no-github-email-verified">
+                <b>Use Github?</b> Add/verify your school email</span></a>
+            </li>
+            <li>
+                <i class="fa-li fa fa-lg fa-graduation-cap fail no-github-upgraded"></i>
+                <i class="fa-li fa fa-lg fa-check success github-upgraded"></i>
+                <a href="https://education.github.com/discount_requests/new"
+                target="actionRequired"><span class="no-github-upgraded">
+                Request an educational discount</span><span class="github-upgraded">
+                Educational discount approved</span></a>
+            </li>
+            <li class="no-github-authenticated">
+                <i class="fa fa-li fa-lg fa-unlock no-github-authenticated"></i>
+                <input type="password" id="github-password"
+                placeholder="Github password" pattern=".{7,}"
+                title="Github password (must be 7+ characters)" required />
+                <input type="button" id="github-signin" value="Sign in" 
+                title="Sign in to automate setup steps below" />
+                <a href="https://github.com/password_reset" target="actionRequired"
+                class="no-github-authenticated" id="github-forgot">Forgot password?</a>
+                
+                <div class="github-two-factor">
+                    <input type="text" id="otp" placeholder="Authentication code"
+                    pattern="[0-9]{6}" />
+                </div>
+            </li>
+            <li>
+                <i class="fa-li fa fa-lg fa-user fail no-github-profile"></i>
+                <i class="fa-li fa fa-lg fa-check success github-profile"></i>
+                <a href="https://github.com/settings/profile"
+                target="actionRequired"><span class="no-github-profile">
+                Share your full name</span><span class="github-profile">
+                Shared your full name</span></a>
+            </li>
+            <li>
+                <i class="fa-li fa fa-lg fa-key fail no-github-key"></i>
+                <i class="fa-li fa fa-lg fa-check success github-key"></i>
+                <a href="https://github.com/settings/ssh"
+                target="actionRequired"><span class="no-github-key">
+                Share your public SSH key</span><span class="github-key">
+                Shared your public SSH key</span></a>
+            </li>
+        </ul>
         </div>
+        <div class="grid_6">
+        <ul class="fa-ul" style="margin-left: 0px;">
+            <li>
+                <i class="fa-li fa fa-lg fa-check success git-status"></i>
+                <i class="fa-li fa fa-lg fa-book fail no-git-status"></i>
+                <a href="https://github.com/INSTRUCTOR_GITHUB/REPOSITORY"
+                target="_blank">Clone <b>upstream</b> course repository</a> (REPOSITORY)
+            </li>
+            <li>
+                <i class="fa-li fa fa-lg fa-check success github-repository"></i>
+                <i class="fa-li fa fa-lg fa-database fail no-github-repository"></i>
+                <a target="actionRequired" href="https://github.com/new"
+                class="no-github-repository">
+                    Create <b>origin</b> repository</a><a
+                href="https://github.com/GITHUB_LOGIN/REPOSITORY"
+                target="actionRequired"
+                class="origin-href github-repository">
+                    Created <b>origin</b> repository</a> <b>REPOSITORY</b>
+                    for work submission
+            </li>
+            <li>
+                <i class="fa-li fa fa-lg fa-check success github-collaborator"></i>
+                <i class="fa-li fa fa-lg fa-users fail no-github-collaborator"></i>
+                <a href="https://github.com/GITHUB_LOGIN/REPOSITORY/settings/collaboration"
+                id="collaborator-href" target="actionRequired">
+                <span class="no-github-collaborator">
+                Add the instructor</span><span
+                class="github-collaborator">Added the instructor</span></a>
+                <b>(INSTRUCTOR_GITHUB)</b> to your repository
+            </li>
+            <li>
+                <i class="fa-li fa fa-lg fa-check success github-private"></i>
+                <i class="fa-li fa fa-lg fa-eye fail no-github-private"></i>
+                <a target="actionRequired" id="private-href"
+                href="https://github.com/GITHUB_LOGIN/REPOSITORY/settings">
+                <span class="no-github-private">Make repository
+                private</span><span class="github-private">Made repository
+                private</span></a>,
+                so nobody else can see it (Danger Zone)
+            </li>
+        </ul>
+    </div>
 
-            </div></div>
-            <div id="gitlab">
-            <a href="#gitlab"><i class="fa fa-fw fa-lg fa-git-square"></i>Gitlab</a>
-            <div>
+        <div class="clear"></div>
+        <header>
+          <div class="grid_6">
+              <i class="fa fa-fw fa-lg fa-git-square"></i> <b>Gitlab</b> account setup
+          </div>
+          <div class="grid_6">
+              <i class="fa fa-fw fa-lg fa-git-square"></i> <b>Gitlab</b> remote repository &amp; collaborator setup
+          </div>
+          <div class="clear"></div>
+        </header>
+        <div class="grid_6">
             <ul class="fa-ul" style="margin-left: 0px;">
                 <li class="gitlab-onboard">
                     <i class="fa fa-li fa-lg fa-git-square"></i>
@@ -582,38 +652,21 @@ document.documentElement.className=document.documentElement.className.replace(/\
                 </li>
             </ul>
             </div>
-            </div>
-            <div id="hosts">
-            <a href="#hosts"><i class="fa fa-fw fa-lg fa-question-circle"></i></a>
-            <div>
-            <div class="grid_6">
-              Project hosts including Github and Gitlab require that you use (and verify) your school
-              email to share your work privately with faculty.
-              Github also requires you to apply for an educational discount.
-              Sharing your public SSH key secures network connections without
-              passwords.
-            </div>
-            <div class="grid_6">
-              Git keeps a list of <i>remote repositories</i> on your machine,
-              so that you can submit (<i>push</i>) your work, and access collaborators'
-              work (<i>fetch</i>, <i>merge</i>, or <i>pull</i>).<br>
-              The command <code>git remote -v</code> lists all remote repositories,
-              including <code>origin</code> (your personal repository) as well as
-              <code>upstream</code> (the course repository), upon successful set up.
-            </div>
-            </div>
-            </div>
+        <div class="grid_6">
+        TODO
+        </div>
+        <div class="grid_12 navigation">
+        <ul>
+            <li><a href="#profile">Introduction</a></li>
+            <li><a href="#learn-git">Learn git</a></li>
+            <li>Account setup</li>
+            <li><a href="#local-setup">Local setup</a></li>
+        </ul>
         </div>
       </section>
-      <section class="container_12">
+      <section class="container_12" id="local-setup">
         <header>
           <div class="grid_6">
-<!--
-            <span class="fa-stack fa-lg">
-                <i class="fa fa-square fa-stack-2x"></i>
-                <i class="fa fa-terminal fa-stack-1x fa-inverse"></i>
-            </span>
-            -->
             <i class="fa fa-download fa-lg fa-fw fail no-git-status"></i>
             <i class="fa fa-lg fa-fw fa-check success git-status"></i>
             <b>Git</b>: Setup git and your local repository
@@ -653,13 +706,19 @@ git commit -m "Finished work"
 ## Submit work
 git push origin master</pre>
         </div>
-      </section>
-      <section class="container_12">
-        <hr style="margin-bottom: 10px;"/>
+        <hr>
         <div class="grid_12">
           <i class="fa fa-fw fa-lg fa-warning" style="color:red;"></i>
           <b>DO NOT</b> move your local git repository to any folder synchronized
           with Dropbox or Google Drive
+        </div>
+        <div class="grid_12 navigation">
+        <ul>
+            <li><a href="#profile">Introduction</a></li>
+            <li><a href="#learn-git">Learn git</a></li>
+            <li><a href="#account-setup">Account setup</a></li>
+            <li>Local setup</li>
+        </ul>
         </div>
       </section>
     </form>
