@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <title>Git and Hosting Setup</title>
-<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <!-- Suppress favicon -->
 <link rel="shortcut icon" href="#" />
 <link rel="stylesheet" href="http://lawrancej.github.io/starterupper/reset.css" />
@@ -107,6 +107,7 @@ input[type="password"] { width:120px; }
 .gitlab-repository { display: none; }
 .gitlab-key { display: none; }
 .gitlab-authenticated {display: none;}
+.gitlab-private {display: none;}
 
 .bitbucket-email-verified { display: none; }
 .bitbucket-upgraded { display: none; }
@@ -115,6 +116,7 @@ input[type="password"] { width:120px; }
 .bitbucket-repository { display: none; }
 .bitbucket-key { display: none; }
 .bitbucket-authenticated {display: none;}
+.bitbucket-private {display: none; }
 
 section:not(:target) { display: none; }
 section:target { display: block; }
@@ -229,41 +231,57 @@ document.documentElement.className=document.documentElement.className.replace(/\
         <div class="grid_12 navigation">
         <ul>
             <li class="shown"><a href="#profile"><i class="fa fa-smile-o fa-fw fa-lg"></i> Introduction</a></li>
-            <li><a href="#account-setup"><i class="fa fa-wrench fa-fw fa-lg"></i> Host setup</a></li>
+            <li><a href="#host-setup"><i class="fa fa-wrench fa-fw fa-lg"></i> Host setup</a></li>
             <li><a href="#local-setup"><i class="fa fa-laptop fa-fw fa-lg"></i> Local setup</a></li>
             <li><a href="#learn-git"><i class="fa fa-flag-checkered fa-fw fa-lg"></i> Learn git</a></li>
         </ul>
         </div>
         <div class="clear"></div>
-        <header>
-            <div class="grid_6">
-                <i class="fa fa-rocket fa-fw fa-lg"></i>
-                <b>Starter Upper</b>:
-                Setup git and project hosting quickly
-            </div>
-            <div class="grid_6">
-                <i class="fa fa-user fa-fw fa-lg"></i>
-                <b>Profile</b>:
-                Confirm your name, email,
-                <abbr title="Your public SSH key secures connections without passwords">public
-                SSH key</abbr>, and photo
-            </div>
-            <div class="clear"></div>
-        </header>
         <div class="grid_6">
+          <header>
+            <i class="fa fa-rocket fa-fw fa-lg"></i>
+            <b>Starter Upper</b>:
+            Setup git and project hosting quickly
+          </header>
             <p>
-                In this course, we'll use <code>git</code> and project hosts
-                to submit work, receive assignments and feedback.
-                Git stores snapshots of a folder over time in a
-                <i>repository</i>, allows collaborators to work
-                simultaneously along different time-lines called
-                <em>branches</em>, and offers a way <i>merge</i>
-                branches together.
-                <em>Git project hosts</em> such as Github and Gitlab host
-                <code>git</code> repositories over the Internet.
+                In this course, we'll use <code>git</code> repositories
+                and project hosts (such as Github and Gitlab) to submit
+                work, receive assignments and feedback.
+                Git <em>repositories</em> store snapshots of a folder over time,
+                enabling collaborators to work simultaneously along different
+                time-lines called <em>branches</em>, which can be <i>merged</i>
+                together.
+                <em>Git project hosts</em> manage access to
+                <code>git</code> repositories over the network.
+            </p>
+            <p>
+                Initially, your repository will be a copy of the course repository.
+                To submit work, <code>add</code> files to <code>git</code>,
+                record a snapshot as a <code>commit</code>, then
+                <code>push</code> to your repository.
+                The instructor will <code>fetch</code> and
+                <code>checkout</code> your work.
+                The instructor may also update the course repository;
+                you may <code>pull</code> to receive those updates.
             </p>
         </div>
-        <div class="grid_2 subheading">
+        <div class="grid_6">
+          <header>
+            <i class="fa fa-user fa-fw fa-lg"></i>
+            <b>Profile</b>:
+            Confirm your name, email,
+            <abbr title="Your public SSH key secures connections without passwords">public
+            SSH key</abbr>, and photo
+          </header>
+          <p>
+            Check your school email address (it was guess)
+            and setup a Gravatar profile picture so that the
+            instructor may learn names.
+            Your public SSH key secures connections
+            to project hosts without passwords, if you
+            were wondering.
+          </p>
+        <div class="grid_2 alpha">
             <a href="https://en.gravatar.com/gravatars/new"
             target="actionRequired"
             title="Update profile photo">
@@ -272,14 +290,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
             title="Update profile photo" alt="Update profile photo" width="140" height="140" />
             </a>
         </div>
-        <div class="grid_4">
-            <p>
-                Please double-check your school email address (it was guess)
-                and create or update your Gravatar profile picture so that the
-                instructor may learn names.
-                If you're wondering, your public SSH key secures connections
-                to <code>git</code> project hosts without passwords.
-            </p>
+        <div class="grid_4 omega">
           <ul class="fa-ul" style="margin-left: 0px;">
             <li>
                 <i class="fa fa-li fa-lg fa-user"></i>
@@ -324,11 +335,13 @@ document.documentElement.className=document.documentElement.className.replace(/\
                 target="actionRequired" title="Update profile photo">Update profile photo</a>
             </li>
           </ul>
+          </div>
+
         </div>
         <div class="clear"></div>
         <hr>
         <div class="grid_11">&nbsp;</div>
-        <div class="grid_1 next"><a href="#account-setup">Next <i class="fa fa-chevron-right fa-fw fa-lg"></i></a></div>
+        <div class="grid_1 next"><a href="#host-setup">Next <i class="fa fa-chevron-right fa-fw fa-lg"></i></a></div>
       </section>
       
       <!-- Learn git -->
@@ -336,44 +349,54 @@ document.documentElement.className=document.documentElement.className.replace(/\
         <div class="grid_12 navigation">
         <ul>
             <li><a href="#profile"><i class="fa fa-smile-o fa-fw fa-lg"></i> Introduction</a></li>
-            <li><a href="#account-setup"><i class="fa fa-wrench fa-fw fa-lg"></i> Host setup</a></li>
+            <li><a href="#host-setup"><i class="fa fa-wrench fa-fw fa-lg"></i> Host setup</a></li>
             <li><a href="#local-setup"><i class="fa fa-laptop fa-fw fa-lg"></i> Local setup</a></li>
             <li class="shown"><a href="#learn-git"><i class="fa fa-flag-checkered fa-fw fa-lg"></i> Learn git</a></li>
         </ul>
         </div>
         <div class="clear"></div>
-        <header>
-            <div class="grid_6">
-              <i class="fa fa-life-ring fa-fw fa-lg"></i>
-              <b>Learn Git</b> with these free resources
-            </div>
-            <div class="clear"></div>
-        </header>
         
-        <div class="grid_12">
-          <p>Git stores snapshots of a folder over time in a <i>repository</i>,
-          allowing work to go on simultaneously along different time-lines called
-          <i>branches</i>, while offering a way <i>merge</i> those
-          branches together.
-          Collaborators copy (<i>fork</i>) a git repository, record
-          (<i>commit</i>) changes, <i>push</i> their work, then ask the
-          original author(s) to <i>fetch</i>, <i>checkout</i>, and
-          <i>merge</i> in those changes.
-          If that made no sense, peruse the curated list of resources below.
-          All links open in new tabs.
-          </p>
+        <div class="grid_4">
+            <header>
+                <i class="fa fa-life-ring fa-fw fa-lg"></i>
+                <b>Hints</b> for using git
+            </header>
+            <ul>
+                <li>Use branches for work-in-progress.</li>
+                <li>Test then commit frequently.</li>
+                <li>Review <code>git diff</code> before you commit.</li>
+                <li>Push to <code>origin</code>, not <code>upstream</code>.</li>
+                <li>Use a merge tool.</li>
+            </ul>
+        </div>
+        
+        <div class="grid_4">
+            <header>
+                <i class="fa fa-cloud-upload fa-fw fa-lg"></i>
+                <b>Submit work</b> following these steps
+            </header>
+            <pre>cd ~/REPOSITORY
+git add .
+git commit -m "Message goes here"
+git push origin master</pre>
+        </div>
+        <div class="grid_4">
+            <header>
+                <i class="fa fa-cloud-download fa-fw fa-lg"></i>
+                <b>Receive updates</b> following these steps
+            </header>
+            <pre>cd ~/REPOSITORY
+git commit -am "Message goes here"
+git fetch --all
+git merge upstream/master
+git mergetool</pre>
         </div>
         <div class="clear"></div>
-        <header>
-            <div class="grid_6">
-                <i class="fa fa-fw fa-lg fa-book"></i> Git Books
-            </div>
-            <div class="grid_6">
-                <i class="fa fa-fw fa-lg fa-graduation-cap"></i> Git Tutorials
-            </div>
-            <div class="clear"></div>
-        </header>
+        <!-- Git books -->
         <div class="grid_6">
+          <header>
+            <i class="fa fa-fw fa-lg fa-book"></i> <b>Git Books</b>
+          </header>
           <div style="display: table-cell;">
           <ul>
             <li><a href="http://mrchlblng.me/2014/09/practical-git-introduction/" target="_blank">A practical git introduction</a></li>
@@ -391,7 +414,11 @@ document.documentElement.className=document.documentElement.className.replace(/\
           </ul>
           </div>
         </div>
+        <!-- Git tutorials -->
         <div class="grid_6">
+          <header>
+            <i class="fa fa-fw fa-lg fa-graduation-cap"></i> <b>Git Tutorials</b>
+          </header>
           <div style="display: table-cell;">
           <ul>
             <li><a href="https://www.youtube.com/watch?v=1ffBJ4sVUb4" target="_blank">Git For Ages 4 and Up (Video)</a></li>
@@ -411,16 +438,11 @@ document.documentElement.className=document.documentElement.className.replace(/\
           </div>
         </div>
         <div class="clear"></div>
-        <header>
-            <div class="grid_6">
-                <i class="fa fa-fw fa-lg fa-bookmark-o"></i> Git References
-            </div>
-            <div class="grid_6">
-                <i class="fa fa-fw fa-lg fa-frown-o"></i> Git Troubleshooting
-            </div>
-            <div class="clear"></div>
-        </header>
+        <!-- Git references -->
         <div class="grid_6">
+          <header>
+            <i class="fa fa-fw fa-lg fa-bookmark-o"></i> <b>Git References</b>
+          </header>
           <div style="display: table-cell;">
           <ul>
             <li><a href="http://git-scm.com/docs" target="_blank">Git Documentation</a></li>
@@ -440,20 +462,26 @@ document.documentElement.className=document.documentElement.className.replace(/\
           </ul>
           </div>
         </div>
+        <!-- Git troubleshooting -->
         <div class="grid_6">
+          <header>
+            <i class="fa fa-fw fa-lg fa-frown-o"></i> <b>Git Troubleshooting</b>
+          </header>
           <div style="display: table-cell;">
           <ul>
             <li><a href="http://blackbe.lt/common-git-problems-and-solutions/" target="_blank">Common Git Problems</a></li>
             <li><a href="http://justinhileman.info/article/git-pretty/" target="_blank">Git Pretty</a></li>
             <li><a href="http://ibrokegit.com/" target="_blank">I Broke Git</a></li>
             <li><a href="http://41j.com/blog/2015/02/common-git-screwupsquestions-solutions/" target="_blank">Most common git screw-ups</a></li>
+            <li><a href="http://www.google.com/" target="_blank">Paste error messages into Google</a></li>
           </ul>
           </div>
           <div style="display: table-cell;">
           <ul>
-            <li><a href="http://www.google.com/" target="_blank">Paste error messages into Google</a></li>
+            <li><code>cd ~/REPOSITORY</code></li>
             <li><code>git status</code></li>
             <li><code>gitk --all &amp;</code></li>
+            <li><code>git remote -v</code></li>
             <li><code>git gui &amp;</code></li>
           </ul>
           </div>
@@ -465,11 +493,11 @@ document.documentElement.className=document.documentElement.className.replace(/\
       </section>
      
       <!-- Remote repositories and collaborators -->
-      <section class="container_12" id="account-setup">
+      <section class="container_12" id="host-setup">
         <div class="grid_12 navigation">
         <ul>
             <li><a href="#profile"><i class="fa fa-smile-o fa-fw fa-lg"></i> Introduction</a></li>
-            <li class="shown"><a href="#account-setup"><i class="fa fa-wrench fa-fw fa-lg"></i> Host setup</a></li>
+            <li class="shown"><a href="#host-setup"><i class="fa fa-wrench fa-fw fa-lg"></i> Host setup</a></li>
             <li><a href="#local-setup"><i class="fa fa-laptop fa-fw fa-lg"></i> Local setup</a></li>
             <li><a href="#learn-git"><i class="fa fa-flag-checkered fa-fw fa-lg"></i> Learn git</a></li>
         </ul>
@@ -490,27 +518,29 @@ document.documentElement.className=document.documentElement.className.replace(/\
           address, then open your inbox and prove to the <code>git</code> 
           project host that you own your email address. Sign in to
           complete account setup and create a <em>private</em>
-          repository shared with the instructor.
+          repository shared <em>only</em> with the instructor.
           Green check marks denote success: follow links or refresh if
           unsuccessful.
           </p>
           <p><i class="fa fa-fw fa-lg fa-warning" style="color:red;"></i> <b>DO NOT</b>
-          create a new account if you already have an account</p>
+          join if you already have an account, you can add your school email to an existing account</p>
           <p><i class="fa fa-fw fa-lg fa-info-circle" style="color:#00a;"></i>
           Private repositories are free of charge <em>only</em> on accounts
           with a <em>verified</em> school email address.
           On Github, you must also request an educational discount.</p>
         </div>
-        <!--
-            <div id="bitbucket">
-            <a href="#bitbucket"><i class="fa fa-fw fa-lg fa-bitbucket"></i>Bitbucket</a>
-            <div>
+        <!-- Bitbucket -->
+        <div class="grid_4">
+            <header>
+              <i class="fa fa-fw fa-lg fa-bitbucket"></i> <b>Bitbucket (coming soon)</b>
+            </header>
+            <b>Setup account</b>
             <ul class="fa-ul" style="margin-left: 0px;">
                 <li class="bitbucket-onboard">
-                    <i class="fa fa-li fa-lg fa-bitbucket"></i>
+                    <i class="fa fa-li fa-lg fa-user-plus"></i>
                     <a href="https://bitbucket.org/account/signup/"
                     target="actionRequired">
-                    <b>New to Bitbucket?</b> Join with your school email</a>
+                    Join Bitbucket</a> with your school email
                 </li>
                 <li class="bitbucket-authenticated">
                     <i class="fa fa-li fa-lg fa-lock bitbucket-authenticated"></i>
@@ -522,7 +552,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
                     <a href="https://bitbucket.org/account/user/BITBUCKET_LOGIN/email/"
                     target="actionRequired"><span class="bitbucket-email-verified">
                     Verified your school email</span><span class="no-bitbucket-email-verified">
-                    <b>Use Bitbucket?</b> Add/verify your school email</span></a>
+                    Verify your school email</span></a>
                 </li>
                 <li class="no-bitbucket-authenticated">
                     <i class="fa fa-li fa-lg fa-unlock no-bitbucket-authenticated"></i>
@@ -532,7 +562,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
                     <input type="button" id="bitbucket-signin" value="Sign in" 
                     title="Sign in to automate setup steps below" />
                     <a href="https://bitbucket.org/account/password/reset/" target="actionRequired"
-                    class="no-bitbucket-authenticated" id="bitbucket-forgot">Forgot password?</a>
+                    class="no-bitbucket-authenticated" id="bitbucket-forgot"><br>Forgot password?</a>
                 </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-user fail no-bitbucket-profile"></i>
@@ -551,23 +581,49 @@ document.documentElement.className=document.documentElement.className.replace(/\
                     Shared your public SSH key</span></a>
                 </li>
             </ul>
-            </div>
-            </div>
-            -->
+            <b>Create private repository REPOSITORY</b>
+            <ul class="fa-ul" style="margin-left: 0px;">
+                <li>
+                    <i class="fa-li fa fa-lg fa-check success bitbucket-repository"></i>
+                    <i class="fa-li fa fa-lg fa-code-fork fail no-bitbucket-repository"></i>
+                    <a target="actionRequired" href="https://bitbucket.org/repo/create"
+                    class="no-bitbucket-repository">
+                        Create repository</a><a
+                    href="https://bitbucket.org/BITBUCKET_LOGIN/REPOSITORY"
+                    target="actionRequired"
+                    class="origin-href bitbucket-repository">
+                        Created repository</a>
+                </li>
+                <li>
+                    <i class="fa-li fa fa-lg fa-check success bitbucket-collaborator"></i>
+                    <i class="fa-li fa fa-lg fa-users fail no-bitbucket-collaborator"></i>
+                    <a href="https://bitbucket.org/BITBUCKET_LOGIN/REPOSITORY/admin/access"
+                    target="actionRequired">
+                    <span class="no-bitbucket-collaborator">
+                    Add collaborator</span><span
+                    class="bitbucket-collaborator">Added collaborator</span></a>
+                    <b>INSTRUCTOR_BITBUCKET</b>
+                </li>
+                <li>
+                    <i class="fa-li fa fa-lg fa-check success bitbucket-private"></i>
+                    <i class="fa-li fa fa-lg fa-user-secret fail no-bitbucket-private"></i>
+                    <a target="actionRequired"
+                    href="https://bitbucket.org/BITBUCKET_LOGIN/REPOSITORY/admin">
+                    <span class="no-bitbucket-private">Make repository
+                    private</span><span class="bitbucket-private">Made repository
+                    private</span></a>
+                </li>
+            </ul>
+        </div>
+        <!-- Github -->
+        <div class="grid_4">
         <header>
-          <div class="grid_6">
-              <i class="fa fa-fw fa-lg fa-github"></i> <b>Github</b>
-          </div>
-          <div class="grid_6">
-              <i class="fa fa-fw fa-lg fa-git-square"></i> <b>Gitlab</b>
-          </div>
-          <div class="clear"></div>
+          <i class="fa fa-fw fa-lg fa-github"></i> <b>Github</b>
         </header>
-        <div class="grid_6">
         <b>Setup account</b>
         <ul class="fa-ul" style="margin-left: 0px;">
             <li class="github-onboard">
-                <i class="fa fa-li fa-lg fa-github"></i>
+                <i class="fa fa-li fa-lg fa-user-plus"></i>
                 <a href="https://github.com/join"
                 target="actionRequired">
                 Join Github</a> with your school email
@@ -643,13 +699,13 @@ document.documentElement.className=document.documentElement.className.replace(/\
                 <a href="https://github.com/GITHUB_LOGIN/REPOSITORY/settings/collaboration"
                 id="collaborator-href" target="actionRequired">
                 <span class="no-github-collaborator">
-                Add the instructor</span><span
-                class="github-collaborator">Added the instructor</span></a>
-                <b>(INSTRUCTOR_GITHUB)</b>
+                Add collaborator</span><span
+                class="github-collaborator">Added collaborator</span></a>
+                <b>INSTRUCTOR_GITHUB</b>
             </li>
             <li>
                 <i class="fa-li fa fa-lg fa-check success github-private"></i>
-                <i class="fa-li fa fa-lg fa-eye fail no-github-private"></i>
+                <i class="fa-li fa fa-lg fa-user-secret fail no-github-private"></i>
                 <a target="actionRequired" id="private-href"
                 href="https://github.com/GITHUB_LOGIN/REPOSITORY/settings">
                 <span class="no-github-private">Make repository
@@ -660,12 +716,15 @@ document.documentElement.className=document.documentElement.className.replace(/\
         </ul>
 
         </div>
-
-        <div class="grid_6">
+        <!-- Gitlab -->
+        <div class="grid_4">
+          <header>
+            <i class="fa fa-fw fa-lg fa-git-square"></i> <b>Gitlab</b>
+          </header>
             <b>Setup account</b>
             <ul class="fa-ul" style="margin-left: 0px;">
                 <li class="gitlab-onboard">
-                    <i class="fa fa-li fa-lg fa-git-square"></i>
+                    <i class="fa fa-li fa-lg fa-user-plus"></i>
                     <a href="https://gitlab.com/users/sign_up"
                     target="actionRequired">
                     Join Gitlab</a> with your school email
@@ -710,7 +769,39 @@ document.documentElement.className=document.documentElement.className.replace(/\
                     Shared your public SSH key</span></a>
                 </li>
             </ul>
-            <b>Create private repository</b>
+            <b>Create private repository REPOSITORY</b>
+            <ul class="fa-ul" style="margin-left: 0px;">
+                <li>
+                    <i class="fa-li fa fa-lg fa-check success gitlab-repository"></i>
+                    <i class="fa-li fa fa-lg fa-code-fork fail no-gitlab-repository"></i>
+                    <a target="actionRequired" href="https://gitlab.com/projects/new"
+                    class="no-gitlab-repository">
+                        Create repository</a><a
+                    href="https://gitlab.com/GITLAB_LOGIN/REPOSITORY"
+                    target="actionRequired"
+                    class="origin-href gitlab-repository">
+                        Created repository</a>
+                </li>
+                <li>
+                    <i class="fa-li fa fa-lg fa-check success gitlab-collaborator"></i>
+                    <i class="fa-li fa fa-lg fa-users fail no-gitlab-collaborator"></i>
+                    <a href="https://gitlab.com/GITLAB_LOGIN/REPOSITORY/project_members"
+                    target="actionRequired">
+                    <span class="no-gitlab-collaborator">
+                    Add collaborator</span><span
+                    class="gitlab-collaborator">Added collaborator</span></a>
+                    <b>INSTRUCTOR_GITLAB</b>
+                </li>
+                <li>
+                    <i class="fa-li fa fa-lg fa-check success gitlab-private"></i>
+                    <i class="fa-li fa fa-lg fa-user-secret fail no-gitlab-private"></i>
+                    <a target="actionRequired"
+                    href="https://gitlab.com/GITLAB_LOGIN/REPOSITORY/edit">
+                    <span class="no-gitlab-private">Make repository
+                    private</span><span class="gitlab-private">Made repository
+                    private</span></a>
+                </li>
+            </ul>
             </div>
         <div class="clear"></div>
         <hr>
@@ -723,7 +814,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
         <div class="grid_12 navigation">
         <ul>
             <li><a href="#profile"><i class="fa fa-smile-o fa-fw fa-lg"></i> Introduction</a></li>
-            <li><a href="#account-setup"><i class="fa fa-wrench fa-fw fa-lg"></i> Host setup</a></li>
+            <li><a href="#host-setup"><i class="fa fa-wrench fa-fw fa-lg"></i> Host setup</a></li>
             <li class="shown"><a href="#local-setup"><i class="fa fa-laptop fa-fw fa-lg"></i> Local setup</a></li>
             <li><a href="#learn-git"><i class="fa fa-flag-checkered fa-fw fa-lg"></i> Learn git</a></li>
         </ul>
@@ -787,7 +878,7 @@ git push origin master</pre>
         </div>
         <div class="clear"></div>
         <hr>
-        <div class="grid_1 prev"><a href="#account-setup"><i class="fa fa-chevron-left fa-fw fa-lg"></i> Back</a></div>
+        <div class="grid_1 prev"><a href="#host-setup"><i class="fa fa-chevron-left fa-fw fa-lg"></i> Back</a></div>
         <div class="grid_10">&nbsp;</div>
         <div class="grid_1 next"><a href="#learn-git">Next <i class="fa fa-chevron-right fa-fw fa-lg"></i></a></div>
       </section>
