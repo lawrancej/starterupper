@@ -28,9 +28,6 @@ div.navigation {
   margin-top: 10px; margin-bottom: 10px;
   margin-left: 0px; margin-right: 0px; padding-right:0px;
 }
-div.navigation > ul {
-  text-align: center;
-}
 div.navigation > ul > li {
   display: inline;
 }
@@ -39,9 +36,10 @@ div.navigation > ul > li > a {
   color: black;
   padding: 10px 0 10px 65px;
   background: #ccc;
-	position: relative; 
-	display: block;
-	float: left;
+  font-weight: bold;
+  position: relative; 
+  display: block;
+  float: left;
 }
 .navigation li a:after { 
 	content: " "; 
@@ -255,12 +253,13 @@ document.documentElement.className=document.documentElement.className.replace(/\
         <div class="grid_6">
             <p>
                 In this course, we'll use <code>git</code> and project hosts
-                to submit work and receive feedback, so verify that your
-                information is accurate, and correct as necessary.
-                Double-check your school email address as it was
-                a guess, and please create a Gravatar profile picture
-                so I can learn names. If you're wondering, your public SSH
-                key secures connections to <code>git</code> project hosts without passwords.
+                to submit work, receive assignments and feedback, so verify
+                that your information is accurate.
+                Double-check your school email address as it was a guess, and
+                please create a Gravatar profile picture so that I may learn
+                names.
+                If you're wondering, your public SSH key secures connections
+                to <code>git</code> project hosts without passwords.
             </p>
             <p>
                 If everything looks fine, proceed.
@@ -472,33 +471,31 @@ document.documentElement.className=document.documentElement.className.replace(/\
         </div>
         <div class="clear"></div>
         <header>
-          <div class="grid_6">
-              <i class="fa fa-gear fa-fw fa-lg"></i>
-              <b>Accounts</b>:
-              Setup accounts on git project hosts for work submission
-          </div>
-          <div class="grid_6">
-            <i class="fa fa-code-fork fa-fw fa-lg"></i>
-            <b>Remotes</b>: Setup remote repositories &amp; collaborators
+          <div class="grid_12">
+              <i class="fa fa-wrench fa-fw fa-lg"></i>
+              <b>Host setup</b>:
+              Setup a <code>git</code> project host account and create a
+              private repository for work submission and feedback
           </div>
           <div class="clear"></div>
         </header>
-        <div class="grid_6">
-          Project hosts including Github and Gitlab require that you use (and verify) your school
-          email to share your work privately with faculty.
-          Github also requires you to apply for an educational discount.
-          Sharing your public SSH key secures network connections without
-          passwords.
+        <div class="grid_12">
+          <p>
+          Join Github or Gitlab using your school email
+          address, then open your inbox and prove to the <code>git</code> 
+          project host that you own your email address. Sign in to
+          complete account setup and create a <em>private</em>
+          repository shared with the instructor.
+          Green check marks denote success: follow links or refresh if
+          unsuccessful.
+          </p>
+          <p><i class="fa fa-fw fa-lg fa-warning" style="color:red;"></i> <b>DO NOT</b>
+          create a new account if you already have an account</p>
+          <p><i class="fa fa-fw fa-lg fa-info-circle" style="color:#00a;"></i>
+          Private repositories are free of charge <em>only</em> on accounts
+          with a <em>verified</em> school email address.
+          On Github, you must also request an educational discount.</p>
         </div>
-        <div class="grid_6">
-          Git keeps a list of <i>remote repositories</i> on your machine,
-          so that you can submit (<i>push</i>) your work, and access collaborators'
-          work (<i>fetch</i>, <i>merge</i>, or <i>pull</i>).<br>
-          The command <code>git remote -v</code> lists all remote repositories,
-          including <code>origin</code> (your personal repository) as well as
-          <code>upstream</code> (the course repository), upon successful set up.
-        </div>
-        <div class="clear"></div>
         <!--
             <div id="bitbucket">
             <a href="#bitbucket"><i class="fa fa-fw fa-lg fa-bitbucket"></i>Bitbucket</a>
@@ -554,20 +551,21 @@ document.documentElement.className=document.documentElement.className.replace(/\
             -->
         <header>
           <div class="grid_6">
-              <i class="fa fa-fw fa-lg fa-github"></i> <b>Github</b> account setup
+              <i class="fa fa-fw fa-lg fa-github"></i> <b>Github</b>
           </div>
           <div class="grid_6">
-              <i class="fa fa-fw fa-lg fa-github"></i> <b>Github</b> remote repository &amp; collaborator  setup
+              <i class="fa fa-fw fa-lg fa-git-square"></i> <b>Gitlab</b>
           </div>
           <div class="clear"></div>
         </header>
         <div class="grid_6">
+        <b>Setup account</b>
         <ul class="fa-ul" style="margin-left: 0px;">
             <li class="github-onboard">
                 <i class="fa fa-li fa-lg fa-github"></i>
                 <a href="https://github.com/join"
                 target="actionRequired">
-                <b>New to Github?</b> Join with your school email</a>
+                Join Github</a> with your school email
             </li>
             <li class="github-authenticated">
                 <i class="fa fa-li fa-lg fa-lock github-authenticated"></i>
@@ -579,7 +577,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
                 <a href="https://github.com/settings/emails"
                 target="actionRequired"><span class="github-email-verified">
                 Verified your school email</span><span class="no-github-email-verified">
-                <b>Use Github?</b> Add/verify your school email</span></a>
+                Verify your school email</span></a>
             </li>
             <li>
                 <i class="fa-li fa fa-lg fa-graduation-cap fail no-github-upgraded"></i>
@@ -597,7 +595,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
                 <input type="button" id="github-signin" value="Sign in" 
                 title="Sign in to automate setup steps below" />
                 <a href="https://github.com/password_reset" target="actionRequired"
-                class="no-github-authenticated" id="github-forgot">Forgot password?</a>
+                class="no-github-authenticated" id="github-forgot"><br>Forgot password?</a>
                 
                 <div class="github-two-factor">
                     <input type="text" id="otp" placeholder="Authentication code"
@@ -621,26 +619,18 @@ document.documentElement.className=document.documentElement.className.replace(/\
                 Shared your public SSH key</span></a>
             </li>
         </ul>
-        </div>
-        <div class="grid_6">
+        <b>Create private repository REPOSITORY</b>
         <ul class="fa-ul" style="margin-left: 0px;">
             <li>
-                <i class="fa-li fa fa-lg fa-check success git-status"></i>
-                <i class="fa-li fa fa-lg fa-book fail no-git-status"></i>
-                <a href="https://github.com/INSTRUCTOR_GITHUB/REPOSITORY"
-                target="_blank">Clone <b>upstream</b> course repository</a> (REPOSITORY)
-            </li>
-            <li>
                 <i class="fa-li fa fa-lg fa-check success github-repository"></i>
-                <i class="fa-li fa fa-lg fa-database fail no-github-repository"></i>
+                <i class="fa-li fa fa-lg fa-code-fork fail no-github-repository"></i>
                 <a target="actionRequired" href="https://github.com/new"
                 class="no-github-repository">
-                    Create <b>origin</b> repository</a><a
+                    Create repository</a><a
                 href="https://github.com/GITHUB_LOGIN/REPOSITORY"
                 target="actionRequired"
                 class="origin-href github-repository">
-                    Created <b>origin</b> repository</a> <b>REPOSITORY</b>
-                    for work submission
+                    Created repository</a>
             </li>
             <li>
                 <i class="fa-li fa fa-lg fa-check success github-collaborator"></i>
@@ -650,7 +640,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
                 <span class="no-github-collaborator">
                 Add the instructor</span><span
                 class="github-collaborator">Added the instructor</span></a>
-                <b>(INSTRUCTOR_GITHUB)</b> to your repository
+                <b>(INSTRUCTOR_GITHUB)</b>
             </li>
             <li>
                 <i class="fa-li fa fa-lg fa-check success github-private"></i>
@@ -659,29 +649,21 @@ document.documentElement.className=document.documentElement.className.replace(/\
                 href="https://github.com/GITHUB_LOGIN/REPOSITORY/settings">
                 <span class="no-github-private">Make repository
                 private</span><span class="github-private">Made repository
-                private</span></a>,
-                so nobody else can see it (Danger Zone)
+                private</span></a>
+                (see Danger Zone)
             </li>
         </ul>
-    </div>
 
-        <div class="clear"></div>
-        <header>
-          <div class="grid_6">
-              <i class="fa fa-fw fa-lg fa-git-square"></i> <b>Gitlab</b> account setup
-          </div>
-          <div class="grid_6">
-              <i class="fa fa-fw fa-lg fa-git-square"></i> <b>Gitlab</b> remote repository &amp; collaborator setup
-          </div>
-          <div class="clear"></div>
-        </header>
+        </div>
+
         <div class="grid_6">
+            <b>Setup account</b>
             <ul class="fa-ul" style="margin-left: 0px;">
                 <li class="gitlab-onboard">
                     <i class="fa fa-li fa-lg fa-git-square"></i>
                     <a href="https://gitlab.com/users/sign_up"
                     target="actionRequired">
-                    <b>New to Gitlab?</b> Join with your school email</a>
+                    Join Gitlab</a> with your school email
                 </li>
                 <li class="gitlab-authenticated">
                     <i class="fa fa-li fa-lg fa-lock gitlab-authenticated"></i>
@@ -693,7 +675,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
                     <a href="https://gitlab.com/profile/emails"
                     target="actionRequired"><span class="gitlab-email-verified">
                     Verified your school email</span><span class="no-gitlab-email-verified">
-                    <b>Use Gitlab?</b> Add/verify your school email</span></a>
+                    Add/verify your school email</span></a>
                     <!-- https://gitlab.com/users/confirmation/new resend confirmation email -->
                 </li>
                 <li class="no-gitlab-authenticated">
@@ -723,10 +705,8 @@ document.documentElement.className=document.documentElement.className.replace(/\
                     Shared your public SSH key</span></a>
                 </li>
             </ul>
+            <b>Create private repository</b>
             </div>
-        <div class="grid_6">
-        TODO
-        </div>
         <div class="clear"></div>
         <hr>
         <div class="grid_1 prev"><a href="#profile"><i class="fa fa-chevron-left fa-fw fa-lg"></i> Back</a></div>
@@ -758,6 +738,15 @@ document.documentElement.className=document.documentElement.className.replace(/\
           <div class="clear"></div>
         </header>
         <div class="grid_6">
+<a href="https://github.com/INSTRUCTOR_GITHUB/REPOSITORY"
+                target="_blank">Clone <b>upstream</b> course repository</a>
+
+                Git keeps a list of <i>remote repositories</i> on your machine,
+          so that you can submit (<i>push</i>) your work, and access collaborators'
+          work (<i>fetch</i>, <i>merge</i>, or <i>pull</i>).<br>
+          The command <code>git remote -v</code> lists all remote repositories,
+          including <code>origin</code> (your personal repository) as well as
+          <code>upstream</code> (the course repository), upon successful set up.
             <textarea id="command-line" rows="10" cols="50" style="width:465px;" readonly>## Copy/paste into Terminal or Git Bash
 git config --global user.name "FULL_NAME"
 git config --global user.email USER_EMAIL
