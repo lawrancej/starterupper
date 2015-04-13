@@ -20,12 +20,66 @@ header {
   display: block; border-bottom: 1px solid lightgray; margin-top: 10px;
   margin-bottom: 10px; padding-bottom: 5px;
 }
+.navigation {
+  list-style: none; overflow: hidden;
+}
 div.navigation {
-  border-top: 1px solid lightgray; margin-top: 10px; margin-bottom: 10px;
+  margin-top: 10px; margin-bottom: 10px;
   margin-left: 0px; margin-right: 0px; padding-right:0px;
 }
+div.navigation > ul {
+  text-align: center;
+}
 div.navigation > ul > li {
-    display: inline;
+  display: inline;
+}
+div.navigation > ul > li > a {
+  text-decoration: none;
+  color: black;
+  padding: 10px 0 10px 65px;
+  background: #ccc;
+	position: relative; 
+	display: block;
+	float: left;
+}
+.navigation li a:after { 
+	content: " "; 
+	display: block; 
+	width: 0; 
+	height: 0;
+	border-top: 50px solid transparent;           /* Go big on the size, and let overflow hide */
+	border-bottom: 50px solid transparent;
+	border-left: 30px solid #ccc;
+	position: absolute;
+	top: 50%;
+	margin-top: -50px; 
+	left: 100%;
+	z-index: 2; 
+}
+.navigation li a:before { 
+	content: " "; 
+	display: block; 
+	width: 0; 
+	height: 0;
+	border-top: 50px solid transparent;       
+	border-bottom: 50px solid transparent;
+	border-left: 30px solid white;
+	position: absolute;
+	top: 50%;
+	margin-top: -50px; 
+	margin-left: 1px;
+	left: 100%;
+	z-index: 1; 
+}
+div.navigation li.shown a {
+  background: #eee;
+}
+div.navigation li.shown a:after { border-left-color: #eee; }
+.prev > a {
+    text-decoration: none;
+}
+.next > a {
+    text-decoration: none;
 }
 section { margin-bottom:5px; }
 input[type="text"] { width:200px; }
@@ -172,6 +226,15 @@ document.documentElement.className=document.documentElement.className.replace(/\
       </section>
       <!-- Profile -->
       <section class="container_12" id="profile">
+        <div class="grid_12 navigation">
+        <ul>
+            <li class="shown"><a href="#profile"><i class="fa fa-smile-o fa-fw fa-lg"></i> Introduction</a></li>
+            <li><a href="#account-setup"><i class="fa fa-gear fa-fw fa-lg"></i> Host setup</a></li>
+            <li><a href="#local-setup"><i class="fa fa-laptop fa-fw fa-lg"></i> Local setup</a></li>
+            <li><a href="#learn-git"><i class="fa fa-flag-checkered fa-fw fa-lg"></i> Learn git</a></li>
+        </ul>
+        </div>
+        <div class="clear"></div>
         <header>
             <div class="grid_6">
                 <i class="fa fa-rocket fa-fw fa-lg"></i>
@@ -190,15 +253,16 @@ document.documentElement.className=document.documentElement.className.replace(/\
         <div class="grid_6">
             <p>
                 In this course, we'll use <code>git</code> and project hosts
-                to submit work and receive feedback. Don't worry, we can do
-                this: first, verify that the information to the
-                right is accurate, and make changes as necessary. I think I
-                got the name right, but I guessed your email. Also,
+                to submit work and receive feedback, so we need to set this
+                up properly. Verify that your profile information at the right
+                is accurate, and correct it if necessary. I think I got the
+                name right, but I guessed your school email address. Also,
                 help me out by creating a Gravatar profile picture so I can
-                learn names.
+                learn names. In case you're wondering, your public SSH key
+                secures connections to project hosts without passwords.
             </p>
             <p>
-                If everything looks fine, proceed using the navigation links below.
+                If everything looks fine, proceed.
             </p>
         </div>
         <div class="grid_2 subheading">
@@ -257,18 +321,22 @@ document.documentElement.className=document.documentElement.className.replace(/\
           </ul>
         </div>
         <div class="clear"></div>
-        <div class="navigation">
-        <ul>
-            <li>Introduction</li>
-            <li><a href="#learn-git">Learn git</a></li>
-            <li><a href="#account-setup">Account setup</a></li>
-            <li>Local setup</li>
-        </ul>
-        </div>
+        <hr>
+        <div class="grid_11">&nbsp;</div>
+        <div class="grid_1 next"><a href="#account-setup">Next <i class="fa fa-chevron-right fa-fw fa-lg"></i></a></div>
       </section>
       
       <!-- Learn git -->
       <section class="container_12" id="learn-git">
+        <div class="grid_12 navigation">
+        <ul>
+            <li><a href="#profile"><i class="fa fa-smile-o fa-fw fa-lg"></i> Introduction</a></li>
+            <li><a href="#account-setup"><i class="fa fa-gear fa-fw fa-lg"></i> Host setup</a></li>
+            <li><a href="#local-setup"><i class="fa fa-laptop fa-fw fa-lg"></i> Local setup</a></li>
+            <li class="shown"><a href="#learn-git"><i class="fa fa-flag-checkered fa-fw fa-lg"></i> Learn git</a></li>
+        </ul>
+        </div>
+        <div class="clear"></div>
         <header>
             <div class="grid_6">
               <i class="fa fa-life-ring fa-fw fa-lg"></i>
@@ -279,20 +347,15 @@ document.documentElement.className=document.documentElement.className.replace(/\
         
         <div class="grid_12">
           <p>Git stores snapshots of a folder over time in a <i>repository</i>,
-          allowing work to go on simultaneously in different directions
-          as <i>branches</i>, while offering a way <i>merge</i> those
+          allowing work to go on simultaneously along different time-lines called
+          <i>branches</i>, while offering a way <i>merge</i> those
           branches together.
           Collaborators copy (<i>fork</i>) a git repository, record
           (<i>commit</i>) changes, <i>push</i> their work, then ask the
           original author(s) to <i>fetch</i>, <i>checkout</i>, and
           <i>merge</i> in those changes.
-          </p>
-          <p>
-            Don't worry if none of that made sense just yet:
-            <a href="#account-setup">setup accounts on Github and Gitlab</a> next.
-          </p>
-          <p>
-            All links open in a new tab.
+          If that made no sense, peruse the curated list of resources below.
+          All links open in new tabs.
           </p>
         </div>
         <div class="clear"></div>
@@ -326,6 +389,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
         <div class="grid_6">
           <div style="display: table-cell;">
           <ul>
+            <li><a href="https://www.youtube.com/watch?v=1ffBJ4sVUb4" target="_blank">Git For Ages 4 and Up (Video)</a></li>
             <li><a href="http://backlogtool.com/git-guide/en/" target="_blank">Git Beginner's Guide for Dummies</a></li>
             <li><a href="http://rogerdudler.github.io/git-guide/" target="_blank">git - the simple guide</a></li>
             <li><a href="http://gitimmersion.com/" target="_blank">Git Immersion</a></li>
@@ -356,12 +420,14 @@ document.documentElement.className=document.documentElement.className.replace(/\
           <ul>
             <li><a href="http://git-scm.com/docs" target="_blank">Git Documentation</a></li>
             <li><a href="http://eagain.net/articles/git-for-computer-scientists/" target="_blank">Git for Computer Scientists</a></li>
+            <li><a href="https://codewords.recurse.com/issues/two/git-from-the-inside-out" target="_blank">Git From the Inside Out</a></li>
             <li><a href="http://gitref.org/" target="_blank">Git Reference</a></li>
             <li><a href="https://github.com/tiimgreen/github-cheat-sheet" target="_blank">Github Cheat Sheet</a></li>
           </ul>
           </div>
         <div style="display: table-cell;">
           <ul>
+            <li><a href="http://www.cheetyr.com/git" target="_blank">Git Cheat Sheet</a></li>
             <li><a href="https://training.github.com/kit/downloads/github-git-cheat-sheet.pdf" target="_blank">Github Git Cheat Sheet</a></li>
             <li><a href="http://ndpsoftware.com/git-cheatsheet.html" target="_blank">Visual Git Cheat Sheet</a></li>
             <li><a href="http://marklodato.github.io/visual-git-guide/index-en.html" target="_blank">A Visual Git Reference</a></li>
@@ -382,23 +448,28 @@ document.documentElement.className=document.documentElement.className.replace(/\
           <ul>
             <li><a href="http://www.google.com/" target="_blank">Paste error messages into Google</a></li>
             <li><code>git status</code></li>
-            <li><code>gitk --all &</code></li>
+            <li><code>gitk --all &amp;</code></li>
+            <li><code>git gui &amp;</code></li>
           </ul>
           </div>
-          </div>
-          </div>
-        <div class="grid_12 navigation">
-        <ul>
-            <li><a href="#profile">Introduction</a></li>
-            <li>Learn git</li>
-            <li><a href="#account-setup">Account setup</a></li>
-            <li>Local setup</li>
-        </ul>
         </div>
+
+        <div class="clear"></div>
+        <hr />
+        <div class="grid_1 prev"><a href="#local-setup"><i class="fa fa-chevron-left fa-fw fa-lg"></i> Back</a></div>
       </section>
      
       <!-- Remote repositories and collaborators -->
       <section class="container_12" id="account-setup">
+        <div class="grid_12 navigation">
+        <ul>
+            <li><a href="#profile"><i class="fa fa-smile-o fa-fw fa-lg"></i> Introduction</a></li>
+            <li class="shown"><a href="#account-setup"><i class="fa fa-gear fa-fw fa-lg"></i> Host setup</a></li>
+            <li><a href="#local-setup"><i class="fa fa-laptop fa-fw fa-lg"></i> Local setup</a></li>
+            <li><a href="#learn-git"><i class="fa fa-flag-checkered fa-fw fa-lg"></i> Learn git</a></li>
+        </ul>
+        </div>
+        <div class="clear"></div>
         <header>
           <div class="grid_6">
               <i class="fa fa-gear fa-fw fa-lg"></i>
@@ -655,16 +726,22 @@ document.documentElement.className=document.documentElement.className.replace(/\
         <div class="grid_6">
         TODO
         </div>
-        <div class="grid_12 navigation">
-        <ul>
-            <li><a href="#profile">Introduction</a></li>
-            <li><a href="#learn-git">Learn git</a></li>
-            <li>Account setup</li>
-            <li><a href="#local-setup">Local setup</a></li>
-        </ul>
-        </div>
+        <div class="clear"></div>
+        <hr>
+        <div class="grid_1 prev"><a href="#profile"><i class="fa fa-chevron-left fa-fw fa-lg"></i> Back</a></div>
+        <div class="grid_10">&nbsp;</div>
+        <div class="grid_1 next"><a href="#local-setup">Next <i class="fa fa-chevron-right fa-fw fa-lg"></i></a></div>
       </section>
       <section class="container_12" id="local-setup">
+        <div class="grid_12 navigation">
+        <ul>
+            <li><a href="#profile"><i class="fa fa-smile-o fa-fw fa-lg"></i> Introduction</a></li>
+            <li><a href="#account-setup"><i class="fa fa-gear fa-fw fa-lg"></i> Host setup</a></li>
+            <li class="shown"><a href="#local-setup"><i class="fa fa-laptop fa-fw fa-lg"></i> Local setup</a></li>
+            <li><a href="#learn-git"><i class="fa fa-flag-checkered fa-fw fa-lg"></i> Learn git</a></li>
+        </ul>
+        </div>
+        <div class="clear"></div>
         <header>
           <div class="grid_6">
             <i class="fa fa-download fa-lg fa-fw fail no-git-status"></i>
@@ -712,14 +789,11 @@ git push origin master</pre>
           <b>DO NOT</b> move your local git repository to any folder synchronized
           with Dropbox or Google Drive
         </div>
-        <div class="grid_12 navigation">
-        <ul>
-            <li><a href="#profile">Introduction</a></li>
-            <li><a href="#learn-git">Learn git</a></li>
-            <li><a href="#account-setup">Account setup</a></li>
-            <li>Local setup</li>
-        </ul>
-        </div>
+        <div class="clear"></div>
+        <hr>
+        <div class="grid_1 prev"><a href="#account-setup"><i class="fa fa-chevron-left fa-fw fa-lg"></i> Back</a></div>
+        <div class="grid_10">&nbsp;</div>
+        <div class="grid_1 next"><a href="#learn-git">Next <i class="fa fa-chevron-right fa-fw fa-lg"></i></a></div>
       </section>
     </form>
   </article>
