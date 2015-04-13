@@ -23,6 +23,7 @@ header {
 .navigation {
   list-style: none; overflow: hidden;
 }
+/* Shout out to: https://css-tricks.com/triangle-breadcrumbs/ */
 div.navigation {
   margin-top: 10px; margin-bottom: 10px;
   margin-left: 0px; margin-right: 0px; padding-right:0px;
@@ -119,6 +120,7 @@ input[type="password"] { width:120px; }
 
 section:not(:target) { display: none; }
 section:target { display: block; }
+
 </style>
 <noscript>
   <link rel="stylesheet" href="http://localhost:8080/browser.css" />
@@ -229,7 +231,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
         <div class="grid_12 navigation">
         <ul>
             <li class="shown"><a href="#profile"><i class="fa fa-smile-o fa-fw fa-lg"></i> Introduction</a></li>
-            <li><a href="#account-setup"><i class="fa fa-gear fa-fw fa-lg"></i> Host setup</a></li>
+            <li><a href="#account-setup"><i class="fa fa-wrench fa-fw fa-lg"></i> Host setup</a></li>
             <li><a href="#local-setup"><i class="fa fa-laptop fa-fw fa-lg"></i> Local setup</a></li>
             <li><a href="#learn-git"><i class="fa fa-flag-checkered fa-fw fa-lg"></i> Learn git</a></li>
         </ul>
@@ -253,13 +255,12 @@ document.documentElement.className=document.documentElement.className.replace(/\
         <div class="grid_6">
             <p>
                 In this course, we'll use <code>git</code> and project hosts
-                to submit work and receive feedback, so we need to set this
-                up properly. Verify that your profile information at the right
-                is accurate, and correct it if necessary. I think I got the
-                name right, but I guessed your school email address. Also,
-                help me out by creating a Gravatar profile picture so I can
-                learn names. In case you're wondering, your public SSH key
-                secures connections to project hosts without passwords.
+                to submit work and receive feedback, so verify that your
+                information is accurate, and correct as necessary.
+                Double-check your school email address as it was
+                a guess, and please create a Gravatar profile picture
+                so I can learn names. If you're wondering, your public SSH
+                key secures connections to <code>git</code> project hosts without passwords.
             </p>
             <p>
                 If everything looks fine, proceed.
@@ -331,7 +332,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
         <div class="grid_12 navigation">
         <ul>
             <li><a href="#profile"><i class="fa fa-smile-o fa-fw fa-lg"></i> Introduction</a></li>
-            <li><a href="#account-setup"><i class="fa fa-gear fa-fw fa-lg"></i> Host setup</a></li>
+            <li><a href="#account-setup"><i class="fa fa-wrench fa-fw fa-lg"></i> Host setup</a></li>
             <li><a href="#local-setup"><i class="fa fa-laptop fa-fw fa-lg"></i> Local setup</a></li>
             <li class="shown"><a href="#learn-git"><i class="fa fa-flag-checkered fa-fw fa-lg"></i> Learn git</a></li>
         </ul>
@@ -464,7 +465,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
         <div class="grid_12 navigation">
         <ul>
             <li><a href="#profile"><i class="fa fa-smile-o fa-fw fa-lg"></i> Introduction</a></li>
-            <li class="shown"><a href="#account-setup"><i class="fa fa-gear fa-fw fa-lg"></i> Host setup</a></li>
+            <li class="shown"><a href="#account-setup"><i class="fa fa-wrench fa-fw fa-lg"></i> Host setup</a></li>
             <li><a href="#local-setup"><i class="fa fa-laptop fa-fw fa-lg"></i> Local setup</a></li>
             <li><a href="#learn-git"><i class="fa fa-flag-checkered fa-fw fa-lg"></i> Learn git</a></li>
         </ul>
@@ -732,11 +733,12 @@ document.documentElement.className=document.documentElement.className.replace(/\
         <div class="grid_10">&nbsp;</div>
         <div class="grid_1 next"><a href="#local-setup">Next <i class="fa fa-chevron-right fa-fw fa-lg"></i></a></div>
       </section>
+      <!-- Local setup -->
       <section class="container_12" id="local-setup">
         <div class="grid_12 navigation">
         <ul>
             <li><a href="#profile"><i class="fa fa-smile-o fa-fw fa-lg"></i> Introduction</a></li>
-            <li><a href="#account-setup"><i class="fa fa-gear fa-fw fa-lg"></i> Host setup</a></li>
+            <li><a href="#account-setup"><i class="fa fa-wrench fa-fw fa-lg"></i> Host setup</a></li>
             <li class="shown"><a href="#local-setup"><i class="fa fa-laptop fa-fw fa-lg"></i> Local setup</a></li>
             <li><a href="#learn-git"><i class="fa fa-flag-checkered fa-fw fa-lg"></i> Learn git</a></li>
         </ul>
