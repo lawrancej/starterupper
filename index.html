@@ -277,9 +277,8 @@ document.documentElement.className=document.documentElement.className.replace(/\
             Check your school email address (it was guess)
             and setup a Gravatar profile picture so that the
             instructor may learn names.
-            Your public SSH key secures connections
-            to project hosts without passwords, if you
-            were wondering.
+            Your public SSH key secures network connections
+            to project hosts without entering passwords.
           </p>
         <div class="grid_2 alpha">
             <a href="https://en.gravatar.com/gravatars/new"
@@ -362,11 +361,11 @@ document.documentElement.className=document.documentElement.className.replace(/\
                 <b>Hints</b> for using git
             </header>
             <ul>
-                <li>Test and review <code>git diff</code> before you commit</li>
+                <li>Don't push it if it's broken: test first</li>
                 <li>Use branches for work-in-progress</li>
                 <li>Commit often, and to complete a merge</li>
                 <li>Do not push to <code>upstream</code></li>
-                <li>Use <code>git gui</code> if you're confused</li>
+                <li>Use a merge tool if you see a <code>CONFLICT</code></li>
             </ul>
         </div>
         
@@ -376,6 +375,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
                 <b>Submit work</b> from the Terminal or Git Bash
             </header>
             <pre>cd ~/REPOSITORY
+git gui &
 git add .
 git commit -m "Message goes here"
 git push origin master</pre>
@@ -424,11 +424,12 @@ git mergetool</pre>
             <li><a href="http://backlogtool.com/git-guide/en/" target="_blank">Git Beginner's Guide</a></li>
             <li><a href="http://rogerdudler.github.io/git-guide/" target="_blank">git - the simple guide</a></li>
             <li><a href="http://gitimmersion.com/" target="_blank">Git Immersion</a></li>
-            <li><a href="https://www.atlassian.com/git/" target="_blank">Getting Git Right</a></li>
+            <li><a href="https://github.com/agis-/git-style-guide" target="_blank">Git Style Guide</a></li>
           </ul>
           </div>
           <div class="grid_3 omega">
           <ul>
+            <li><a href="https://www.atlassian.com/git/" target="_blank">Getting Git Right</a></li>
             <li><a href="http://pcottle.github.io/learnGitBranching/?demo" target="_blank">Learn Git Branching</a></li>
             <li><a href="http://rypress.com/tutorials/git/index" target="_blank">Ry's Git Tutorial</a></li>
             <li><a href="http://think-like-a-git.net/" target="_blank">Think like (a) Git</a></li>
@@ -487,6 +488,8 @@ git gui &amp;</pre>
         <div class="clear"></div>
         <hr />
         <div class="grid_1 prev"><a href="#local-setup"><i class="fa fa-chevron-left fa-fw fa-lg"></i> Back</a></div>
+        <div class="grid_10">&nbsp;</div>
+        <div class="grid_1 next">Done <i class="fa fa-flag-checkered fa-fw fa-lg"></i></div>
       </section>
      
       <!-- Remote repositories and collaborators -->
@@ -504,19 +507,18 @@ git gui &amp;</pre>
         <header>
           <i class="fa fa-wrench fa-fw fa-lg"></i>
           <b>Host setup</b>:
-          Setup an account and create a private repository to submit work,
-          receive feedback and updates
+          Setup an account and create a private repository for work submission
         </header>
         <div class="grid_6 alpha">
           <p>
-          Join Github or Gitlab using your school email
-          address, then open your inbox and prove to the <code>git</code> 
-          project host that you own your email address.
-          Sign in below to complete account setup and create a
-          <em>private</em> repository shared <em>only</em> with the
-          instructor. Green check marks will appear next to successfully
-          completed steps: if they don't appear, refresh this page and
-          follow links to complete steps manually.
+          Join Github or Gitlab using your school email address, then open your
+          inbox: the project host will email you a link to <em>verify</em> to
+          that you indeed own your email address.
+          Finally, sign in below to complete account setup and create a
+          <em>private</em> repository shared <em>only</em> with the instructor.
+          Green check marks will appear next to steps completed automatically: if
+          they don't appear, refresh this page and follow links to complete
+          steps manually.
           </p>
         </div>
         <div class="grid_6 omega">
@@ -525,12 +527,13 @@ git gui &amp;</pre>
           One account is enough: ask your instructor which host(s) to use</li>
           <li><i class="fa fa-li fa-lg fa-warning" style="color:red;"></i>
           <b>DO NOT</b> join a project host if you already have an account;
-          instead, add your school email address to the account</li>
+          instead, add your school email address to the account and verify it</li>
           <li><i class="fa fa-li fa-lg fa-info-circle" style="color:#00a;"></i>
           Private repositories are free of charge <em>only</em> on accounts
           with a <em>verified</em> school email address</li>
           <li><i class="fa fa-li fa-lg fa-info-circle" style="color:#00a;"></i>
-          On Github, you must request an educational discount</li>
+          On Github, you must request (and receive) an educational discount
+          before making your repository private</li>
         </ul>
         </div>
         </div>
@@ -832,23 +835,30 @@ git gui &amp;</pre>
                 <b>Local setup</b>: Setup git on your machine
             </header>
             <p>
-            The commands at right teach git your name, email address, and
-            where to find the repositories we created.
-            Git uses your name and email address to identify authors.
-            Git also keeps a list of <i>remote repositories</i> in your local
-            repository (see <code>git remote -v</code>), so that you can
-            <code>push</code> your work to submit it and also receive
-            updates by doing a <code>fetch</code> then a <code>merge</code>,
-            or by doing a <code>pull</code>.
-            Every remote repository has a name and a URL:
+            Git needs to know your name, email address, and where to find the
+            repositories we created.
+            Git uses your name and email address to identify the author of each
+            snapshot (<code>commit</code>).
+            Git also keeps a list of <i>remote repositories</i> in your <a 
+            href="REPOSITORY" target="_blank">local repository</a>,
+            so that you can <code>push</code> to your private
+            repository to submit work and also receive updates from
+            <code>upstream</code> by doing a <code>fetch</code> then a
+            <code>merge</code> or a <code>pull</code>.
+            The command <code>git remote -v</code> shows the nickname and URL of
+            every remote repository:
             </p>
-            <ol id="repositories">
-            <li><a href="UPSTREAM" target="_blank">The course repository (<code>upstream</code>)</a></li>
-            <li><a href="https://bitbucket.org/BITBUCKET_LOGIN/REPOSITORY" target="_blank">Your private repository (<code>bitbucket</code>)</a></li>
-            <li><a href="https://github.com/GITHUB_LOGIN/REPOSITORY" target="_blank">Your private repository (<code>github</code>)</a></li>
-            <li><a href="https://gitlab.com/GITLAB_LOGIN/REPOSITORY" target="_blank">Your private repository (<code>gitlab</code>)</a></li>
-            <li><a href="REPOSITORY" target="_blank">The local repository (<code>~/REPOSITORY</code>)</a></li>
-            </ol>
+            <ul class="fa-ul" id="repositories">
+            <li><i class="fa fa-li fa-lg fa-university"></i>
+            <a href="UPSTREAM" target="_blank">The course repository (<code>upstream</code>)</a></li>
+            <li><i class="fa fa-li fa-lg fa-bitbucket"></i>
+            <a href="https://bitbucket.org/BITBUCKET_LOGIN/REPOSITORY" target="_blank">Your private repository (<code>bitbucket</code>)</a></li>
+            <li><i class="fa fa-li fa-lg fa-github"></i>
+            <a href="https://github.com/GITHUB_LOGIN/REPOSITORY" target="_blank">Your private repository (<code>github</code>)</a></li>
+            <li><i class="fa fa-li fa-lg fa-git-square"></i>
+            <a href="https://gitlab.com/GITLAB_LOGIN/REPOSITORY" target="_blank">Your private repository (<code>gitlab</code>)</a></li>
+            </ul>
+            <br>
             <ul class="fa-ul" style="margin-left: 0px;">
             <li><i class="fa fa-li fa-lg fa-warning" style="color:red;"></i>
           <b>DO NOT</b> move your local git repository into any folder
@@ -864,11 +874,11 @@ git gui &amp;</pre>
             <p>
             Copy and paste the commands below into the Terminal or
             Git Bash to set up git and remote repositories. Press
-            <code>Insert</code> to paste in Git Bash.
+            <code>Insert</code> to paste into Git Bash.
             </p>
             <p>
             <i class="fa fa-fw fa-lg fa-warning" style="color:red;"></i>
-            <b>DO NOT</b> type in commands manually: you will mess it up
+            <b>DO NOT</b> type in these commands manually: you will mess it up
             </p>
             <textarea id="command-line" rows="14" cols="50" style="width:465px;" readonly>git config --global user.name "FULL_NAME"
 git config --global user.email USER_EMAIL
