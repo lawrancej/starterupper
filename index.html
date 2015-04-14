@@ -251,16 +251,16 @@ document.documentElement.className=document.documentElement.className.replace(/\
                 enabling collaborators to work simultaneously along different
                 time-lines called <em>branches</em>, which can be <i>merged</i>
                 together.
-                <em>Git project hosts</em> manage access to
+                <em>Project hosts</em> manage access to
                 <code>git</code> repositories over the network.
             </p>
             <p>
                 Initially, your repository will be a copy of the course repository.
-                To submit work, <code>add</code> files to <code>git</code>,
-                record a snapshot as a <code>commit</code>, then
+                To submit work, first <code>add</code> files to <code>git</code>,
+                then <code>commit</code> to record a snapshot, and finally
                 <code>push</code> to your repository.
                 The instructor will <code>fetch</code> and
-                <code>checkout</code> your work.
+                <code>checkout</code> your work to review it.
                 The instructor may also update the course repository;
                 you may <code>pull</code> to receive those updates.
             </p>
@@ -500,32 +500,41 @@ git gui &amp;</pre>
         </ul>
         </div>
         <div class="clear"></div>
-        <header>
-          <div class="grid_12">
-              <i class="fa fa-wrench fa-fw fa-lg"></i>
-              <b>Host setup</b>:
-              Setup a <code>git</code> project host account and create a
-              private repository for work submission and feedback
-          </div>
-          <div class="clear"></div>
-        </header>
         <div class="grid_12">
+        <header>
+          <i class="fa fa-wrench fa-fw fa-lg"></i>
+          <b>Host setup</b>:
+          Setup an account and create a private repository to submit work,
+          receive feedback and updates
+        </header>
+        <div class="grid_6 alpha">
           <p>
           Join Github or Gitlab using your school email
           address, then open your inbox and prove to the <code>git</code> 
-          project host that you own your email address. Sign in to
-          complete account setup and create a <em>private</em>
-          repository shared <em>only</em> with the instructor.
-          Green check marks denote success: follow links or refresh if
-          unsuccessful.
+          project host that you own your email address.
+          Sign in below to complete account setup and create a
+          <em>private</em> repository shared <em>only</em> with the
+          instructor. Green check marks will appear next to successfully
+          completed steps: if they don't appear, refresh this page and
+          follow links to complete steps manually.
           </p>
-          <p><i class="fa fa-fw fa-lg fa-warning" style="color:red;"></i> <b>DO NOT</b>
-          join if you already have an account: you can add your school email to an existing account</p>
-          <p><i class="fa fa-fw fa-lg fa-info-circle" style="color:#00a;"></i>
-          Private repositories are free of charge <em>only</em> on accounts
-          with a <em>verified</em> school email address.
-          On Github, you must also request an educational discount.</p>
         </div>
+        <div class="grid_6 omega">
+        <ul class="fa-ul" style="margin-left: 0px;">
+          <li><i class="fa fa-info-circle fa-li fa-lg" style="color:#00a;"></i>
+          One account is enough: ask your instructor which host(s) to use</li>
+          <li><i class="fa fa-li fa-lg fa-warning" style="color:red;"></i>
+          <b>DO NOT</b> join a project host if you already have an account;
+          instead, add your school email address to the account</li>
+          <li><i class="fa fa-li fa-lg fa-info-circle" style="color:#00a;"></i>
+          Private repositories are free of charge <em>only</em> on accounts
+          with a <em>verified</em> school email address</li>
+          <li><i class="fa fa-li fa-lg fa-info-circle" style="color:#00a;"></i>
+          On Github, you must request an educational discount</li>
+        </ul>
+        </div>
+        </div>
+        <div class="clear"></div>
         <!-- Bitbucket -->
         <div class="grid_4">
             <header>
@@ -840,6 +849,11 @@ git gui &amp;</pre>
             <li><a href="https://gitlab.com/GITLAB_LOGIN/REPOSITORY" target="_blank">Your private repository (<code>gitlab</code>)</a></li>
             <li><a href="REPOSITORY" target="_blank">The local repository (<code>~/REPOSITORY</code>)</a></li>
             </ol>
+            <ul class="fa-ul" style="margin-left: 0px;">
+            <li><i class="fa fa-li fa-lg fa-warning" style="color:red;"></i>
+          <b>DO NOT</b> move your local git repository into any folder
+          synchronized with services such as Dropbox or Google Drive</li>
+            </ul>
         </div>
         <div class="grid_6">
             <header>
@@ -856,7 +870,7 @@ git gui &amp;</pre>
             <i class="fa fa-fw fa-lg fa-warning" style="color:red;"></i>
             <b>DO NOT</b> type in commands manually: you will mess it up
             </p>
-            <textarea id="command-line" rows="10" cols="50" style="width:465px;" readonly>git config --global user.name "FULL_NAME"
+            <textarea id="command-line" rows="14" cols="50" style="width:465px;" readonly>git config --global user.name "FULL_NAME"
 git config --global user.email USER_EMAIL
 printf "\n" | ssh-keygen -t rsa -N ''
 cd ~
@@ -870,12 +884,6 @@ git fetch --all
 git merge upstream/master
 git submodule update --init --recursive
 git push -u origin master</textarea>
-        </div>
-        <div class="clear"></div>
-        <div class="grid_12">
-          <i class="fa fa-fw fa-lg fa-warning" style="color:red;"></i>
-          <b>DO NOT</b> move your local git repository into any folder
-          synchronized with services such as Dropbox or Google Drive
         </div>
         <div class="clear"></div>
         <hr>

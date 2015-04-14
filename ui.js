@@ -1,20 +1,20 @@
 
 
 function updateCommands() {
-    var value = "## Copy/paste into Terminal or Git Bash";
+    var value = "";
     // Configure git
     if (user.name.changed() && user.name.isValid()) {
-        value += "\ngit config --global user.name \"" + user.get("name") + "\"";
+        value += "git config --global user.name \"" + user.get("name") + "\"\n";
     }
     if (user.email.changed() && user.email.isValid()) {
-        value += "\ngit config --global user.email " + user.get("email");
+        value += "git config --global user.email " + user.get("email") + "\n";
     }
     // Create public/private SSH keypair
     if (!user.key.isValid()) {
-        value += "\nprintf \"\\n\" | ssh-keygen -t rsa -N ''"
+        value += "printf \"\\n\" | ssh-keygen -t rsa -N ''\n"
     }
     // Enter home directory
-    value += "\ncd ~";
+    value += "cd ~";
     // Create repository
     if ($("#cloned").val() != "true") {
         value += "\ngit init " + model.repo();
