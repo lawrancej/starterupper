@@ -362,18 +362,18 @@ document.documentElement.className=document.documentElement.className.replace(/\
                 <b>Hints</b> for using git
             </header>
             <ul>
-                <li>Use branches for work-in-progress.</li>
-                <li>Test then commit frequently.</li>
-                <li>Review <code>git diff</code> before you commit.</li>
-                <li>Push to <code>origin</code>, not <code>upstream</code>.</li>
-                <li>Use a merge tool.</li>
+                <li>Test and review <code>git diff</code> before you commit</li>
+                <li>Use branches for work-in-progress</li>
+                <li>Commit often, and to complete a merge</li>
+                <li>Do not push to <code>upstream</code></li>
+                <li>Use <code>git gui</code> if you're confused</li>
             </ul>
         </div>
         
         <div class="grid_4">
             <header>
                 <i class="fa fa-cloud-upload fa-fw fa-lg"></i>
-                <b>Submit work</b> following these steps
+                <b>Submit work</b> from the Terminal or Git Bash
             </header>
             <pre>cd ~/REPOSITORY
 git add .
@@ -391,13 +391,12 @@ git fetch --all
 git merge upstream/master
 git mergetool</pre>
         </div>
-        <div class="clear"></div>
         <!-- Git books -->
         <div class="grid_6">
           <header>
-            <i class="fa fa-fw fa-lg fa-book"></i> <b>Git Books</b>
+            <i class="fa fa-fw fa-lg fa-book"></i> <b>Books</b>
           </header>
-          <div style="display: table-cell;">
+          <div class="grid_3 alpha">
           <ul>
             <li><a href="http://mrchlblng.me/2014/09/practical-git-introduction/" target="_blank">A practical git introduction</a></li>
             <li><a href="http://blog.anvard.org/conversational-git/" target="_blank">Conversational Git</a></li>
@@ -405,7 +404,7 @@ git mergetool</pre>
             <li><a href="https://github.com/pluralsight/git-internals-pdf/releases/download/v2.0/peepcode-git.pdf" target="_blank">Git Internals (PDF)</a></li>
           </ul>
           </div>
-          <div style="display: table-cell;">
+          <div class="grid_3 omega">
           <ul>
             <li><a href="http://cbx33.github.io/gitt/index.html" target="_blank">Git In The Trenches</a></li>
             <li><a href="http://www-cs-students.stanford.edu/~blynn/gitmagic/" target="_blank">Git Magic</a></li>
@@ -417,18 +416,18 @@ git mergetool</pre>
         <!-- Git tutorials -->
         <div class="grid_6">
           <header>
-            <i class="fa fa-fw fa-lg fa-graduation-cap"></i> <b>Git Tutorials</b>
+            <i class="fa fa-fw fa-lg fa-graduation-cap"></i> <b>Tutorials &amp; Guides</b>
           </header>
-          <div style="display: table-cell;">
+          <div class="grid_3 alpha">
           <ul>
             <li><a href="https://www.youtube.com/watch?v=1ffBJ4sVUb4" target="_blank">Git For Ages 4 and Up (Video)</a></li>
-            <li><a href="http://backlogtool.com/git-guide/en/" target="_blank">Git Beginner's Guide for Dummies</a></li>
+            <li><a href="http://backlogtool.com/git-guide/en/" target="_blank">Git Beginner's Guide</a></li>
             <li><a href="http://rogerdudler.github.io/git-guide/" target="_blank">git - the simple guide</a></li>
             <li><a href="http://gitimmersion.com/" target="_blank">Git Immersion</a></li>
             <li><a href="https://www.atlassian.com/git/" target="_blank">Getting Git Right</a></li>
           </ul>
           </div>
-          <div style="display: table-cell;">
+          <div class="grid_3 omega">
           <ul>
             <li><a href="http://pcottle.github.io/learnGitBranching/?demo" target="_blank">Learn Git Branching</a></li>
             <li><a href="http://rypress.com/tutorials/git/index" target="_blank">Ry's Git Tutorial</a></li>
@@ -441,9 +440,9 @@ git mergetool</pre>
         <!-- Git references -->
         <div class="grid_6">
           <header>
-            <i class="fa fa-fw fa-lg fa-bookmark-o"></i> <b>Git References</b>
+            <i class="fa fa-fw fa-lg fa-bookmark-o"></i> <b>References &amp; Cheat Sheets</b>
           </header>
-          <div style="display: table-cell;">
+          <div class="grid_3 alpha">
           <ul>
             <li><a href="http://git-scm.com/docs" target="_blank">Git Documentation</a></li>
             <li><a href="http://eagain.net/articles/git-for-computer-scientists/" target="_blank">Git for Computer Scientists</a></li>
@@ -452,7 +451,7 @@ git mergetool</pre>
             <li><a href="https://github.com/tiimgreen/github-cheat-sheet" target="_blank">Github Cheat Sheet</a></li>
           </ul>
           </div>
-        <div style="display: table-cell;">
+        <div class="grid_3 omega">
           <ul>
             <li><a href="http://www.cheetyr.com/git" target="_blank">Git Cheat Sheet</a></li>
             <li><a href="https://training.github.com/kit/downloads/github-git-cheat-sheet.pdf" target="_blank">Github Git Cheat Sheet</a></li>
@@ -465,25 +464,23 @@ git mergetool</pre>
         <!-- Git troubleshooting -->
         <div class="grid_6">
           <header>
-            <i class="fa fa-fw fa-lg fa-frown-o"></i> <b>Git Troubleshooting</b>
+            <i class="fa fa-fw fa-lg fa-frown-o"></i> <b>Troubleshooting</b>
           </header>
-          <div style="display: table-cell;">
+          <div class="grid_3 alpha">
           <ul>
             <li><a href="http://blackbe.lt/common-git-problems-and-solutions/" target="_blank">Common Git Problems</a></li>
             <li><a href="http://justinhileman.info/article/git-pretty/" target="_blank">Git Pretty</a></li>
             <li><a href="http://ibrokegit.com/" target="_blank">I Broke Git</a></li>
             <li><a href="http://41j.com/blog/2015/02/common-git-screwupsquestions-solutions/" target="_blank">Most common git screw-ups</a></li>
-            <li><a href="http://www.google.com/" target="_blank">Paste error messages into Google</a></li>
+            <li><a href="http://www.google.com/" target="_blank">Google error messages</a></li>
           </ul>
           </div>
-          <div style="display: table-cell;">
-          <ul>
-            <li><code>cd ~/REPOSITORY</code></li>
-            <li><code>git status</code></li>
-            <li><code>gitk --all &amp;</code></li>
-            <li><code>git remote -v</code></li>
-            <li><code>git gui &amp;</code></li>
-          </ul>
+          <div class="grid_3 omega">
+          <pre>cd ~/REPOSITORY
+git status
+git remote -v
+gitk --all &amp;
+git gui &amp;</pre>
           </div>
         </div>
 
@@ -820,31 +817,46 @@ git mergetool</pre>
         </ul>
         </div>
         <div class="clear"></div>
-        <header>
-          <div class="grid_6">
-            <i class="fa fa-download fa-lg fa-fw fail no-git-status"></i>
-            <i class="fa fa-lg fa-fw fa-check success git-status"></i>
-            <b>Git</b>: Setup git and your local repository
-            (<a href="REPOSITORY" target="_blank"><code>~/REPOSITORY</code></a>)
-          </div>
-          <div class="grid_6">
-            <i class="fa fa-upload fa-fw fa-lg"></i>
-            <b>Next steps</b>: Submit work using git
-          </div>
-          <div class="clear"></div>
-        </header>
         <div class="grid_6">
-<a href="https://github.com/INSTRUCTOR_GITHUB/REPOSITORY"
-                target="_blank">Clone <b>upstream</b> course repository</a>
-
-                Git keeps a list of <i>remote repositories</i> on your machine,
-          so that you can submit (<i>push</i>) your work, and access collaborators'
-          work (<i>fetch</i>, <i>merge</i>, or <i>pull</i>).<br>
-          The command <code>git remote -v</code> lists all remote repositories,
-          including <code>origin</code> (your personal repository) as well as
-          <code>upstream</code> (the course repository), upon successful set up.
-            <textarea id="command-line" rows="10" cols="50" style="width:465px;" readonly>## Copy/paste into Terminal or Git Bash
-git config --global user.name "FULL_NAME"
+            <header>
+                <i class="fa fa-laptop fa-lg fa-fw"></i>
+                <b>Local setup</b>: Setup git on your machine
+            </header>
+            <p>
+            The commands at right teach git your name, email address, and
+            where to find the repositories we created.
+            Git uses your name and email address to identify authors.
+            Git also keeps a list of <i>remote repositories</i> in your local
+            repository (see <code>git remote -v</code>), so that you can
+            <code>push</code> your work to submit it and also receive
+            updates doing a <code>fetch</code> then a <code>merge</code>,
+            or by doing a <code>pull</code>).
+            Every remote repository has a name and a URL:
+            </p>
+            <ol id="repositories">
+            <li><a href="UPSTREAM" target="_blank">The course repository (<code>upstream</code>)</a></li>
+            <li><a href="https://bitbucket.org/BITBUCKET_LOGIN/REPOSITORY" target="_blank">Your private repository (<code>bitbucket</code>)</a></li>
+            <li><a href="https://github.com/GITHUB_LOGIN/REPOSITORY" target="_blank">Your private repository (<code>github</code>)</a></li>
+            <li><a href="https://gitlab.com/GITLAB_LOGIN/REPOSITORY" target="_blank">Your private repository (<code>gitlab</code>)</a></li>
+            <li><a href="REPOSITORY" target="_blank">The local repository (<code>~/REPOSITORY</code>)</a></li>
+            </ol>
+        </div>
+        <div class="grid_6">
+            <header>
+                <i class="fa fa-terminal fa-lg fa-fw fail no-git-status"></i>
+                <i class="fa fa-lg fa-fw fa-check success git-status"></i>
+                <b>Commands</b> to setup git and remote repositories
+            </header>
+            <p>
+            Copy and paste the commands below into the Terminal or
+            Git Bash to set up git and remote repositories. Press
+            <code>Insert</code> to paste in Git Bash.
+            </p>
+            <p>
+            <i class="fa fa-fw fa-lg fa-warning" style="color:red;"></i>
+            <b>DO NOT</b> type in commands manually: you will mess it up
+            </p>
+            <textarea id="command-line" rows="10" cols="50" style="width:465px;" readonly>git config --global user.name "FULL_NAME"
 git config --global user.email USER_EMAIL
 printf "\n" | ssh-keygen -t rsa -N ''
 cd ~
@@ -859,22 +871,11 @@ git merge upstream/master
 git submodule update --init --recursive
 git push -u origin master</textarea>
         </div>
-        <div class="grid_6">
-            <pre>## Go into your repository
-cd ~/REPOSITORY
-## Do your work
-## Track changes you made in your repository
-git add .
-## Record changes locally
-git commit -m "Finished work"
-## Submit work
-git push origin master</pre>
-        </div>
-        <hr>
+        <div class="clear"></div>
         <div class="grid_12">
           <i class="fa fa-fw fa-lg fa-warning" style="color:red;"></i>
-          <b>DO NOT</b> move your local git repository to any folder synchronized
-          with Dropbox or Google Drive
+          <b>DO NOT</b> move your local git repository into any folder
+          synchronized with services such as Dropbox or Google Drive
         </div>
         <div class="clear"></div>
         <hr>
