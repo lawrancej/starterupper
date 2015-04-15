@@ -172,33 +172,63 @@ document.documentElement.className=document.documentElement.className.replace(/\
         <!-- Intro -->
         <div class="grid_6">
           <header>
-            <i class="fa fa-rocket fa-fw fa-lg"></i>
-            <b>Starter Upper</b>:
-            Setup git and project hosting quickly
+            <i class="fa fa-book fa-fw fa-lg"></i>
+            <b>Introduction</b>: Learn the vocabulary of git and project hosting
           </header>
             <p>
-                In this course, we'll use <code>git</code> repositories
-                and project hosts to submit work, receive assignments and feedback.
-                Git <em>repositories</em> store snapshots of a folder over time,
-                enabling collaborators to work simultaneously along different
-                time-lines called <em>branches</em>, which can be <i>merged</i>
-                together.
-                <em>Project hosts</em> (including Bitbucket, Github and Gitlab)
-                manage access to <code>git</code> repositories on a network.
+                Git is a <em>version control system</em>: it stores snapshots of
+                a folder over time into a <em>repository</em>.
+                To record a snapshot, you must decide what changes in the
+                <em>working directory</em> to <em>add</em> to the <em>staging
+                area</em>.
+                Snapshots, known as <em>commits</em>, record the timestamped 
+                contents of the staging area, the author's name and email, a
+                descriptive message, and <em>references</em> to predecessor commits.
+                Making a commit happens locally; it does not submit work over
+                the network.
+                The SHA1 hash of the commit uniquely identifies the commit in
+                a <em>log</em>.
+                Git allows you to <em>checkout</em> a commit to see the folder
+                as it was at the time of that snapshot.
             </p>
             <p>
-                Initially, your repository will be a copy of the course repository.
-                To submit work, first <code>add</code> files to <code>git</code>,
-                then <code>commit</code> to record a snapshot, and finally
-                <code>push</code> to your repository.
-                The instructor will <code>fetch</code> and
-                <code>checkout</code> your work to review it.
-                The instructor may also update the course repository;
-                you may <code>pull</code> to receive those updates.
+                Git is <em>distributed</em> in that every repository has a list
+                of <em>remote</em> repositories, each with a nickname and URL.
+                Git allows history to split off along separate timelines called
+                <em>branches</em>, which can <i>merge</i> back together.
+                The default branch is called <em>master</em> and the default
+                remote is called <em>origin</em>.
+                To submit work, <em>push</em> a branch to a remote repository.
+                To receive updates, <em>fetch</em> branches from a remote
+                repository into the local repository, then <em>merge</em>, or
+                just <em>pull</em>.
+                A <em>merge conflict</em> may happen during a merge when two
+                branches have different changes to the same regions within
+                a file; use a <em>merge tool</em> to fix these.
+            </p>
+            <p>
+                <em>Project hosts</em> such as Bitbucket, Github and Gitlab
+                offer storage for remote repositories and manage access to them
+                over the network.
             </p>
         </div>
         <!-- Profile -->
         <div class="grid_6">
+          <header>
+            <i class="fa fa-rocket fa-fw fa-lg"></i>
+            <b>Goal</b>:
+            Setup git and project hosting for this course
+          </header>
+            <p>
+                Most software developers use <code>git</code> and project hosts
+                to submit work, receive updates and feedback, which is why we'll
+                use <code>git</code> in this course.
+                Use this wizard to join a project host, create a private
+                repository, and setup <code>git</code> on your machine.
+                To submit work, push to your private repository.
+                The instructor will fetch your work to review it.
+                If the instructor updates the course repository, pull.
+            </p>
           <header>
             <i class="fa fa-user fa-fw fa-lg"></i>
             <b>Profile</b>:
@@ -207,11 +237,13 @@ document.documentElement.className=document.documentElement.className.replace(/\
             SSH key</abbr>, and photo
           </header>
           <p>
-            Check your school email address (it was guess)
-            and setup a Gravatar profile picture so that the
-            instructor may learn names.
-            Your public SSH key secures network connections
-            to project hosts without entering passwords.
+            Git needs your name and email address to identify you as the
+            author of your commits, so check your information below.
+            Project hosts need your public SSH key to secure network
+            connections without passwords.
+            Project hosts use Gravatar to associate your school email address
+            with your profile picture; please setup a Gravatar to help the
+            instructor learn names.
           </p>
         <div class="grid_2 alpha">
             <a href="https://en.gravatar.com/gravatars/new"
@@ -244,11 +276,11 @@ document.documentElement.className=document.documentElement.className.replace(/\
                 title="Your public SSH key secures connections without passwords" />
             </li>
             <li class="no-gravatar-account">
-                <i class="fa fa-li fa-lg fa-gear"></i>
+                <i class="fa fa-li fa-lg fa-smile-o"></i>
                 Setup a Gravatar (profile photo)
             </li>
             <li class="no-gravatar-account">
-                <i class="fa fa-li fa-lg fa-user"></i>
+                <i class="fa fa-li fa-lg fa-user-plus"></i>
                 <a href="https://en.gravatar.com/connect/?source=_signup"
                 target="actionRequired"
                 title="New to Gravatar? Join with your school email">
@@ -297,11 +329,11 @@ document.documentElement.className=document.documentElement.className.replace(/\
                 <b>Hints</b> for using git
             </header>
             <ul>
-                <li>Don't push what's broken: test beforehand</li>
-                <li>Use branches for work-in-progress</li>
-                <li>Commit often, and to complete a merge</li>
-                <li>Do not push to <code>upstream</code></li>
-                <li>Use a merge tool if you see a <code>CONFLICT</code></li>
+                <li>Commit early and often: keep commits small</li>
+                <li>Use branches for experiments</li>
+                <li>Test before you push, don't push if it's broken</li>
+                <li>Push to <code>origin</code>, not to <code>upstream</code></li>
+                <li>See <code>CONFLICT</code>s? Use a merge tool</li>
             </ul>
         </div>
         <!-- How to submit work -->
@@ -774,18 +806,11 @@ git gui &amp;</pre>
                 <b>Local setup</b>: Setup git on your machine
             </header>
             <p>
-            Git needs to know your name, email address, and where to find the
-            repositories we created.
-            Git uses your name and email address to identify the author of each
-            snapshot (<code>commit</code>).
-            Git also keeps a list of <i>remote repositories</i> in your <a 
-            href="REPOSITORY" target="_blank">local repository</a>,
-            so that you can <code>push</code> to your private
-            repository to submit work and also receive updates from
-            <code>upstream</code> by doing a <code>fetch</code> then a
-            <code>merge</code> or a <code>pull</code>.
+            Git needs your name, email address, and the URL of each remote
+            repository; go back if you did not confirm your information or
+            sign in to a project host.
             The command <code>git remote -v</code> shows the nickname and URL of
-            every remote repository:
+            all remotes:
             </p>
             <ul class="fa-ul" id="repositories">
             <li><i class="fa fa-li fa-lg fa-university"></i>
@@ -848,7 +873,7 @@ git push -u origin master</textarea>
   <script>
 var model = {
     // Name of the repository
-    repo: function()       { return "COMP201-2014"; /*$("#repository").val(); */ },
+    repo: function()       { return $("#repository").val(); },
     // Who's the instructor? (i.e., github login)
     instructor: function() { return $("#instructor").val(); },
 };  
