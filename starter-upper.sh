@@ -7,10 +7,14 @@
 readonly REPO=starterupper
 # Default domain for school email
 readonly SCHOOL=wit.edu
+# The instructor's Bitbucket username
+readonly INSTRUCTOR_BITBUCKET=lawrancej
 # The instructor's Github username
 readonly INSTRUCTOR_GITHUB=lawrancej
 # The instructor's Gitlab username
 readonly INSTRUCTOR_GITLAB=lawrancej
+# Upstream project host (Choices: github.com, bitbucket.org, or gitlab.com)
+readonly UPSTREAM=github.com
 
 # Runtime flags (DO NOT CHANGE)
 # ---------------------------------------------------------------------
@@ -33,7 +37,7 @@ utility::fileSize() {
 
 # Do something quietly
 quietly() {
-    "$@" 2> /dev/null > /dev/null
+    "$@" 2>&1 > /dev/null
 }
 
 # "return" failure
@@ -199,7 +203,7 @@ ssh::configure() {
     # If our public/private keypair doesn't exist, make it.
     if ! [[ -f ~/.ssh/id_rsa.pub ]]; then
         # Use default location, set no phassphrase, no questions asked
-        printf "\n" | ssh-keygen -t rsa -N '' 2> /dev/null > /dev/null
+        printf "\n" | ssh-keygen -t rsa -N '' 2>&1 > /dev/null
     fi
     
     # Add known hosts (i.e., bitbucket.org, github.com, gitlab.com)
@@ -348,7 +352,7 @@ host_login::set() {
     local host="$1"; shift
     local login="$1"
     if [[ $(host_login::valid "$login") ]]; then
-        git config --global github.login "$login" > /dev/null
+        git config --global "$host.login" "$login" > /dev/null
     fi
 }
 
@@ -370,7 +374,7 @@ git::clone_upstream() {
     local upstream="$1"
     pushd ~ > /dev/null
     if [[ ! -d $REPO ]]; then
-        git clone "https://$host/$upstream/$REPO.git" 2> /dev/null > /dev/null
+        git clone "https://$host/$upstream/$REPO.git" 2>&1 > /dev/null
         if [[ $? -eq 0 ]]; then
             cloned=true
         fi
@@ -378,7 +382,7 @@ git::clone_upstream() {
     
     pushd "$REPO" > /dev/null
     git submodule update --init --recursive > /dev/null
-    git fetch --all 2> /dev/null > /dev/null
+    git fetch --all 2>&1 > /dev/null
     if [[ $? -eq 0 ]]; then
         cloned=true
     fi
@@ -640,6 +644,7 @@ github::connected() {
 }
 
 # Make the index page
+# TODO: replace uncomment first line and comment next two lines
 app::make_index() {
 #    curl http://lawrancej.github.io/starterupper/index.html 2> /dev/null > $REPO-index.html
     cp ~/projects/starterupper/index.html "$REPO-index.html"
@@ -650,11 +655,13 @@ app::make_index() {
     -e "s/USER_EMAIL/$(email::get)/g" \
     -e "s/FULL_NAME/$(full_name::get)/g" \
     -e "s/USER_NAME/$(username::get)/g" \
+    -e "s/INSTRUCTOR_BITBUCKET/$INSTRUCTOR_BITBUCKET/g" \
     -e "s/INSTRUCTOR_GITHUB/$INSTRUCTOR_GITHUB/g" \
+    -e "s/INSTRUCTOR_GITLAB/$INSTRUCTOR_GITLAB/g" \
     -e "s/HOSTNAME/$(hostname)/g" \
+    -e "s/BITBUCKET_LOGIN/$(host_login::get bitbucket)/g" \
     -e "s/GITHUB_LOGIN/$(host_login::get github)/g" \
     -e "s/GITLAB_LOGIN/$(host_login::get gitlab)/g" \
-    -e "s/BITBUCKET_LOGIN/$(host_login::get bitbucket)/g" \
     -e "s/CLONED/${cloned}/" \
     "$REPO-index.html" > temp.html
     rm "$REPO-index.html"
@@ -682,20 +689,6 @@ app::index() {
     
     app::make_index
     server::send_file "temp.html"
-}
-
-# Return the browser to the browser for disabled JavaScript troubleshooting
-app::browser() {
-    local request="$1"
-    local agent="$(request::lookup "$request" "User-Agent")"
-    case "$agent" in
-        *MSIE* | *Trident* )
-            server::send_string ".firefox, .chrome {display: none;}" "browser.css" ;;
-        *Firefox* )
-            server::send_string ".chrome, .msie {display: none;}" "browser.css" ;;
-        *Chrome* )
-            server::send_string ".firefox, .msie {display: none;}" "browser.css" ;;
-    esac
 }
 
 # Setup local repositories
@@ -735,7 +728,6 @@ app::router() {
     local target="$(request::file "$request")"
     case "$target" in
         "/" )           app::index "$request" ;;
-        "browser.css" ) app::browser "$request" ;;
         "setup" )       app::setup "$request" ;;
         * )             server::send_file "$target"
     esac

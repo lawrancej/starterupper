@@ -178,14 +178,13 @@ document.documentElement.className=document.documentElement.className.replace(/\
           </header>
             <p>
                 In this course, we'll use <code>git</code> repositories
-                and project hosts (such as Github and Gitlab) to submit
-                work, receive assignments and feedback.
+                and project hosts to submit work, receive assignments and feedback.
                 Git <em>repositories</em> store snapshots of a folder over time,
                 enabling collaborators to work simultaneously along different
                 time-lines called <em>branches</em>, which can be <i>merged</i>
                 together.
-                <em>Project hosts</em> manage access to
-                <code>git</code> repositories over the network.
+                <em>Project hosts</em> (including Bitbucket, Github and Gitlab)
+                manage access to <code>git</code> repositories on a network.
             </p>
             <p>
                 Initially, your repository will be a copy of the course repository.
@@ -451,14 +450,14 @@ git gui &amp;</pre>
         </header>
         <div class="grid_6 alpha">
           <p>
-          Join Github or Gitlab using your school email address, then open your
-          inbox: the project host will email you a link to <em>verify</em> to
-          that you indeed own your email address.
-          Finally, sign in below to complete account setup and create a
+          Join a project host using your school email address, then check your
+          inbox.
+          The project host will email a link that you must follow to <em>verify</em>
+          that you own your email address.
+          Then, sign in below to complete account setup and create a
           <em>private</em> repository shared <em>only</em> with the instructor.
-          Green check marks will appear next to steps completed automatically: if
-          they don't appear, refresh this page and follow links to complete
-          steps manually.
+          Green check marks should appear next to completed steps automatically;
+          otherwise, refresh this page or follow links to complete steps manually.
           </p>
         </div>
         <div class="grid_6 omega">
@@ -467,13 +466,11 @@ git gui &amp;</pre>
           One account is enough: ask your instructor which host(s) to use</li>
           <li><i class="fa fa-li fa-lg fa-warning" style="color:red;"></i>
           <b>DO NOT</b> join a project host if you already have an account;
-          instead, add your school email address to the account and verify it</li>
+          add your school email address to your account instead</li>
           <li><i class="fa fa-li fa-lg fa-info-circle" style="color:#00a;"></i>
-          Private repositories are free of charge <em>only</em> on accounts
-          with a <em>verified</em> school email address</li>
+          To make repositories private, you must <em>verify</em> your school email address</li>
           <li><i class="fa fa-li fa-lg fa-info-circle" style="color:#00a;"></i>
-          On Github, you must request (and receive) an educational discount
-          before making your repository private</li>
+          Github requires an educational discount to make repositories private</li>
         </ul>
         </div>
         </div>
@@ -489,7 +486,7 @@ git gui &amp;</pre>
                     <i class="fa fa-li fa-lg fa-user-plus"></i>
                     <a href="https://bitbucket.org/account/signup/"
                     target="actionRequired">
-                    Join Bitbucket</a> with your school email
+                    Join Bitbucket with your school email</a>
                 </li>
                 <li class="bitbucket-authenticated">
                     <i class="fa fa-li fa-lg fa-lock bitbucket-authenticated"></i>
@@ -575,7 +572,7 @@ git gui &amp;</pre>
                 <i class="fa fa-li fa-lg fa-user-plus"></i>
                 <a href="https://github.com/join"
                 target="actionRequired">
-                Join Github</a> with your school email
+                Join Github with your school email</a>
             </li>
             <li class="github-authenticated">
                 <i class="fa fa-li fa-lg fa-lock github-authenticated"></i>
@@ -676,7 +673,7 @@ git gui &amp;</pre>
                     <i class="fa fa-li fa-lg fa-user-plus"></i>
                     <a href="https://gitlab.com/users/sign_up"
                     target="actionRequired">
-                    Join Gitlab</a> with your school email
+                    Join Gitlab with your school email</a>
                 </li>
                 <li class="gitlab-authenticated">
                     <i class="fa fa-li fa-lg fa-lock gitlab-authenticated"></i>
@@ -699,7 +696,7 @@ git gui &amp;</pre>
                     <input type="button" id="gitlab-signin" value="Sign in" 
                     title="Sign in to automate setup steps below" />
                     <a href="https://gitlab.com/users/password/new" target="actionRequired"
-                    class="no-gitlab-authenticated" id="gitlab-forgot">Forgot password?</a>
+                    class="no-gitlab-authenticated" id="gitlab-forgot"><br>Forgot password?</a>
                 </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-user fail no-gitlab-profile"></i>
@@ -846,8 +843,8 @@ git push -u origin master</textarea>
       </section>
     </form>
   </article>
-  <script src="http://lawrancej.github.io/starterupper/sparkMD5.js"></script>
-  <script src="http://lawrancej.github.io/starterupper/jquery-2.1.1.min.js"></script>
+  <script src="sparkMD5.js"></script>
+  <script src="jquery-2.1.1.min.js"></script>
   <script>
 var model = {
     // Name of the repository
@@ -857,9 +854,6 @@ var model = {
 };  
   </script>
   <script src="github.js"></script>
-<!-- TODO
-  <script src="http://lawrancej.github.io/starterupper/ui.js"></script>
--->
   <script src="gitlab.js"></script>
   <script src="user.js"></script>
   <script src="ui.js"></script>
