@@ -516,7 +516,7 @@ git gui &amp;</pre>
         <!-- Bitbucket -->
         <div class="grid_4">
             <header>
-              <i class="fa fa-fw fa-lg fa-bitbucket"></i> <b>Bitbucket (coming soon)</b>
+              <i class="fa fa-fw fa-lg fa-bitbucket"></i> <b>Bitbucket</b> (manual setup only)
             </header>
             <b>Setup account</b>
             <ul class="fa-ul" style="margin-left: 0px;">
@@ -526,9 +526,9 @@ git gui &amp;</pre>
                     target="actionRequired">
                     Join Bitbucket with your school email</a>
                 </li>
-                <li class="bitbucket-authenticated">
-                    <i class="fa fa-li fa-lg fa-lock bitbucket-authenticated"></i>
-                    <input type="button" id="bitbucket-signout" value="Sign out" />
+                <li>
+                    <i class="fa fa-li fa-lg fa-pencil"></i>
+                    <input type="text" placeholder="Bitbucket username" id="bitbucket-login" />
                 </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-check success bitbucket-email-verified"></i>
@@ -537,6 +537,11 @@ git gui &amp;</pre>
                     target="actionRequired"><span class="bitbucket-email-verified">
                     Verified your school email</span><span class="no-bitbucket-email-verified">
                     Add &amp; verify your school email</span></a>
+                </li>
+                <!--
+                <li class="bitbucket-authenticated">
+                    <i class="fa fa-li fa-lg fa-lock bitbucket-authenticated"></i>
+                    <input type="button" id="bitbucket-signout" value="Sign out" />
                 </li>
                 <li class="no-bitbucket-authenticated">
                     <i class="fa fa-li fa-lg fa-unlock no-bitbucket-authenticated"></i>
@@ -548,6 +553,7 @@ git gui &amp;</pre>
                     <a href="https://bitbucket.org/account/password/reset/" target="actionRequired"
                     class="no-bitbucket-authenticated" id="bitbucket-forgot"><br>Forgot password?</a>
                 </li>
+                -->
                 <li>
                     <i class="fa-li fa fa-lg fa-user fail no-bitbucket-profile"></i>
                     <i class="fa-li fa fa-lg fa-check success bitbucket-profile"></i>
