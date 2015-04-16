@@ -20,6 +20,7 @@ header { display: block; border-bottom: 1px solid #ccc; margin-top: 10px; margin
 .navigation {
   list-style: none; overflow: hidden;
 }
+p { text-align: justify; }
 /* Shout out to: https://css-tricks.com/triangle-breadcrumbs/ */
 div.navigation {
   margin-top: 10px; margin-bottom: 10px;
@@ -88,8 +89,8 @@ div.navigation > ul > li > a {
     text-decoration: none;
 }
 section { margin-bottom:5px; }
-input[type="text"] { width:200px; }
-input[type="email"] { width:200px; }
+input[type="text"] { width:180px; }
+input[type="email"] { width:180px; }
 input[type="password"] { width:120px; }
 .js #javascript-warning {display: none;}
 
@@ -170,7 +171,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
         </div>
         <div class="clear"></div>
         <!-- Intro -->
-        <div class="grid_6">
+        <div class="grid_7">
           <header>
             <i class="fa fa-book fa-fw fa-lg"></i>
             <b>Introduction</b>: Learn git and project hosting jargon
@@ -216,11 +217,11 @@ document.documentElement.className=document.documentElement.className.replace(/\
             </p>
         </div>
         <!-- Profile -->
-        <div class="grid_6">
+        <div class="grid_5">
           <header>
             <i class="fa fa-rocket fa-fw fa-lg"></i>
             <b>Goal</b>:
-            Setup git and project hosting for this course
+            Setup git and project hosting
           </header>
             <p>
                 To submit work, receive updates and feedback in this course,
@@ -232,10 +233,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
             </p>
           <header>
             <i class="fa fa-user fa-fw fa-lg"></i>
-            <b>Profile setup</b>:
-            Name, email,
-            <abbr title="Your public SSH key secures connections without passwords">public
-            SSH key</abbr>, photo
+            <b>Profile</b>: Name, email, public key, photo
           </header>
           <p>
             Git needs your name and email address to identify you, so check it
@@ -254,7 +252,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
             title="Update profile photo" alt="Update profile photo" width="140" height="140" />
             </a>
         </div>
-        <div class="grid_4 omega">
+        <div class="grid_3 omega">
           <ul class="fa-ul" style="margin-left: 0px;">
             <li>
                 <i class="fa fa-li fa-lg fa-user"></i>
