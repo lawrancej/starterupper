@@ -172,10 +172,11 @@ document.documentElement.className=document.documentElement.className.replace(/\
         <div class="clear"></div>
         <!-- Intro -->
         <div class="grid_7">
-          <header>
-            <i class="fa fa-book fa-fw fa-lg"></i>
-            <b>Introduction</b>: Learn git and project hosting jargon
-          </header>
+            <header>
+                <i class="fa fa-book fa-fw fa-lg"></i>
+                <b>Introduction</b>: Learn git and project hosting jargon
+            </header>
+            <!-- Commits -->
             <p>
                 Git is a <em>version control system</em>: it stores snapshots of
                 a folder over time into a <em>repository</em>.
@@ -190,17 +191,19 @@ document.documentElement.className=document.documentElement.className.replace(/\
                 The SHA1 hash of the commit uniquely identifies it in the
                 repository, and verifies integrity.
             </p>
+            <!-- Branching and merging -->
             <p>
                 Git allows history to split off along separate timelines called
                 <em>branches</em>, which can <i>merge</i> back together.
                 The default branch is called <code>master</code>.
-                To see the working directory as it was at another time,
+                To see the working directory as it was at another point in time,
                 <em>checkout</em> a commit or a branch; <code>HEAD</code>
                 points at the current commit or branch.
                 During a merge, a <em>merge conflict</em> may happen when two
                 branches have different changes to the same regions within
                 a file; use a <em>merge tool</em> to fix these.
             </p>
+            <!-- Distributed remote repositories -->
             <p>
                 Git is <em>distributed</em> in that every repository has a list
                 of <em>remote</em> repositories, each with a nickname and URL.
@@ -210,14 +213,16 @@ document.documentElement.className=document.documentElement.className.replace(/\
                 remote repository into the local repository, then <em>merge</em>,
                 or equivalently, <em>pull</em>.
             </p>
+            <!-- Project hosts -->
             <p>
                 <em>Project hosts</em> such as Bitbucket, Github and Gitlab
                 offer storage for remote repositories and manage access to them
                 over the network.
             </p>
         </div>
-        <!-- Profile -->
+        <!-- Goal and Profile -->
         <div class="grid_5">
+          <!-- Goal -->
           <header>
             <i class="fa fa-rocket fa-fw fa-lg"></i>
             <b>Goal</b>:
@@ -231,6 +236,7 @@ document.documentElement.className=document.documentElement.className.replace(/\
                 repository, and setup <code>git</code> on your machine so that
                 the instructor can fetch your work and checkout to review it.
             </p>
+          <!-- Profile -->
           <header>
             <i class="fa fa-user fa-fw fa-lg"></i>
             <b>Profile</b>: Name, email, public key, photo
@@ -482,20 +488,21 @@ git gui &amp;</pre>
           <p>
             Join a project host using your school email address, then check your
             inbox.
+            One account is all you need: if you already have an account,
+            <em>do not</em> join again; add your school email address to your
+            existing account instead.
             The project host will email a link that you must follow to
             <em>verify</em> that you own your email address.
-            If you already have an account on a project host, <b>do not</b> join
-            again; add your school email address to your existing account instead.
-            Also, one account is enough: ask your instructor which project host
-            to use.
+            Be patient: email may take several minutes to arrive, and requesting
+            a new verification email invalidates previous emails.
           </p>
         </div>
         <div class="grid_6 omega">
           <p>
-            Sign in below to complete account setup and create a <em>private</em>
-            repository shared <em>only</em> with the instructor.
-            You must <em>verify</em> your school email address to create a
-            repository; Github also requires an educational discount.
+            Sign in below to complete account setup and create a private
+            repository shared <em>only</em> with the instructor and nobody else.
+            To create a private repository, you must first <em>verify</em> your
+            school email address; Github also requires an educational discount.
             Green check marks should appear next to completed steps automatically;
             otherwise, refresh this page or follow links in order from top to
             bottom to complete steps manually.
