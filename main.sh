@@ -3,8 +3,6 @@
 # Configuration
 # ---------------------------------------------------------------------
 
-# Upstream HTTPS course repository URL (NO TRAILING SLASH)
-readonly UPSTREAM=https://github.com/lawrancej/starterupper
 # The repository to clone as upstream (NO SPACES)
 readonly REPO=starterupper
 # Default domain for school email
@@ -15,6 +13,12 @@ readonly INSTRUCTOR_BITBUCKET=lawrancej
 readonly INSTRUCTOR_GITHUB=lawrancej
 # The instructor's Gitlab username
 readonly INSTRUCTOR_GITLAB=lawrancej
+# Upstream host (uncomment only one upstream host)
+readonly UPSTREAM_HOST=github.com
+#readonly UPSTREAM=gitlab.com
+#readonly UPSTREAM=bitbucket.org
+# Upstream instructor
+readonly UPSTREAM_INSTRUCTOR=lawrancej
 
 # Run starter upper
 # ---------------------------------------------------------------------

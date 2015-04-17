@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Configuration
-# ---------------------------------------------------------------------
-
 # Runtime flags (DO NOT CHANGE)
 # ---------------------------------------------------------------------
 readonly PROGNAME="$(basename "$0")"
@@ -644,6 +641,8 @@ app::make_index() {
     -e "s/BITBUCKET_LOGIN/$(host_login::get bitbucket)/g" \
     -e "s/GITHUB_LOGIN/$(host_login::get github)/g" \
     -e "s/GITLAB_LOGIN/$(host_login::get gitlab)/g" \
+    -e "s/UPSTREAM_HOST/${UPSTREAM_HOST}/" \
+    -e "s/UPSTREAM_INSTRUCTOR/${UPSTREAM_INSTRUCTOR}/" \
     -e "s/CLONED/${cloned}/" \
     "$REPO-index.html" > temp.html
     rm "$REPO-index.html"
@@ -746,7 +745,7 @@ starterupper::main() {
     pushd ~ > /dev/null
     
     # Perform setup steps
-    # app::init
+    app::init
     # Make web page
     printf "Generating user interface..."
     app::make_index

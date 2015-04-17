@@ -47,7 +47,7 @@ var user = {
   },
   login: {
     value: function() { return $("#login").val(); },
-    isValid: function() { return !/USER_NAME/.test(user.login.value()) && user.login.value().length > 0; },
+    isValid: function() { return user.login.value() !== "USER_NAME" && user.login.value().length > 0; },
   },
   host: {
     value: function() { return $("#host").val(); },

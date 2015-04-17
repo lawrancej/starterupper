@@ -158,6 +158,8 @@ function redirect() {
       <input type="hidden" id="stored-gitlab" value="GITLAB_LOGIN" />
       <input type="hidden" id="stored-bitbucket" value="BITBUCKET_LOGIN" />
       <input type="hidden" id="cloned" value="CLONED" />
+      <input type="hidden" id="upstream-host" value="UPSTREAM_HOST" />
+      <input type="hidden" id="upstream-instructor" value="UPSTREAM_INSTRUCTOR" />
       
       <!-- Nag the user if JavaScript is disabled -->
       <div class="container_12" id="javascript-warning">
@@ -825,7 +827,7 @@ git gui &amp;</pre>
             </p>
             <ul class="fa-ul" id="repositories">
             <li><i class="fa fa-li fa-lg fa-university"></i>
-            <a href="UPSTREAM" target="_blank">The course repository (<code>upstream</code>)</a></li>
+            <a href="https://UPSTREAM_HOST/UPSTREAM_INSTRUCTOR/REPOSITORY" target="_blank">The course repository (<code>upstream</code>)</a></li>
             <li><i class="fa fa-li fa-lg fa-bitbucket"></i>
             <a href="https://bitbucket.org/BITBUCKET_LOGIN/REPOSITORY" target="_blank">Your private repository (<code>bitbucket</code>)</a></li>
             <li><i class="fa fa-li fa-lg fa-github"></i>
@@ -851,7 +853,7 @@ cd ~
 git init REPOSITORY
 cd REPOSITORY
 git remote add upstream \
-https://github.com/INSTRUCTOR_GITHUB/REPOSITORY.git
+https://UPSTREAM_HOST/UPSTREAM_INSTRUCTOR/REPOSITORY.git
 git remote add origin \
 git@github.com:GITHUB_LOGIN/REPOSITORY.git
 git fetch --all
