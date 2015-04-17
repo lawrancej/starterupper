@@ -3,19 +3,6 @@
 # Configuration
 # ---------------------------------------------------------------------
 
-# Upstream project host (Choices: github.com, bitbucket.org, or gitlab.com)
-readonly UPSTREAM=github.com
-# The repository to clone as upstream (NO SPACES)
-readonly REPO=starterupper
-# Default domain for school email
-readonly SCHOOL=wit.edu
-# The instructor's Bitbucket username
-readonly INSTRUCTOR_BITBUCKET=lawrancej
-# The instructor's Github username
-readonly INSTRUCTOR_GITHUB=lawrancej
-# The instructor's Gitlab username
-readonly INSTRUCTOR_GITLAB=lawrancej
-
 # Runtime flags (DO NOT CHANGE)
 # ---------------------------------------------------------------------
 readonly PROGNAME="$(basename "$0")"
@@ -644,12 +631,7 @@ github::connected() {
 }
 
 # Make the index page
-# TODO: replace uncomment first line and comment next two lines
 app::make_index() {
-#    curl http://lawrancej.github.io/starterupper/index.html 2> /dev/null > $REPO-index.html
-    cp ~/projects/starterupper/index.html "$REPO-index.html"
-    cp ~/projects/starterupper/*.js .
-
     sed -e "s/REPOSITORY/$REPO/g" \
     -e "s/PUBLIC_KEY/$(ssh::getPublicKeyForSed)/g" \
     -e "s/USER_EMAIL/$(email::get)/g" \
@@ -759,7 +741,7 @@ app::init() {
     fi
 }
 
-main() {
+starterupper::main() {
     # Go into the home directory
     pushd ~ > /dev/null
     
@@ -783,4 +765,3 @@ main() {
 }
 
 export TERM=xterm
-main

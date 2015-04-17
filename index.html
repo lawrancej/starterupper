@@ -818,7 +818,7 @@ git gui &amp;</pre>
         <div class="grid_6">
             <header>
                 <i class="fa fa-code-fork fa-lg fa-fw"></i>
-                <b>Remote repositories</b>: Where to submit work and receive updates
+                <b>Remotes</b>: Where to submit work and receive updates
             </header>
             <p>
             Sign into a project host to see all remote repositories.
@@ -875,18 +875,7 @@ git push -u origin master</textarea>
   </article>
   <script src="sparkMD5.js"></script>
   <script src="jquery-2.1.1.min.js"></script>
-  <script>
-var model = {
-    // Name of the repository
-    repo: function()       { return $("#repository").val(); },
-    // Who's the instructor?
-    instructor: function(host) { return $("#instructor-" + host).val(); },
-};  
-  </script>
-  <script src="user.js"></script>
-  <script src="bitbucket.js"></script>
-  <script src="github.js"></script>
-  <script src="gitlab.js"></script>
+  <script src="script.js"></script>
   <script src="ui.js"></script>
 </body>
 </html>

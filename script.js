@@ -1,5 +1,3 @@
-// Quick and dirty Github Javascript API wrapper
-
 // Workarounds for legacy browsers
 // Courtesy: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString
 if ( !Date.prototype.toISOString ) {
@@ -29,7 +27,84 @@ if ( !Date.prototype.toISOString ) {
 
 // Methods with an object parameter often require two callbacks in an object:
 // success and fail.
+
+// Repository and instructor names
+var model = {
+    // Name of the repository
+    repo: function()       { return $("#repository").val(); },
+    // Who's the instructor?
+    instructor: function(host) { return $("#instructor-" + host).val(); },
+};  
+
+// User information
+var user = {
+  get: function(field) {
+    if (user[field].isValid()) {
+        localStorage.setItem("User." + field, user[field].value());
+        return user[field].value();
+    }
+    return localStorage.getItem("User." + field);
+  },
+  login: {
+    value: function() { return $("#login").val(); },
+    isValid: function() { return !/USER_NAME/.test(user.login.value()) && user.login.value().length > 0; },
+  },
+  host: {
+    value: function() { return $("#host").val(); },
+    isValid: function() { return user.login.value().length > 0; },
+  },
+  key : {
+    value: function() { return $("#public-key").val(); },
+    isValid: function() { return /ssh-rsa .*/.test(user.key.value()); },
+  },
+  name : {
+    value: function() { return $("#name").val().trim(); },
+    isValid: function() { return /[^ ]+( [^ ]+)+/.test(user.name.value()); },
+    changed: function() { return $("#stored-name").val() != user.name.value(); },
+  },
+  email : {
+    isValid: function() { return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(user.email.value()) && /edu$/.test(user.email.value()); },
+    value: function() { return $("#email").val().toLowerCase().trim(); },
+    changed: function() { return $("#stored-email").val() != user.email.value(); },
+  },
+  gravatar : {
+    value: function() { return SparkMD5.hash(user.get("email")); },
+    changed: function() { return user.gravatar.value() != localStorage.getItem("Gravatar"); },
+    isValid: function() { return localStorage.hasOwnProperty("Gravatar"); },
+    checkValid: function(callback) {
+        if (user.gravatar.changed()) {
+            $.ajax({
+                method: "GET",
+                dataType: "jsonp",
+                crossDomain: true,
+                processData: false,
+                url: 'https://en.gravatar.com/' + user.gravatar.value() + '.json',
+                success: function(response) {
+                    localStorage.setItem("Gravatar", user.gravatar.value());
+                    callback(true);
+                },
+                error: function(response) {
+                    localStorage.removeItem("Gravatar");
+                    callback(false);
+                }
+            });
+        } else {
+            callback(user.gravatar.isValid());
+        }
+    },
+  },
+};
+
+// Bitbucket wrapper
+var Bitbucket = {
+    getUsername: function() { return $('#bitbucket-login').val(); },
+    repoURL: function() { return "https://bitbucket.org/" + Bitbucket.getUsername() + "/" + model.repo(); },
+    existingUser: function() { return Bitbucket.getUsername() != ""; },
+}
+
+// Github wrapper
 var Github = {
+
     // Innocent until proven guilty properties
     badCredentials: false,
     setOTP: false,
@@ -383,3 +458,238 @@ var Github = {
     }
 
 }
+
+// Gitlab wrapper
+var Gitlab = {
+    badCredentials: false,
+    nameShared: false,
+    emailVerified: false,
+    keyShared: false,
+    repoCreated: false,
+
+    email: "",
+    password: "",
+    
+    authenticated: function () {
+        return localStorage.hasOwnProperty("Gitlab.token") && localStorage.hasOwnProperty("Gitlab.username");
+    },
+    
+    getAuthorization: function () {
+        return localStorage.getItem("Gitlab.token");
+    },
+    
+    getUsername: function() { return localStorage.getItem("Gitlab.username"); },
+    existingUser: function() { return localStorage.hasOwnProperty("Gitlab.username"); },
+    repoURL: function() { return "https://gitlab.com/" + Gitlab.getUsername() + "/" + model.repo().toLowerCase(); },
+
+    // Generic Gitlab API invoker
+    invoke: function (settings) {
+        $.ajax({
+            crossDomain: true,
+            url: "https://gitlab.com/api/v3" + settings.url,
+            type: settings.method,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("PRIVATE-TOKEN", Gitlab.getAuthorization());
+            },
+            dataType: "json",
+            data: settings.data,
+            success: settings.success,
+            error: settings.fail
+        });
+    },
+
+    // Login to Gitlab
+    login: function(settings) {
+        Gitlab.email = settings.email;
+        Gitlab.password = settings.password;
+        if (Gitlab.authenticated()) {
+            settings.authenticated();
+        } else {
+            $.ajax({
+                crossDomain: true,
+                url: "https://gitlab.com/api/v3/session",
+                type: "POST",
+                dataType: "json",
+                data: { "email": Gitlab.email, "password": Gitlab.password },
+                success: function(response) {
+                    localStorage.setItem("Gitlab.username",response.username);
+                    localStorage.setItem("Gitlab.token",response.private_token);
+                    
+                    settings.authenticated();
+                },
+                error: function(response) {
+                    Gitlab.badCredentials = true;
+                    settings.badCredential();
+                }
+            });
+        }
+    },
+    
+    logout: function() {
+        localStorage.removeItem('Gitlab.token');
+    },
+    
+    shareKey: function(settings) {
+        if (!user.key.isValid()) return;
+        Gitlab.invoke({
+            url: "/user/keys",
+            method: "GET",
+            data: {},
+            success: function(response) {
+                settings.success(response);
+                for (index in response) {
+                    if (response[index].key == settings.key) {
+                        settings.success(response);
+                        return;
+                    }
+                }
+                // Send key
+                Gitlab.invoke({
+                    url: "/user/keys",
+                    method: "POST",
+                    data: {
+                        title: settings.title,
+                        key: settings.key
+                    },
+                    success: settings.success,
+                    fail: settings.fail
+                });
+            },
+            fail: settings.fail
+        });
+    },
+    
+    getUser: function(settings) {
+        Gitlab.invoke({
+            url: "/user",
+            method: "GET",
+            data: {},
+            success: settings.success,
+            fail: settings.fail
+        });
+    },
+    
+    // Find a user by name
+    getUserByName: function(settings) {
+        Gitlab.invoke({
+            url: "/users?search="+settings.user,
+            method: "GET",
+            data: {},
+            success: settings.success,
+            fail: settings.fail
+        });
+    },
+
+    setupAccount: function(settings) {
+        // Onboarding/authentication status
+        settings.callback("gitlab-onboard", !Gitlab.existingUser());
+        settings.callback('gitlab-authenticated', Gitlab.authenticated());
+        if (Gitlab.authenticated()) {
+            // Nag the user if they didn't share their name or email
+            if (!Gitlab.nameShared || !Gitlab.emailVerified) { 
+                Gitlab.getUser({
+                    success: function(response) {
+                        Gitlab.nameShared = response.name == settings.name;
+                        Gitlab.emailVerified = response.email == settings.email;
+                        settings.callback('gitlab-profile', Gitlab.nameShared);
+                        settings.callback('gitlab-email-verified', Gitlab.emailVerified);
+                    }
+                });
+            }
+            // Share key
+            if (!Gitlab.keyShared) {
+                Gitlab.shareKey({
+                    title: settings.title,
+                    key: settings.key,
+                    success: function() {
+                        Gitlab.keyShared = true;
+                        settings.callback('gitlab-key',true);
+                    },
+                });
+            }
+            // Setup repo
+            if (!Gitlab.repoCreated) {
+                Gitlab.setupRepo(settings);
+            }
+        }
+    },
+
+    // Create repository
+    createRepo: function(settings) {
+        Gitlab.invoke({
+            url: "/projects/" + Gitlab.getUsername() + "%2F" + model.repo().toLowerCase(),
+            method: "GET",
+            data: {},
+            // If the repo is created already, we're done
+            success: settings.success,
+            // Otherwise, we need to make it
+            fail: function(response) {
+                Gitlab.invoke({
+                    url: "/projects",
+                    method: "POST",
+                    data: {
+                        name: model.repo(),
+                        "public": false,
+                        visibility_level: 0
+                        // you could also set the import_url so something public
+                    },
+                    success: settings.success,
+                    fail: settings.fail
+                });
+            }
+        });
+    },
+    
+    privateRepo: function(settings) {
+        settings.success();
+    },
+    
+    // Add collaborator
+    addCollaborator: function(settings) {
+        var url = "/projects/" + Gitlab.getUsername() + "%2F" + model.repo().toLowerCase() + "/members";
+        Gitlab.getUserByName({
+            user: settings.collaborator,
+            success: function(response) {
+                Gitlab.invoke({
+                    method: "PUT",
+                    "url": url,
+                    data: {
+                        "id": Gitlab.getUsername() + "%2F" + model.repo().toLowerCase(),
+                        "user_id": response[0].id,
+                        // See: https://gitlab.com/help/permissions/permissions
+                        "access_level": 30 // Developer
+                    },
+                    success: settings.success,
+                    fail: settings.fail
+                });
+            },
+            fail: settings.fail
+        });
+    },
+    
+    // Create repository, add collaborator, and make private, given object with
+    // callback function(key, bool) to update view
+    setupRepo: function (settings) {
+        Gitlab.createRepo({
+            success: function(response) {
+                settings.callback('gitlab-repository',true);
+                Gitlab.addCollaborator({
+                    collaborator: model.instructor('gitlab'),
+                    success: function(response) {
+                        settings.callback('gitlab-collaborator', true);
+                    },
+                });
+                // Make the repository private if we're not the instructor
+                if (model.instructor('gitlab') != Gitlab.getUsername()) {
+                    Gitlab.privateRepo({
+                        success: function(response) {
+                            settings.callback('gitlab-private', true);
+                        },
+                    });
+                }
+            },
+        });
+    }
+}
+
+
