@@ -755,8 +755,8 @@ starterupper::main() {
     echo "Opening $(app::url) in a web browser."
     utility::fileOpen temp.html
 
-    echo -e "Starting local web server at http://localhost:8080...                      [\e[1;32mOK\e[0m]"
-    server::start "app::router"
+#    echo -e "Starting local web server at http://localhost:8080...                      [\e[1;32mOK\e[0m]"
+#    server::start "app::router"
 }
 
 export TERM=xterm
