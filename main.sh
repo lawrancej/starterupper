@@ -47,8 +47,6 @@ cp .starterupper/index.html "$REPO-index.html"
 cp .starterupper/*.js .
 cp .starterupper/starter-upper.sh .
 
-
-
 # Run starter upper
 chmod +x starter-upper.sh
 . starter-upper.sh
@@ -57,3 +55,9 @@ starterupper::main
 # Clean up
 rm starterupper.zip
 rm -rf .starterupper
+rm temp.html
+rm starter-upper.sh
+rm sparkMD5.js
+rm jquery-2.1.1.min.js
+rm ui.js
+rm script.js
