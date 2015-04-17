@@ -45,10 +45,8 @@ pipe::rm() {
 app::shutdown() {
     echo
     printf "%s" "Cleaning up temporary files..." >&2
-    pushd ~ > /dev/null
     pipe::rm
     quietly rm -f temp.html
-    popd > /dev/null
     echo -e "                                           [\e[1;32mDONE\e[0m]" >&2
     
     quietly kill -9 $TOP_PID
@@ -354,11 +352,8 @@ cloned=false
 
 # Clone/fetch upstream
 git::clone_upstream() {
-    local host="$1"; shift
-    local upstream="$1"
-    pushd ~ > /dev/null
-    if [[ ! -d $REPO ]]; then
-        git clone "https://$host/$upstream/$REPO.git" 2>&1 > /dev/null
+    if [[ ! -d "$REPO" ]]; then
+        git clone "https://${UPSTREAM_HOST}/${UPSTREAM_USER}/$REPO.git" 2>&1 > /dev/null
         if [[ $? -eq 0 ]]; then
             cloned=true
         fi
@@ -373,7 +368,6 @@ git::clone_upstream() {
     popd > /dev/null
     
     utility::fileOpen "$REPO"
-    popd > /dev/null
 }
 
 # Configure remotes
@@ -385,7 +379,7 @@ git::configure_remotes() {
     local upstream="https://$hostDomain/$upstreamLogin/$REPO.git"
     
     # Configure remotes
-    cd ~/"$REPO"
+    pushd "$REPO"
     git remote rm origin 2> /dev/null
     git remote rm upstream 2> /dev/null
     git remote add origin "$origin"
@@ -393,6 +387,7 @@ git::configure_remotes() {
     git config branch.master.remote origin
     git config branch.master.merge refs/heads/master
     git remote | tr '\n' ' '
+    popd
 }
 
 # Push repository, and show the user local/remote repositories
@@ -404,8 +399,9 @@ git::configure_remotes() {
 # 5. SSH key is in known_hosts
 # 6. The private repo exists
 git::push() {
-    cd ~/"$REPO"
+    pushd ~/"$REPO"
     git push -u origin master
+    popd
 }
 
 # Is this a request line?
@@ -642,7 +638,7 @@ app::make_index() {
     -e "s/GITHUB_LOGIN/$(host_login::get github)/g" \
     -e "s/GITLAB_LOGIN/$(host_login::get gitlab)/g" \
     -e "s/UPSTREAM_HOST/${UPSTREAM_HOST}/" \
-    -e "s/UPSTREAM_INSTRUCTOR/${UPSTREAM_INSTRUCTOR}/" \
+    -e "s/UPSTREAM_USER/${UPSTREAM_USER}/" \
     -e "s/CLONED/${cloned}/" \
     "$REPO-index.html" > temp.html
     rm "$REPO-index.html"
@@ -732,7 +728,7 @@ app::init() {
     fi
     # Clone upstream
     printf "Cloning upstream..."
-    git::clone_upstream "github.com" "$INSTRUCTOR_GITHUB"
+    git::clone_upstream
     if [[ $cloned == true ]]; then
         echo -e "                                                        [\e[1;32mOK\e[0m]"
     else
@@ -741,11 +737,9 @@ app::init() {
 }
 
 starterupper::main() {
-    # Go into the home directory
-    pushd ~ > /dev/null
-    
-    # Perform setup steps
+    # Gather information
     app::init
+    
     # Make web page
     printf "Generating user interface..."
     app::make_index
@@ -758,9 +752,6 @@ starterupper::main() {
 
     echo -e "Starting local web server at http://localhost:8080...                      [\e[1;32mOK\e[0m]"
     server::start "app::router"
-    
-    # Go back where we were
-    popd > /dev/null
 }
 
 export TERM=xterm

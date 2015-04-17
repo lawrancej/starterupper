@@ -17,8 +17,8 @@ readonly INSTRUCTOR_GITLAB=lawrancej
 readonly UPSTREAM_HOST=github.com
 #readonly UPSTREAM=gitlab.com
 #readonly UPSTREAM=bitbucket.org
-# Upstream instructor
-readonly UPSTREAM_INSTRUCTOR=lawrancej
+# Upstream user (most likely the instructor's user name on the upstream host)
+readonly UPSTREAM_USER=lawrancej
 
 # Run starter upper
 # ---------------------------------------------------------------------
