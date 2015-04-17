@@ -28,9 +28,21 @@ function updateCommands() {
             value += "\ngit remote add upstream \\";
             value += "\n" + model.upstream() + ".git";
         }
-        value += "\ngit remote add origin \\";
+    }
+    if (Github.existingUser()) {
+        value += "\ngit remote add github \\";
         value += "\ngit@github.com:" + ((Github.getUsername() == null) ? user.get("login") : Github.getUsername()) + "/" + model.repo() + ".git";
     }
+    if (Gitlab.existingUser()) {
+        value += "\ngit remote add gitlab \\";
+        value += "\ngit@gitlab.com:" + ((Gitlab.getUsername() == null) ? user.get("login") : Gitlab.getUsername()) + "/" + model.repo() + ".git";
+    }
+    if (Bitbucket.existingUser()) {
+        value += "\ngit remote add bitbucket \\";
+        value += "\ngit@bitbucket.org:" + ((Bitbucket.getUsername() == null) ? user.get("login") : Bitbucket.getUsername()) + "/" + model.repo() + ".git";
+    }
+    
+
     // Add extra collaborators
     for (var key in Github.collaborators) {
         value += "\ngit remote add " + key + " \\\ngit@github.com:" + key + "/" + model.repo() + ".git";
