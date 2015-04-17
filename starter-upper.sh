@@ -45,8 +45,8 @@ pipe::rm() {
 app::shutdown() {
     echo
     printf "%s" "Cleaning up temporary files..." >&2
-    pipe::rm
-    quietly rm -f temp.html
+#    pipe::rm
+#    quietly rm -f temp.html
     echo -e "                                           [\e[1;32mDONE\e[0m]" >&2
     
     quietly kill -9 $TOP_PID

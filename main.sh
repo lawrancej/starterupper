@@ -55,7 +55,6 @@ starterupper::main
 # Clean up
 rm starterupper.zip
 rm -rf .starterupper
-rm temp.html
 rm starter-upper.sh
 rm sparkMD5.js
 rm jquery-2.1.1.min.js
