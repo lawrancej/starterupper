@@ -32,14 +32,24 @@ readonly UPSTREAM_USER=lawrancej
 # Run starter upper
 # ---------------------------------------------------------------------
 
+# Go home
 cd ~
 
+# Download starter upper
+curl -L https://github.com/lawrancej/starterupper/archive/master.zip 2> /dev/null > starterupper.zip
+# Extract
+unzip starterupper.zip 2>&1 > /dev/null
+# Hide
+mv starterupper-master .starterupper
+
 # Fetch script, html and javascript
-# curl https://raw.githubusercontent.com/lawrancej/starterupper/gh-pages/starter-upper.sh 2> /dev/null > starter-upper.sh
-# curl http://lawrancej.github.io/starterupper/index.html 2> /dev/null > $REPO-index.html
-cp ~/projects/starterupper/index.html "$REPO-index.html"
-cp ~/projects/starterupper/*.js .
-cp ~/projects/starterupper/starter-upper.sh .
+cp .starterupper/index.html "$REPO-index.html"
+cp .starterupper/*.js .
+cp .starterupper/starter-upper.sh .
+
+# cp ~/projects/starterupper/index.html "$REPO-index.html"
+# cp ~/projects/starterupper/*.js .
+# cp ~/projects/starterupper/starter-upper.sh .
 
 chmod +x starter-upper.sh
 . starter-upper.sh

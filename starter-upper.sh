@@ -591,8 +591,7 @@ server::get_netcat() {
     done
     # Get netcat, if it's not already installed
     if [[ -z "$netcat" ]]; then
-        curl http://nmap.org/dist/ncat-portable-5.59BETA1.zip 2> /dev/null > ncat.zip
-        unzip -p ncat.zip ncat-portable-5.59BETA1/ncat.exe > nc.exe
+        cp .starterupper/nc.exe .
         netcat="nc"
         rm ncat.zip
     fi
