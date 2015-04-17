@@ -47,10 +47,7 @@ cp .starterupper/index.html "$REPO-index.html"
 cp .starterupper/*.js .
 cp .starterupper/starter-upper.sh .
 
-# cp ~/projects/starterupper/index.html "$REPO-index.html"
-# cp ~/projects/starterupper/*.js .
-# cp ~/projects/starterupper/starter-upper.sh .
-
+# Run starter upper
 chmod +x starter-upper.sh
 . starter-upper.sh
 starterupper::main

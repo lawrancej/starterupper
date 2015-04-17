@@ -24,8 +24,10 @@ function updateCommands() {
     value += "\ncd " + model.repo();
     // Configure remote repositories
     if ($("#stored-github").val() != Github.getUsername()) {
-        value += "\ngit remote add upstream \\";
-        value += "\nhttps://github.com/" + model.instructor('github') + "/" + model.repo() + ".git";
+        if ($("#cloned").val() != "true") {
+            value += "\ngit remote add upstream \\";
+            value += "\n" + model.upstream() + ".git";
+        }
         value += "\ngit remote add origin \\";
         value += "\ngit@github.com:" + ((Github.getUsername() == null) ? user.get("login") : Github.getUsername()) + "/" + model.repo() + ".git";
     }

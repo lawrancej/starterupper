@@ -31,7 +31,9 @@ if ( !Date.prototype.toISOString ) {
 // Repository and instructor names
 var model = {
     // Name of the repository
-    repo: function()       { return $("#repository").val(); },
+    repo: function()           { return $("#repository").val(); },
+    // Upstream url
+    upstream: function()       { return "https://" + $('#upstream-host').val() + "/" + $('#upstream-user').val() + "/" + model.repo(); },
     // Who's the instructor?
     instructor: function(host) { return $("#instructor-" + host).val(); },
 };  
