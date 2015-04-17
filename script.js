@@ -102,10 +102,12 @@ var Bitbucket = {
     getUsername: function() { return $('#bitbucket-login').val(); },
     repoURL: function() { return "https://bitbucket.org/" + Bitbucket.getUsername() + "/" + model.repo(); },
     existingUser: function() { return Bitbucket.getUsername() != ""; },
+    getHostname: function() { return "bitbucket.org"; }
 }
 
 // Github wrapper
 var Github = {
+    getHostname: function() { return "github.com"; },
 
     // Innocent until proven guilty properties
     badCredentials: false,
@@ -475,6 +477,7 @@ var Gitlab = {
     authenticated: function () {
         return localStorage.hasOwnProperty("Gitlab.token") && localStorage.hasOwnProperty("Gitlab.username");
     },
+    getHostname: function() { return "gitlab.com"; },
     
     getAuthorization: function () {
         return localStorage.getItem("Gitlab.token");

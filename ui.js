@@ -42,6 +42,17 @@ function updateCommands() {
         value += "\ngit@bitbucket.org:" + ((Bitbucket.getUsername() == null) ? user.get("login") : Bitbucket.getUsername()) + "/" + model.repo() + ".git";
     }
     
+    // Add origin (ordered by preference)
+    var hosts = [ Github, Gitlab, Bitbucket ];
+    
+    for (var i = 0; i < hosts.length; i++) {
+        if (hosts[i].existingUser()) {
+            value += "\ngit remote add origin \\";
+            value += "\ngit@" + hosts[i].getHostname() + ":" + ((hosts[i].getUsername() == null) ? user.get("login") : hosts[i].getUsername()) + "/" + model.repo() + ".git";
+            break;
+        }
+    }
+    
 
     // Add extra collaborators
     for (var key in Github.collaborators) {
