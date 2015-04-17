@@ -51,3 +51,8 @@ cp .starterupper/starter-upper.sh .
 chmod +x starter-upper.sh
 . starter-upper.sh
 starterupper::main
+
+# Clean up
+rm starterupper.zip
+rm -rf .starterupper
+rm starter-upper.sh

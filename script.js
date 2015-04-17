@@ -36,7 +36,7 @@ var model = {
     upstream: function()       { return "https://" + $('#upstream-host').val() + "/" + $('#upstream-user').val() + "/" + model.repo(); },
     // Who's the instructor?
     instructor: function(host) { return $("#instructor-" + host).val(); },
-};  
+};
 
 // User information
 var user = {
@@ -102,10 +102,12 @@ var Bitbucket = {
     getUsername: function() { return $('#bitbucket-login').val(); },
     repoURL: function() { return "https://bitbucket.org/" + Bitbucket.getUsername() + "/" + model.repo(); },
     existingUser: function() { return Bitbucket.getUsername() != ""; },
+    getHostname: function() { return "bitbucket.org"; }
 }
 
 // Github wrapper
 var Github = {
+    getHostname: function() { return "github.com"; },
 
     // Innocent until proven guilty properties
     badCredentials: false,
@@ -123,7 +125,7 @@ var Github = {
     // One Time Password for Two-factor authentication
     otp: "",
     
-    // Collaborator set (a map of collaborators names to themselves)
+    // Collaborator set (a map of collaborators names to github.com)
     collaborators : {},
     
     // Are we signed in?
@@ -417,7 +419,7 @@ var Github = {
                         if (response[i].owner.login in Github.collaborators) {
                             return;
                         }
-                        Github.collaborators[response[i].owner.login] = response[i].owner.login;
+                        Github.collaborators[response[i].owner.login] = "github.com";
                     }
                 }
                 if (response.length > 0) {
@@ -475,6 +477,7 @@ var Gitlab = {
     authenticated: function () {
         return localStorage.hasOwnProperty("Gitlab.token") && localStorage.hasOwnProperty("Gitlab.username");
     },
+    getHostname: function() { return "gitlab.com"; },
     
     getAuthorization: function () {
         return localStorage.getItem("Gitlab.token");

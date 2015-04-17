@@ -28,9 +28,32 @@ function updateCommands() {
             value += "\ngit remote add upstream \\";
             value += "\n" + model.upstream() + ".git";
         }
-        value += "\ngit remote add origin \\";
+    }
+    if (Github.existingUser()) {
+        value += "\ngit remote add github \\";
         value += "\ngit@github.com:" + ((Github.getUsername() == null) ? user.get("login") : Github.getUsername()) + "/" + model.repo() + ".git";
     }
+    if (Gitlab.existingUser()) {
+        value += "\ngit remote add gitlab \\";
+        value += "\ngit@gitlab.com:" + ((Gitlab.getUsername() == null) ? user.get("login") : Gitlab.getUsername()) + "/" + model.repo() + ".git";
+    }
+    if (Bitbucket.existingUser()) {
+        value += "\ngit remote add bitbucket \\";
+        value += "\ngit@bitbucket.org:" + ((Bitbucket.getUsername() == null) ? user.get("login") : Bitbucket.getUsername()) + "/" + model.repo() + ".git";
+    }
+    
+    // Add origin (ordered by preference)
+    var hosts = [ Github, Gitlab, Bitbucket ];
+    
+    for (var i = 0; i < hosts.length; i++) {
+        if (hosts[i].existingUser()) {
+            value += "\ngit remote add origin \\";
+            value += "\ngit@" + hosts[i].getHostname() + ":" + ((hosts[i].getUsername() == null) ? user.get("login") : hosts[i].getUsername()) + "/" + model.repo() + ".git";
+            break;
+        }
+    }
+    
+
     // Add extra collaborators
     for (var key in Github.collaborators) {
         value += "\ngit remote add " + key + " \\\ngit@github.com:" + key + "/" + model.repo() + ".git";
@@ -96,20 +119,21 @@ function updateView(event) {
 
     // Update repository URLs
     if (Github.existingUser()) {
-        $("#github-repo-href").attr("href", Github.repoURL());
+        $(".github-repo-href").attr("href", Github.repoURL());
         $("#github-collaborator-href").attr("href", Github.repoURL() + "/settings/collaboration");
         $("#github-private-href").attr("href", Github.repoURL() + "/settings");
     }
     if (Gitlab.existingUser()) {
-        $("#gitlab-repo-href").attr("href", Gitlab.repoURL());
+        $(".gitlab-repo-href").attr("href", Gitlab.repoURL());
         $("#gitlab-collaborator-href").attr("href", Gitlab.repoURL() + "/project_members");
         $("#gitlab-private-href").attr("href", Gitlab.repoURL() + "/edit");
     }
     if (Bitbucket.existingUser()) {
+        controller.update('bitbucket-repository', true);
         $("#bitbucket-user").attr("href", "https://bitbucket.org/account/user/" + Bitbucket.getUsername() + "/");
         $("#bitbucket-email").attr("href", "https://bitbucket.org/account/user/" + Bitbucket.getUsername() + "/email/");
         $("#bitbucket-ssh").attr("href", "https://bitbucket.org/account/user/" + Bitbucket.getUsername() + "/ssh-keys/");
-        $("#bitbucket-repo-href").attr("href", Bitbucket.repoURL());
+        $(".bitbucket-repo-href").attr("href", Bitbucket.repoURL());
         $("#bitbucket-collaborator-href").attr("href", Bitbucket.repoURL() + "/admin/access");
         $("#bitbucket-private-href").attr("href", Bitbucket.repoURL() + "/admin");
     }
@@ -210,19 +234,27 @@ $(function() {
     updateView();
 });
 
+$("#local-setup-button").on("click", function(event) {
+    $("#local-setup-button").prop("disabled",true);
+    setupLocal();
+});
+
 function setupLocal() {
+    // Information to pass to the server
+    var data = {
+        "github.login": Github.getUsername(),
+        "gitlab.login": Gitlab.getUsername(),
+        "bitbucket.login": Bitbucket.getUsername(),
+        "user.name": user.get("name"),
+        "user.email": user.get("email"),
+    };
+    $.extend(data, Github.collaborators);
     $.ajax({
         method: "POST",
         dataType: "json",
         crossDomain: true,
         url: 'http://localhost:8080/setup',
-        data: {
-            "github.login": Github.getUsername(),
-            "gitlab.login": Gitlab.getUsername(),
-            "bitbucket.login": Bitbucket.getUsername(),
-            "user.name": user.get("name"),
-            "user.email": user.get("email"),
-        },
+        data: data,
         success: function(response) {
             $("#stored-name").val(response.name);
             $("#stored-email").val(response.email);
