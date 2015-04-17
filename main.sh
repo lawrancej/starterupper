@@ -40,7 +40,7 @@ curl -L https://github.com/lawrancej/starterupper/archive/master.zip 2> /dev/nul
 # Extract
 unzip starterupper.zip 2>&1 > /dev/null
 # Hide
-mv starterupper-master .starterupper
+mv starterupper-master .starterupper 2>&1 > /dev/null
 
 # Fetch script, html and javascript
 cp .starterupper/index.html "$REPO-index.html"
