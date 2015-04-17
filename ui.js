@@ -210,19 +210,27 @@ $(function() {
     updateView();
 });
 
+$("#local-setup-button").on("click", function(event) {
+    $("#local-setup-button").prop("disabled",true);
+    setupLocal();
+});
+
 function setupLocal() {
+    // Information to pass to the server
+    var data = {
+        "github.login": Github.getUsername(),
+        "gitlab.login": Gitlab.getUsername(),
+        "bitbucket.login": Bitbucket.getUsername(),
+        "user.name": user.get("name"),
+        "user.email": user.get("email"),
+    };
+    $.extend(data, Github.collaborators);
     $.ajax({
         method: "POST",
         dataType: "json",
         crossDomain: true,
         url: 'http://localhost:8080/setup',
-        data: {
-            "github.login": Github.getUsername(),
-            "gitlab.login": Gitlab.getUsername(),
-            "bitbucket.login": Bitbucket.getUsername(),
-            "user.name": user.get("name"),
-            "user.email": user.get("email"),
-        },
+        data: data,
         success: function(response) {
             $("#stored-name").val(response.name);
             $("#stored-email").val(response.email);

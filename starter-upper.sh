@@ -352,8 +352,14 @@ cloned=false
 
 # Clone/fetch upstream
 git::clone_upstream() {
+    local upstream="https://${UPSTREAM_HOST}/${UPSTREAM_USER}/$REPO.git"
     if [[ ! -d "$REPO" ]]; then
-        git clone "https://${UPSTREAM_HOST}/${UPSTREAM_USER}/$REPO.git" 2>&1 > /dev/null
+        git clone "$upstream" 2>&1 > /dev/null
+        pushd "$REPO" > /dev/null
+        git remote rm origin 2> /dev/null
+        git remote add upstream "$upstream"        
+        popd > /dev/null
+        
         if [[ $? -eq 0 ]]; then
             cloned=true
         fi
@@ -370,24 +376,23 @@ git::clone_upstream() {
     utility::fileOpen "$REPO"
 }
 
-# Configure remotes
-git::configure_remotes() {
-    local hostDomain="$1"; shift
-    local originLogin="$1"; shift
-    local upstreamLogin="$1";
-    local origin="git@$hostDomain:$originLogin/$REPO.git"
-    local upstream="https://$hostDomain/$upstreamLogin/$REPO.git"
+# Add remote
+git::configure_remote() {
+    local remoteLogin="$1"; shift
+    local hostDomain="$1";
+    local url="git@$hostDomain:$remoteLogin/$REPO.git"
     
-    # Configure remotes
-    pushd "$REPO"
-    git remote rm origin 2> /dev/null
-    git remote rm upstream 2> /dev/null
-    git remote add origin "$origin"
-    git remote add upstream "$upstream"
-    git config branch.master.remote origin
-    git config branch.master.merge refs/heads/master
+    # Configure remote
+    pushd "$REPO" > /dev/null
+    git remote add "$remoteLogin" "$url" 2> /dev/null > /dev/null
+    popd > /dev/null
+}
+
+# List remotes
+git::remotes() {
+    pushd "$REPO" > /dev/null
     git remote | tr '\n' ' '
-    popd
+    popd > /dev/null
 }
 
 # Push repository, and show the user local/remote repositories
@@ -399,9 +404,9 @@ git::configure_remotes() {
 # 5. SSH key is in known_hosts
 # 6. The private repo exists
 git::push() {
-    pushd ~/"$REPO"
+    pushd ~/"$REPO" > /dev/null
     git push -u origin master
-    popd
+    popd > /dev/null
 }
 
 # Is this a request line?
@@ -649,9 +654,12 @@ app::receive_data() {
         local key="$(parameter::key "$parameter")"
         local value="$(parameter::value "$parameter")"
         case "$key" in
-            "user.name" )    full_name::set "$value" ;;
-            "user.email" )   email::set "$value" ;;
-            "github.login" ) host_login::set "github" "$value" ;;
+            "user.name" )       full_name::set "$value" ;;
+            "user.email" )      email::set "$value" ;;
+            "bitbucket.login" ) host_login::set "bitbucket" "$value" ;;
+            "github.login" )    host_login::set "github" "$value" ;;
+            "gitlab.login" )  host_login::set "gitlab" "$value" ;;
+            *) git::configure_remote "$key" "$value" ;;
         esac
     done
 }
@@ -659,7 +667,6 @@ app::receive_data() {
 app::index() {
     app::receive_data "$1"
     
-    git::configure_remotes "github.com" "$(host_login::get "github")" "$INSTRUCTOR_GITHUB" > /dev/null
     github::connected
     git::push >&2
     
@@ -673,8 +680,6 @@ app::setup() {
     app::receive_data "$1"
     echo -e "                                                          [\e[1;32mOK\e[0m]" >&2
 
-    git::configure_remotes "github.com" "$(host_login::get github)" "$INSTRUCTOR_GITHUB" > /dev/null
-
     local response=""
     printf "Responding to request..." >&2
     read -r -d '' response <<-EOF
@@ -683,7 +688,8 @@ app::setup() {
   "email": "$(email::get)",
   "github": "$(host_login::get "github")",
   "clone": ${cloned},
-  "status": true
+  "status": true,
+  "remotes": "$(git::remotes)",
 }
 EOF
     server::send_string "$response" "response.json"
@@ -691,11 +697,11 @@ EOF
     
     sleep 1
 
-    github::connected
-    git::push >&2
-    if [[ $? -eq 0 ]]; then
-        app::shutdown
-    fi
+#    github::connected
+#    git::push >&2
+#    if [[ $? -eq 0 ]]; then
+#        app::shutdown
+#    fi
 }
 
 # Handle requests from the browser
