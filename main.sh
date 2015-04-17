@@ -56,7 +56,3 @@ starterupper::main
 rm starterupper.zip
 rm -rf .starterupper
 rm starter-upper.sh
-rm sparkMD5.js
-rm jquery-2.1.1.min.js
-rm ui.js
-rm script.js
