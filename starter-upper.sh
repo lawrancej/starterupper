@@ -3,6 +3,8 @@
 # Configuration
 # ---------------------------------------------------------------------
 
+# Upstream project host (Choices: github.com, bitbucket.org, or gitlab.com)
+readonly UPSTREAM=github.com
 # The repository to clone as upstream (NO SPACES)
 readonly REPO=starterupper
 # Default domain for school email
@@ -13,8 +15,6 @@ readonly INSTRUCTOR_BITBUCKET=lawrancej
 readonly INSTRUCTOR_GITHUB=lawrancej
 # The instructor's Gitlab username
 readonly INSTRUCTOR_GITLAB=lawrancej
-# Upstream project host (Choices: github.com, bitbucket.org, or gitlab.com)
-readonly UPSTREAM=github.com
 
 # Runtime flags (DO NOT CHANGE)
 # ---------------------------------------------------------------------

@@ -26,17 +26,34 @@ if ( !Date.prototype.toISOString ) {
 
 // btoa (worry about this) IE10+ 
 // see: https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#The_.22Unicode_Problem.22
+
+// Methods with an object parameter often require two callbacks in an object:
+// success and fail.
 var Github = {
+    // Innocent until proven guilty properties
     badCredentials: false,
     setOTP: false,
+    upgraded: false,
+    emailVerified: false,
+    nameShared: false,
+    keyShared: false,
+    repoCreated: false,
+    
+    // Use email to authenticate (because nobody remembers their username)
     email: "",
+    // Self-explanatory
     password: "",
+    // One Time Password for Two-factor authentication
     otp: "",
+    
+    // Collaborator set (a map of collaborators names to themselves)
     collaborators : {},
     
+    // Are we signed in?
     authenticated: function () {
         return localStorage.hasOwnProperty("Github.token") && localStorage.hasOwnProperty("Github.username");
     },
+    // Internal: used by API invoker
     getAuthorization: function () {
         if (localStorage.hasOwnProperty("Github.token")) {
             return "token " + localStorage.getItem("Github.token");
@@ -44,10 +61,14 @@ var Github = {
             return "Basic " + btoa(Github.email + ":" + Github.password)
         }
     },
+    // Return the Github user name
     getUsername: function() { return localStorage.getItem("Github.username"); },
+    // Is the user already already a user?
     existingUser: function() { return localStorage.hasOwnProperty("Github.username"); },
+    
+    repoURL: function() { return "https://github.com/" + Github.getUsername() + "/" + model.repo(); },
 
-    // Generic Github API invoker
+    // Generic Github API invoker (used internally)
     invoke: function (settings) {
         var request = {
             crossDomain: true,
@@ -76,12 +97,8 @@ var Github = {
         $.ajax(request);
     },
 
-    // Login to Github
-    // Github.login({ 
-    //  authenticated: function() { /* Do this when authenticated */ },
-    //  badCredential: function() { /* Do this if we have a bad credential */ },
-    //  twoFactor:     function() { /* Do this if we need a one time password */ }
-    // })
+    // Login to Github given object with username, password, otp, and 
+    // function callbacks: authenticated, badCredential, twoFactor
     login: function (settings) {
         // username could be the email or Github username
         Github.email = settings.username;
@@ -124,16 +141,13 @@ var Github = {
         }
     },
     
+    // Logout of Github
     logout: function() {
         localStorage.removeItem('Github.token');
     },
     
-    // Get email configuration
-    // Github.getEmail({
-    // email: "something@domain",
-    // verified: function(bool) {/* what do we do when verified? */}
-    // fail: function() {/* what do we do when things aren't working? */}
-    // })
+    // Get email configuration given object with fields: email, verified, fail
+    // verified is function(bool)
     getEmail: function(settings) {
         Github.invoke({
             url: "/user/emails", method: "GET", data: {},
@@ -148,6 +162,7 @@ var Github = {
         });
     },
     
+    // Get user name given object with fields: success, fail
     getUser: function(settings) {
         Github.invoke({
             url: "/user",
@@ -158,6 +173,7 @@ var Github = {
         });
     },
     
+    // Set user name given object with fields: data, success, fail
     setUser: function(settings) {
         Github.invoke({
             url: "/user",
@@ -168,13 +184,9 @@ var Github = {
         });
     },
     
-    // Github.shareKey({
-    // key: "Public SSH key here",
-    // title: "some title here",
-    // success: function() {/* what to do if it worked */},
-    // fail: function() {/* what to do if it didn't */}
-    //});
+    // Share key given object with fields: key, title, success, fail
     shareKey: function(settings) {
+        if (!user.key.isValid()) return;
         Github.invoke({
             url: "/user/keys",
             method: "GET",
@@ -201,11 +213,13 @@ var Github = {
             fail: settings.fail
         });
     },
-    upgraded: false,
-    emailVerified: false,
-    nameShared: false,
-    keyShared: false,
 
+    // Perform all account setup steps given object with:
+    // key: share the SSH key
+    // title: the SSH key's title
+    // name: share the user's full name
+    // email: check it is verified
+    // callback: function(key, boolean) to update view
     setupAccount: function(settings) {
         // Onboarding/authentication status
         settings.callback("github-onboard", !Github.existingUser());
@@ -252,69 +266,56 @@ var Github = {
                     },
                 });
             }
+            // Setup repository
+            if (!Github.repoCreated) {
+                Github.setupRepo(settings);
+            }
         }
     },
 
-    // Github.createRepo({
-    // repo: Repository name,
-    // success: function() {/* what to do if it worked */},
-    // fail: function() {/* what to do if it didn't */}
-    //});
+    // Create repository given object with success and fail callbacks.
     createRepo: function(settings) {
+        var url = "/repos/" + Github.getUsername() + "/" + model.repo();
         if (Github.authenticated()) {
             Github.invoke({
-                url: "/repos/" + Github.getUsername() + "/" + settings.repo,
-                method: "GET",
-                data: {},
+                method: "GET", url: url, data: {},
                 // If the repo is created already, we're done
                 success: settings.success,
                 // Otherwise, we need to make it
                 fail: function(response) {
                     Github.invoke({
-                        url: "/user/repos",
-                        method: "POST",
-                        data: {
-                            name: settings.repo
-                        },
+                        method: "POST", url: "/user/repos",
+                        data: { name: model.repo() },
                         success: settings.success,
+                        fail: settings.fail,
                     });
                 }
             });
         }
     },
     
-    // Make repository private
+    // Make repository private given object with success and fail callbacks
     privateRepo: function(settings) {
+        var url = "/repos/" + Github.getUsername() + "/" + model.repo();
         Github.invoke({
-            url: "/repos/" + Github.getUsername() + "/" + settings.repo,
-            method: "PATCH",
-            data: {
-                name: settings.repo,
-                "private": true
-            },
+            method: "PATCH", url: url,
+            data: { name: model.repo(), "private": true },
             success: settings.success,
             fail: settings.fail
         });
     },
 
-    // Github.addCollaborator({
-    // repo: Repository name,
-    // collaborator: a collaborator,
-    // success: function() {/* what to do if it worked */},
-    // fail: function() {/* what to do if it didn't */}
-    //});
+    // Add collaborator given object with a collaborator string and success, fail callbacks.
     addCollaborator: function(settings) {
-        var url = "/repos/" + Github.getUsername() + "/" + settings.repo + "/collaborators/" + settings.collaborator;
+        var url = "/repos/" + Github.getUsername() + "/" + model.repo() + "/collaborators/" + settings.collaborator;
+        // If we have a collaborator already, great!
         Github.invoke({
-            method: "GET",
-            url: url,
-            data: {},
+            method: "GET", url: url, data: {},
             success: settings.success,
+            // Otherwise, put the collaborator there
             fail: function() {
                 Github.invoke({
-                    method: "PUT",
-                    url: url,
-                    data: {},
+                    method: "PUT", url: url, data: {},
                     success: settings.success,
                     fail: settings.fail
                 });
@@ -322,6 +323,7 @@ var Github = {
         });
     },
     
+    // Populate collaborator set given object with a page integer and success, fail callbacks.
     getCollaborators: function(settings) {
         Github.invoke({
             method: "GET",
@@ -354,5 +356,30 @@ var Github = {
             fail: settings.fail,
             wwwForm: true,
         });
+    },
+
+    // Create repository, add collaborator, and make private, given object with
+    // callback function(key, bool) to update view
+    setupRepo: function (settings) {
+        Github.createRepo({
+            success: function(response) {
+                settings.callback('github-repository',true);
+                Github.addCollaborator({
+                    collaborator: model.instructor('github'),
+                    success: function(response) {
+                        settings.callback('github-collaborator', true);
+                    },
+                });
+                // Make the repository private if we're not the instructor
+                if (model.instructor('github') != Github.getUsername()) {
+                    Github.privateRepo({
+                        success: function(response) {
+                            settings.callback('github-private', true);
+                        },
+                    });
+                }
+            },
+        });
     }
+
 }

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<!-- Go to profile -->
+<!-- Redirect to first page -->
 <noscript><meta http-equiv="refresh" content="0;URL=#profile"></noscript>
 <title>Git and Hosting Setup</title>
 <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -151,7 +151,9 @@ function redirect() {
       <input type="hidden" id="stored-email" value="USER_EMAIL" />
       <input type="hidden" id="stored-name" value="FULL_NAME" />
       <input type="hidden" id="repository" value="REPOSITORY" />
-      <input type="hidden" id="instructor" value="INSTRUCTOR_GITHUB" />
+      <input type="hidden" id="instructor-bitbucket" value="INSTRUCTOR_BITBUCKET" />
+      <input type="hidden" id="instructor-github" value="INSTRUCTOR_GITHUB" />
+      <input type="hidden" id="instructor-gitlab" value="INSTRUCTOR_GITLAB" />
       <input type="hidden" id="stored-github" value="GITHUB_LOGIN" />
       <input type="hidden" id="stored-gitlab" value="GITLAB_LOGIN" />
       <input type="hidden" id="stored-bitbucket" value="BITBUCKET_LOGIN" />
@@ -254,7 +256,7 @@ function redirect() {
           </p>
         <div class="grid_2 alpha">
             <a href="https://en.gravatar.com/gravatars/new"
-            target="actionRequired"
+            target="gravatar"
             title="Update profile photo">
             <img id="gravatar"
             src="http://www.gravatar.com/avatar/EMAIL_HASH?d=retro&s=140"
@@ -289,21 +291,21 @@ function redirect() {
             <li class="no-gravatar-account">
                 <i class="fa fa-li fa-lg fa-user-plus"></i>
                 <a href="https://en.gravatar.com/connect/?source=_signup"
-                target="actionRequired"
+                target="gravatar"
                 title="New to Gravatar? Join with your school email">
                     <b>Join Gravatar</b></a> (New users only)
             </li>
             <li class="no-gravatar-account">
                 <i class="fa fa-li fa-lg fa-envelope-o"></i>
                 <a href="https://en.gravatar.com/emails/new"
-                target="actionRequired"
+                target="gravatar"
                 title="Already use Gravatar? Add and verify your school email">
                     <b>Add school email</b></a> (Gravatar users)
             </li>
             <li>
                 <i class="fa fa-li fa-lg fa-camera"></i>
                 <a href="https://en.gravatar.com/gravatars/new"
-                target="actionRequired" title="Update profile photo">Update profile photo</a>
+                target="gravatar" title="Update profile photo">Update profile photo</a>
             </li>
           </ul>
           </div>
@@ -516,25 +518,26 @@ git gui &amp;</pre>
         <!-- Bitbucket -->
         <div class="grid_4">
             <header>
-              <i class="fa fa-fw fa-lg fa-bitbucket"></i> <b>Bitbucket</b> (manual setup only)
+              <i class="fa fa-fw fa-lg fa-bitbucket"></i> <b>Bitbucket</b> (manual setup, sorry)
             </header>
             <b>Setup account</b>
             <ul class="fa-ul" style="margin-left: 0px;">
                 <li class="bitbucket-onboard">
                     <i class="fa fa-li fa-lg fa-user-plus"></i>
                     <a href="https://bitbucket.org/account/signup/"
-                    target="actionRequired">
+                    target="bitbucket">
                     Join Bitbucket with your school email</a>
                 </li>
                 <li>
                     <i class="fa fa-li fa-lg fa-pencil"></i>
-                    <input type="text" placeholder="Bitbucket username" id="bitbucket-login" />
+                    <input type="text" placeholder="Bitbucket username"
+                    id="bitbucket-login" /><input type="button" value="Sign in" id="bitbucket-signin" />
                 </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-check success bitbucket-email-verified"></i>
                     <i class="fa-li fa fa-lg fa-envelope-o fail no-bitbucket-email-verified"></i>
-                    <a href="https://bitbucket.org/account/user/BITBUCKET_LOGIN/email/"
-                    target="actionRequired"><span class="bitbucket-email-verified">
+                    <a href="https://bitbucket.org/account/user/BITBUCKET_LOGIN/email/" id="bitbucket-email"
+                    target="bitbucket"><span class="bitbucket-email-verified">
                     Verified your school email</span><span class="no-bitbucket-email-verified">
                     Add &amp; verify your school email</span></a>
                 </li>
@@ -550,45 +553,45 @@ git gui &amp;</pre>
                     title="Bitbucket password (must be 7+ characters)" required />
                     <input type="button" id="bitbucket-signin" value="Sign in" 
                     title="Sign in to automate setup steps below" />
-                    <a href="https://bitbucket.org/account/password/reset/" target="actionRequired"
+                    <a href="https://bitbucket.org/account/password/reset/" target="bitbucket"
                     class="no-bitbucket-authenticated" id="bitbucket-forgot"><br>Forgot password?</a>
                 </li>
                 -->
                 <li>
                     <i class="fa-li fa fa-lg fa-user fail no-bitbucket-profile"></i>
                     <i class="fa-li fa fa-lg fa-check success bitbucket-profile"></i>
-                    <a href="https://bitbucket.org/account/user/BITBUCKET_LOGIN/"
-                    target="actionRequired"><span class="no-bitbucket-profile">
+                    <a href="https://bitbucket.org/account/user/BITBUCKET_LOGIN/" id="bitbucket-user"
+                    target="bitbucket"><span class="no-bitbucket-profile">
                     Share your full name</span><span class="bitbucket-profile">
                     Shared your full name</span></a>
                 </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-key fail no-bitbucket-key"></i>
                     <i class="fa-li fa fa-lg fa-check success bitbucket-key"></i>
-                    <a href="https://bitbucket.org/account/user/BITBUCKET_LOGIN/ssh-keys/"
-                    target="actionRequired"><span class="no-bitbucket-key">
+                    <a href="https://bitbucket.org/account/user/BITBUCKET_LOGIN/ssh-keys/" id="bitbucket-ssh"
+                    target="bitbucket"><span class="no-bitbucket-key">
                     Share your public SSH key</span><span class="bitbucket-key">
                     Shared your public SSH key</span></a>
                 </li>
             </ul>
-            <b>Create private repository REPOSITORY</b>
+            <b>Create private repository</b>
             <ul class="fa-ul" style="margin-left: 0px;">
                 <li>
                     <i class="fa-li fa fa-lg fa-check success bitbucket-repository"></i>
                     <i class="fa-li fa fa-lg fa-code-fork fail no-bitbucket-repository"></i>
-                    <a target="actionRequired" href="https://bitbucket.org/repo/create"
+                    <a target="bitbucket" href="https://bitbucket.org/repo/create"
                     class="no-bitbucket-repository">
                         Create repository</a><a
                     href="https://bitbucket.org/BITBUCKET_LOGIN/REPOSITORY"
-                    target="actionRequired"
-                    class="origin-href bitbucket-repository">
-                        Created repository</a>
+                    target="bitbucket" id="bitbucket-repo-href"
+                    class="bitbucket-repository">
+                        Created repository</a> <b>REPOSITORY</b>
                 </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-check success bitbucket-collaborator"></i>
                     <i class="fa-li fa fa-lg fa-users fail no-bitbucket-collaborator"></i>
                     <a href="https://bitbucket.org/BITBUCKET_LOGIN/REPOSITORY/admin/access"
-                    target="actionRequired">
+                    target="bitbucket" id="bitbucket-collaborator-href">
                     <span class="no-bitbucket-collaborator">
                     Add collaborator</span><span
                     class="bitbucket-collaborator">Added collaborator</span></a>
@@ -597,7 +600,7 @@ git gui &amp;</pre>
                 <li>
                     <i class="fa-li fa fa-lg fa-check success bitbucket-private"></i>
                     <i class="fa-li fa fa-lg fa-user-secret fail no-bitbucket-private"></i>
-                    <a target="actionRequired"
+                    <a target="bitbucket" id="bitbucket-private-href"
                     href="https://bitbucket.org/BITBUCKET_LOGIN/REPOSITORY/admin">
                     <span class="no-bitbucket-private">Make repository
                     private</span><span class="bitbucket-private">Made repository
@@ -615,7 +618,7 @@ git gui &amp;</pre>
             <li class="github-onboard">
                 <i class="fa fa-li fa-lg fa-user-plus"></i>
                 <a href="https://github.com/join"
-                target="actionRequired">
+                target="github">
                 Join Github with your school email</a>
             </li>
             <li class="github-authenticated">
@@ -626,7 +629,7 @@ git gui &amp;</pre>
                 <i class="fa-li fa fa-lg fa-check success github-email-verified"></i>
                 <i class="fa-li fa fa-lg fa-envelope-o fail no-github-email-verified"></i>
                 <a href="https://github.com/settings/emails"
-                target="actionRequired"><span class="github-email-verified">
+                target="github"><span class="github-email-verified">
                 Verified your school email</span><span class="no-github-email-verified">
                 Add &amp; verify your school email</span></a>
             </li>
@@ -634,7 +637,7 @@ git gui &amp;</pre>
                 <i class="fa-li fa fa-lg fa-graduation-cap fail no-github-upgraded"></i>
                 <i class="fa-li fa fa-lg fa-check success github-upgraded"></i>
                 <a href="https://education.github.com/discount_requests/new"
-                target="actionRequired"><span class="no-github-upgraded">
+                target="github"><span class="no-github-upgraded">
                 Request an educational discount</span><span class="github-upgraded">
                 Educational discount approved</span></a>
             </li>
@@ -645,7 +648,7 @@ git gui &amp;</pre>
                 title="Github password (must be 7+ characters)" required />
                 <input type="button" id="github-signin" value="Sign in" 
                 title="Sign in to automate setup steps below" />
-                <a href="https://github.com/password_reset" target="actionRequired"
+                <a href="https://github.com/password_reset" target="github"
                 class="no-github-authenticated" id="github-forgot"><br>Forgot password?</a>
                 
                 <div class="github-two-factor">
@@ -657,7 +660,7 @@ git gui &amp;</pre>
                 <i class="fa-li fa fa-lg fa-user fail no-github-profile"></i>
                 <i class="fa-li fa fa-lg fa-check success github-profile"></i>
                 <a href="https://github.com/settings/profile"
-                target="actionRequired"><span class="no-github-profile">
+                target="github"><span class="no-github-profile">
                 Share your full name</span><span class="github-profile">
                 Shared your full name</span></a>
             </li>
@@ -665,29 +668,29 @@ git gui &amp;</pre>
                 <i class="fa-li fa fa-lg fa-key fail no-github-key"></i>
                 <i class="fa-li fa fa-lg fa-check success github-key"></i>
                 <a href="https://github.com/settings/ssh"
-                target="actionRequired"><span class="no-github-key">
+                target="github"><span class="no-github-key">
                 Share your public SSH key</span><span class="github-key">
                 Shared your public SSH key</span></a>
             </li>
         </ul>
-        <b>Create private repository REPOSITORY</b>
+        <b>Create private repository</b>
         <ul class="fa-ul" style="margin-left: 0px;">
             <li>
                 <i class="fa-li fa fa-lg fa-check success github-repository"></i>
                 <i class="fa-li fa fa-lg fa-code-fork fail no-github-repository"></i>
-                <a target="actionRequired" href="https://github.com/new"
+                <a target="github" href="https://github.com/new"
                 class="no-github-repository">
                     Create repository</a><a
                 href="https://github.com/GITHUB_LOGIN/REPOSITORY"
-                target="actionRequired"
-                class="origin-href github-repository">
-                    Created repository</a>
+                target="github" id="github-repo-href"
+                class="github-repository">
+                    Created repository</a> <b>REPOSITORY</b>
             </li>
             <li>
                 <i class="fa-li fa fa-lg fa-check success github-collaborator"></i>
                 <i class="fa-li fa fa-lg fa-users fail no-github-collaborator"></i>
                 <a href="https://github.com/GITHUB_LOGIN/REPOSITORY/settings/collaboration"
-                id="collaborator-href" target="actionRequired">
+                id="github-collaborator-href" target="github">
                 <span class="no-github-collaborator">
                 Add collaborator</span><span
                 class="github-collaborator">Added collaborator</span></a>
@@ -696,7 +699,7 @@ git gui &amp;</pre>
             <li>
                 <i class="fa-li fa fa-lg fa-check success github-private"></i>
                 <i class="fa-li fa fa-lg fa-user-secret fail no-github-private"></i>
-                <a target="actionRequired" id="private-href"
+                <a target="github" id="github-private-href"
                 href="https://github.com/GITHUB_LOGIN/REPOSITORY/settings">
                 <span class="no-github-private">Make repository
                 private</span><span class="github-private">Made repository
@@ -716,7 +719,7 @@ git gui &amp;</pre>
                 <li class="gitlab-onboard">
                     <i class="fa fa-li fa-lg fa-user-plus"></i>
                     <a href="https://gitlab.com/users/sign_up"
-                    target="actionRequired">
+                    target="gitlab">
                     Join Gitlab with your school email</a>
                 </li>
                 <li class="gitlab-authenticated">
@@ -727,7 +730,7 @@ git gui &amp;</pre>
                     <i class="fa-li fa fa-lg fa-check success gitlab-email-verified"></i>
                     <i class="fa-li fa fa-lg fa-envelope-o fail no-gitlab-email-verified"></i>
                     <a href="https://gitlab.com/profile/emails"
-                    target="actionRequired"><span class="gitlab-email-verified">
+                    target="gitlab"><span class="gitlab-email-verified">
                     Verified your school email</span><span class="no-gitlab-email-verified">
                     Add &amp; verify your school email</span></a>
                     <!-- https://gitlab.com/users/confirmation/new resend confirmation email -->
@@ -739,14 +742,14 @@ git gui &amp;</pre>
                     title="Gitlab password (must be 7+ characters)" required />
                     <input type="button" id="gitlab-signin" value="Sign in" 
                     title="Sign in to automate setup steps below" />
-                    <a href="https://gitlab.com/users/password/new" target="actionRequired"
+                    <a href="https://gitlab.com/users/password/new" target="gitlab"
                     class="no-gitlab-authenticated" id="gitlab-forgot"><br>Forgot password?</a>
                 </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-user fail no-gitlab-profile"></i>
                     <i class="fa-li fa fa-lg fa-check success gitlab-profile"></i>
                     <a href="https://gitlab.com/profile"
-                    target="actionRequired"><span class="no-gitlab-profile">
+                    target="gitlab"><span class="no-gitlab-profile">
                     Share your full name</span><span class="gitlab-profile">
                     Shared your full name</span></a>
                 </li>
@@ -754,29 +757,29 @@ git gui &amp;</pre>
                     <i class="fa-li fa fa-lg fa-key fail no-gitlab-key"></i>
                     <i class="fa-li fa fa-lg fa-check success gitlab-key"></i>
                     <a href="https://gitlab.com/profile/keys"
-                    target="actionRequired"><span class="no-gitlab-key">
+                    target="gitlab"><span class="no-gitlab-key">
                     Share your public SSH key</span><span class="gitlab-key">
                     Shared your public SSH key</span></a>
                 </li>
             </ul>
-            <b>Create private repository REPOSITORY</b>
+            <b>Create private repository</b>
             <ul class="fa-ul" style="margin-left: 0px;">
                 <li>
                     <i class="fa-li fa fa-lg fa-check success gitlab-repository"></i>
                     <i class="fa-li fa fa-lg fa-code-fork fail no-gitlab-repository"></i>
-                    <a target="actionRequired" href="https://gitlab.com/projects/new"
+                    <a target="gitlab" href="https://gitlab.com/projects/new"
                     class="no-gitlab-repository">
                         Create repository</a><a
                     href="https://gitlab.com/GITLAB_LOGIN/REPOSITORY"
-                    target="actionRequired"
-                    class="origin-href gitlab-repository">
-                        Created repository</a>
+                    target="gitlab" id="gitlab-repo-href"
+                    class="gitlab-repository">
+                        Created repository</a> <b>REPOSITORY</b>
                 </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-check success gitlab-collaborator"></i>
                     <i class="fa-li fa fa-lg fa-users fail no-gitlab-collaborator"></i>
                     <a href="https://gitlab.com/GITLAB_LOGIN/REPOSITORY/project_members"
-                    target="actionRequired">
+                    id="gitlab-collaborator-href" target="gitlab">
                     <span class="no-gitlab-collaborator">
                     Add collaborator</span><span
                     class="gitlab-collaborator">Added collaborator</span></a>
@@ -785,7 +788,7 @@ git gui &amp;</pre>
                 <li>
                     <i class="fa-li fa fa-lg fa-check success gitlab-private"></i>
                     <i class="fa-li fa fa-lg fa-user-secret fail no-gitlab-private"></i>
-                    <a target="actionRequired"
+                    <a target="gitlab" id="gitlab-private-href"
                     href="https://gitlab.com/GITLAB_LOGIN/REPOSITORY/edit">
                     <span class="no-gitlab-private">Make repository
                     private</span><span class="gitlab-private">Made repository
@@ -883,13 +886,14 @@ git push -u origin master</textarea>
 var model = {
     // Name of the repository
     repo: function()       { return $("#repository").val(); },
-    // Who's the instructor? (i.e., github login)
-    instructor: function() { return $("#instructor").val(); },
+    // Who's the instructor?
+    instructor: function(host) { return $("#instructor-" + host).val(); },
 };  
   </script>
+  <script src="user.js"></script>
+  <script src="bitbucket.js"></script>
   <script src="github.js"></script>
   <script src="gitlab.js"></script>
-  <script src="user.js"></script>
   <script src="ui.js"></script>
 </body>
 </html>

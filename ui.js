@@ -1,5 +1,6 @@
 
 
+// Show commands in textarea
 function updateCommands() {
     var value = "";
     // Configure git
@@ -24,7 +25,7 @@ function updateCommands() {
     // Configure remote repositories
     if ($("#stored-github").val() != Github.getUsername()) {
         value += "\ngit remote add upstream \\";
-        value += "\nhttps://github.com/" + model.instructor() + "/" + model.repo() + ".git";
+        value += "\nhttps://github.com/" + model.instructor('github') + "/" + model.repo() + ".git";
         value += "\ngit remote add origin \\";
         value += "\ngit@github.com:" + ((Github.getUsername() == null) ? user.get("login") : Github.getUsername()) + "/" + model.repo() + ".git";
     }
@@ -43,6 +44,7 @@ function updateCommands() {
     $("#command-line").val(value);
 }
 
+// Validate profile, outlining broken fields in red
 function validateUser() {
     var fields = [ user.name, user.email, user.key, user.gravatar ];
     var id = [ "#name", "#email", "#public-key", "#gravatar" ];
@@ -60,6 +62,7 @@ function validateUser() {
     return allValid;
 }
 
+// Setup all accounts
 function setupAccounts() {
     var hosts = [ Github, Gitlab ];
     var settings = {
@@ -87,13 +90,26 @@ function updateView(event) {
     // Don't allow sign-in unless their email is valid
     $("#github-signin").prop("disabled", !user.email.isValid());
     $("#gitlab-signin").prop("disabled", !user.email.isValid());
-    $("#bitbucket-signin").prop("disabled", !user.email.isValid());
+//    $("#bitbucket-signin").prop("disabled", !user.email.isValid());
 
-    // Update URLs
+    // Update repository URLs
     if (Github.existingUser()) {
-        $(".origin-href").attr("href", "https://github.com/" + Github.getUsername() + "/" + model.repo());
-        $("#private-href").attr("href", "https://github.com/" + Github.getUsername() + "/" + model.repo() + "/settings");
-        $("#collaborator-href").attr("href", "https://github.com/" + Github.getUsername() + "/" + model.repo() + "/settings/collaboration");
+        $("#github-repo-href").attr("href", Github.repoURL());
+        $("#github-collaborator-href").attr("href", Github.repoURL() + "/settings/collaboration");
+        $("#github-private-href").attr("href", Github.repoURL() + "/settings");
+    }
+    if (Gitlab.existingUser()) {
+        $("#gitlab-repo-href").attr("href", Gitlab.repoURL());
+        $("#gitlab-collaborator-href").attr("href", Gitlab.repoURL() + "/project_members");
+        $("#gitlab-private-href").attr("href", Gitlab.repoURL() + "/edit");
+    }
+    if (Bitbucket.existingUser()) {
+        $("#bitbucket-user").attr("href", "https://bitbucket.org/account/user/" + Bitbucket.getUsername() + "/");
+        $("#bitbucket-email").attr("href", "https://bitbucket.org/account/user/" + Bitbucket.getUsername() + "/email/");
+        $("#bitbucket-ssh").attr("href", "https://bitbucket.org/account/user/" + Bitbucket.getUsername() + "/ssh-keys/");
+        $("#bitbucket-repo-href").attr("href", Bitbucket.repoURL());
+        $("#bitbucket-collaborator-href").attr("href", Bitbucket.repoURL() + "/admin/access");
+        $("#bitbucket-private-href").attr("href", Bitbucket.repoURL() + "/admin");
     }
     Github.getCollaborators({
         page: 1,
@@ -173,6 +189,18 @@ $("#gitlab-signin").on("click", function(event) {
     });
 });
 
+$("#bitbucket-signin").on("click", function(event) {
+    updateView();
+});
+
+$("#gitlab-signout").on("click", function(event) {
+    Gitlab.logout();
+    $("#gitlab-signin").prop("disabled",false);
+    $("#gitlab-password").val('');
+    $("#gitlab-password").removeAttr('style');
+    controller.update('gitlab-authenticated', false);
+});
+
 $(function() {
     // Show values from local storage, if available
     $("#name").val(user.get("name"));
@@ -188,6 +216,8 @@ function setupLocal() {
         url: 'http://localhost:8080/setup',
         data: {
             "github.login": Github.getUsername(),
+            "gitlab.login": Gitlab.getUsername(),
+            "bitbucket.login": Bitbucket.getUsername(),
             "user.name": user.get("name"),
             "user.email": user.get("email"),
         },
@@ -202,33 +232,5 @@ function setupLocal() {
         error: function(response) {
             alert("Local server not responding.");
         }
-    });
-}
-
-// TODO: move this to Github.js
-function setupRepo() {
-    Github.createRepo({
-        repo: model.repo(),
-        success: function(response) {
-            controller.update('github-repository',true);
-            setupLocal();
-            Github.addCollaborator({
-                repo: model.repo(),
-                collaborator: model.instructor(),
-                success: function(response) {
-                    controller.update('github-collaborator', true);
-                },
-            });
-            // As long as we're not the instructor, ...
-            if ($("#instructor").val() != Github.getUsername()) {
-                // Make the repository private
-                Github.privateRepo({
-                    repo: model.repo(),
-                    success: function(response) {
-                        controller.update('github-private', true);
-                    },
-                });
-            }
-        },
     });
 }

@@ -2,6 +2,11 @@
 
 var Gitlab = {
     badCredentials: false,
+    nameShared: false,
+    emailVerified: false,
+    keyShared: false,
+    repoCreated: false,
+
     email: "",
     password: "",
     
@@ -15,6 +20,7 @@ var Gitlab = {
     
     getUsername: function() { return localStorage.getItem("Gitlab.username"); },
     existingUser: function() { return localStorage.hasOwnProperty("Gitlab.username"); },
+    repoURL: function() { return "https://gitlab.com/" + Gitlab.getUsername() + "/" + model.repo().toLowerCase(); },
 
     // Generic Gitlab API invoker
     invoke: function (settings) {
@@ -74,6 +80,7 @@ var Gitlab = {
     // fail: function() {/* what to do if it didn't */}
     //});
     shareKey: function(settings) {
+        if (!user.key.isValid()) return;
         Gitlab.invoke({
             url: "/user/keys",
             method: "GET",
@@ -123,10 +130,6 @@ var Gitlab = {
         });
     },
 
-    nameShared: false,
-    emailVerified: false,
-    keyShared: false,
-
     setupAccount: function(settings) {
         // Onboarding/authentication status
         settings.callback("gitlab-onboard", !Gitlab.existingUser());
@@ -154,17 +157,20 @@ var Gitlab = {
                     },
                 });
             }
+            // Setup repo
+            if (!Gitlab.repoCreated) {
+                Gitlab.setupRepo(settings);
+            }
         }
     },
 
     // Gitlab.createRepo({
-    // repo: Repository name,
     // success: function() {/* what to do if it worked */},
     // fail: function() {/* what to do if it didn't */}
     //});
     createRepo: function(settings) {
         Gitlab.invoke({
-            url: "/projects/" + Gitlab.getUsername() + "%2F" + settings.repo.toLowerCase(),
+            url: "/projects/" + Gitlab.getUsername() + "%2F" + model.repo().toLowerCase(),
             method: "GET",
             data: {},
             // If the repo is created already, we're done
@@ -175,7 +181,7 @@ var Gitlab = {
                     url: "/projects",
                     method: "POST",
                     data: {
-                        name: settings.repo,
+                        name: model.repo(),
                         "public": false,
                         visibility_level: 0
                         // you could also set the import_url so something public
@@ -187,14 +193,17 @@ var Gitlab = {
         });
     },
     
+    privateRepo: function(settings) {
+        settings.success();
+    },
+    
     // Gitlab.addCollaborator({
-    // repo: Repository name,
     // collaborator: a collaborator,
     // success: function() {/* what to do if it worked */},
     // fail: function() {/* what to do if it didn't */}
     //});
     addCollaborator: function(settings) {
-        var url = "/projects/" + Gitlab.getUsername() + "%2F" + settings.repo.toLowerCase() + "/members";
+        var url = "/projects/" + Gitlab.getUsername() + "%2F" + model.repo().toLowerCase() + "/members";
         Gitlab.getUserByName({
             user: settings.collaborator,
             success: function(response) {
@@ -202,7 +211,7 @@ var Gitlab = {
                     method: "PUT",
                     "url": url,
                     data: {
-                        "id": Gitlab.getUsername() + "%2F" + settings.repo.toLowerCase(),
+                        "id": Gitlab.getUsername() + "%2F" + model.repo().toLowerCase(),
                         "user_id": response[0].id,
                         // See: https://gitlab.com/help/permissions/permissions
                         "access_level": 30 // Developer
@@ -214,4 +223,28 @@ var Gitlab = {
             fail: settings.fail
         });
     },
+    
+    // Create repository, add collaborator, and make private, given object with
+    // callback function(key, bool) to update view
+    setupRepo: function (settings) {
+        Gitlab.createRepo({
+            success: function(response) {
+                settings.callback('gitlab-repository',true);
+                Gitlab.addCollaborator({
+                    collaborator: model.instructor('gitlab'),
+                    success: function(response) {
+                        settings.callback('gitlab-collaborator', true);
+                    },
+                });
+                // Make the repository private if we're not the instructor
+                if (model.instructor('gitlab') != Gitlab.getUsername()) {
+                    Gitlab.privateRepo({
+                        success: function(response) {
+                            settings.callback('gitlab-private', true);
+                        },
+                    });
+                }
+            },
+        });
+    }
 }
