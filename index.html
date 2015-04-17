@@ -579,15 +579,9 @@ git gui &amp;</pre>
             <b>Create private repository</b>
             <ul class="fa-ul" style="margin-left: 0px;">
                 <li>
-                    <i class="fa-li fa fa-lg fa-check success bitbucket-repository"></i>
-                    <i class="fa-li fa fa-lg fa-code-fork fail no-bitbucket-repository"></i>
-                    <a target="bitbucket" href="https://bitbucket.org/repo/create"
-                    class="no-bitbucket-repository">
-                        Create repository</a><a
-                    href="https://bitbucket.org/BITBUCKET_LOGIN/REPOSITORY"
-                    target="bitbucket" id="bitbucket-repo-href"
-                    class="bitbucket-repository">
-                        Created repository</a> <b>REPOSITORY</b>
+                    <i class="fa-li fa fa-lg fa-code-fork fail"></i>
+                    <a target="bitbucket" href="https://bitbucket.org/repo/create">
+                        Create repository</a> <b>REPOSITORY</b>
                 </li>
                 <li>
                     <i class="fa-li fa fa-lg fa-check success bitbucket-collaborator"></i>
@@ -685,7 +679,7 @@ git gui &amp;</pre>
                     Create repository</a><a
                 href="https://github.com/GITHUB_LOGIN/REPOSITORY"
                 target="github" id="github-repo-href"
-                class="github-repository">
+                class="github-repository github-repo-href">
                     Created repository</a> <b>REPOSITORY</b>
             </li>
             <li>
@@ -774,7 +768,7 @@ git gui &amp;</pre>
                         Create repository</a><a
                     href="https://gitlab.com/GITLAB_LOGIN/REPOSITORY"
                     target="gitlab" id="gitlab-repo-href"
-                    class="gitlab-repository">
+                    class="gitlab-repository gitlab-repo-href">
                         Created repository</a> <b>REPOSITORY</b>
                 </li>
                 <li>
@@ -828,12 +822,12 @@ git gui &amp;</pre>
             <ul class="fa-ul" id="repositories">
             <li><i class="fa fa-li fa-lg fa-university"></i>
             <a href="https://UPSTREAM_HOST/UPSTREAM_USER/REPOSITORY" target="_blank">The course repository (<code>upstream</code>)</a></li>
-            <li><i class="fa fa-li fa-lg fa-bitbucket"></i>
-            <a href="https://bitbucket.org/BITBUCKET_LOGIN/REPOSITORY" target="_blank">Your private repository (<code>bitbucket</code>)</a></li>
-            <li><i class="fa fa-li fa-lg fa-github"></i>
-            <a href="https://github.com/GITHUB_LOGIN/REPOSITORY" target="_blank">Your private repository (<code>github</code>)</a></li>
-            <li><i class="fa fa-li fa-lg fa-git-square"></i>
-            <a href="https://gitlab.com/GITLAB_LOGIN/REPOSITORY" target="_blank">Your private repository (<code>gitlab</code>)</a></li>
+            <li class="bitbucket-repository"><i class="fa fa-li fa-lg fa-bitbucket"></i>
+            <a class="bitbucket-repo-href" href="https://bitbucket.org/BITBUCKET_LOGIN/REPOSITORY" target="_blank">Your private repository (<code>bitbucket</code>)</a></li>
+            <li class="github-repository"><i class="fa fa-li fa-lg fa-github"></i>
+            <a class="github-repo-href" href="https://github.com/GITHUB_LOGIN/REPOSITORY" target="_blank">Your private repository (<code>github</code>)</a></li>
+            <li class="gitlab-repository"><i class="fa fa-li fa-lg fa-git-square"></i>
+            <a class="bitbucket-repo-href" href="https://gitlab.com/GITLAB_LOGIN/REPOSITORY" target="_blank">Your private repository (<code>gitlab</code>)</a></li>
             </ul>
         </div>
         <div class="grid_6">
@@ -841,7 +835,9 @@ git gui &amp;</pre>
                 <i class="fa fa-laptop fa-lg fa-fw"></i>
                 <b>Local setup</b>: Setup git on your machine
             </header>
+            <!--
             <input type="button" value="Setup git" id="local-setup-button" />
+            -->
             <p>
             Copy and paste the commands below into the Terminal or
             Git Bash to set up git, local and remote repositories. Press

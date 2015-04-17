@@ -96,20 +96,21 @@ function updateView(event) {
 
     // Update repository URLs
     if (Github.existingUser()) {
-        $("#github-repo-href").attr("href", Github.repoURL());
+        $(".github-repo-href").attr("href", Github.repoURL());
         $("#github-collaborator-href").attr("href", Github.repoURL() + "/settings/collaboration");
         $("#github-private-href").attr("href", Github.repoURL() + "/settings");
     }
     if (Gitlab.existingUser()) {
-        $("#gitlab-repo-href").attr("href", Gitlab.repoURL());
+        $(".gitlab-repo-href").attr("href", Gitlab.repoURL());
         $("#gitlab-collaborator-href").attr("href", Gitlab.repoURL() + "/project_members");
         $("#gitlab-private-href").attr("href", Gitlab.repoURL() + "/edit");
     }
     if (Bitbucket.existingUser()) {
+        controller.update('bitbucket-repository', true);
         $("#bitbucket-user").attr("href", "https://bitbucket.org/account/user/" + Bitbucket.getUsername() + "/");
         $("#bitbucket-email").attr("href", "https://bitbucket.org/account/user/" + Bitbucket.getUsername() + "/email/");
         $("#bitbucket-ssh").attr("href", "https://bitbucket.org/account/user/" + Bitbucket.getUsername() + "/ssh-keys/");
-        $("#bitbucket-repo-href").attr("href", Bitbucket.repoURL());
+        $(".bitbucket-repo-href").attr("href", Bitbucket.repoURL());
         $("#bitbucket-collaborator-href").attr("href", Bitbucket.repoURL() + "/admin/access");
         $("#bitbucket-private-href").attr("href", Bitbucket.repoURL() + "/admin");
     }
