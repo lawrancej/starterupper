@@ -1,54 +1,48 @@
 = Starter Upper
 
-Introducing undergraduate students to git and hosting services is difficult without cutting into scarce class time.
-Even with clear instructions, students rarely set up everything properly, frustrating everyone.
-As a result, few undergraduate computer science faculty use git for work submission, despite its importance in software development.
-Starter Upper automates set up as much as possible so students and faculty can get to work using http://db.grinnell.edu/sigcse/sigcse2013/Program/viewAcceptedProposal.pdf?sessionType=paper&sessionNumber=257[git on the cloud in the classroom].
+Starter Upper automates set up of git and hosting services so that students and
+faculty may use http://db.grinnell.edu/sigcse/sigcse2013/Program/viewAcceptedProposal.pdf?sessionType=paper&sessionNumber=257[git on the cloud in the classroom].
+It configures everyone's full name, email, and SSH keys for git and project
+hosts, assists in setting up project hosting accounts, and
+creates a private repository shared only with the instructor.
+For instructors, Starter Upper collects the class roster to fetch student work.
 
-== Student instructions
+== Step 1. Install Git and frontends
+[[install-git]]
+Windows:: http://sourceforge.net/projects/gitextensions/[Install Git Extensions]
++
+NOTE: Install MsysGit, Install KDiff, and *choose OpenSSH* (not PuTTY); otherwise,
+stick to the default settings.
++
+image:http://lawrancej.github.io/starterupper/images/what2install.png[Install MsysGit and KDiff]
+image:http://lawrancej.github.io/starterupper/images/openssh.png[Choose OpenSSH]
 
-. http://git-scm.com/download[Install Git]
-. Copy/paste this command into Git Bash or Terminal:
+Mac OS X:: http://rowanj.github.io/gitx/[Install GitX-dev], then https://developer.apple.com/xcode/downloads/[Install XCode developer tools] which ships with git (recommended) or http://git-scm.com/download/mac[install git from here].
+
+Linux:: http://git-scm.com/download/linux[Install git] using your package manager.
+http://sourceforge.net/projects/qgit/[QGit, a git frontend] may also be available for your distribution.
++
+NOTE: Don't forget to use +sudo+ with your package manager.
+
+== Step 2. Faculty instructions
+
+. Copy/paste this command into Git Bash or Terminal to clone this repository:
++
+----
+curl https://raw.githubusercontent.com/lawrancej/starterupper/master/main.sh | bash
+----
+
+. Copy `main.sh` into your course repository
+. Change as necessary for your course
+
+== Step 3. Student instructions
+
+Students will copy/paste a command similar to this into Git Bash or Terminal
+(substitute `YOUR-NAME-HERE` and `COURSE-REPOSITORY` as appropriate for students):
 
 ----
-curl https://raw.githubusercontent.com/lawrancej/starterupper/master/starter-upper.sh | bash
+curl https://raw.githubusercontent.com/YOUR-NAME-HERE/COURSE-REPOSITORY/master/main.sh | bash
 ----
-
-== What Starter Upper does for students
-
-. Configures git locally
-.. Configures git's +user.name+ to the student's full name
-.. Configures git's +user.email+ to the student's school email address
-.. Creates SSH keys if they do not already exist without user interaction
-. Configures project hosting on Github
-.. Asks users to join Github if they haven't already
-.. Authenticates with Github (supporting two-factor authentication)
-.. Ensures the student's email is validated
-.. Requests educational discounts
-.. Sets the user's profile name to the student's full name
-.. Shares SSH keys with Github, if not already shared
-.. Tests SSH connectivity, and reconfigures gracefully in case of firewall restrictions
-. Set up the course repository
-.. Creates a private repository (origin) for the student on Github
-.. Adds faculty as a collaborator to the private repository
-.. Clones the course (upstream) repository
-.. Adds origin for the student
-.. Pushes to origin
-.. Loads the local repository in the file explorer / finder
-.. Loads the Github repository page in the web browser
-
-== What Starter Upper does for faculty
-
-Starter Upper collects the class roster from Github and fetches all student work.
-
-== Starter Upper principles
-
-* Set up everything with one command
-* Small download
-* Minimize user interaction as much as possible
-* Provide good defaults and ask for confirmation
-* Validate all user input
-* Degrade gracefully when facing errors
 
 == References
 

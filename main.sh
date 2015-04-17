@@ -3,20 +3,29 @@
 # Configuration
 # ---------------------------------------------------------------------
 
-# The repository to clone as upstream (NO SPACES)
+# The instructor's course repository
+# A good template to use for course repository names is:
+#   SUBJECT-NUMBER-YEAR-SEMESTER  (NO SPACES)
 readonly REPO=starterupper
-# Default domain for school email
+
+# Your school email address domain
 readonly SCHOOL=wit.edu
+
 # The instructor's Bitbucket username
 readonly INSTRUCTOR_BITBUCKET=lawrancej
+
 # The instructor's Github username
 readonly INSTRUCTOR_GITHUB=lawrancej
+
 # The instructor's Gitlab username
 readonly INSTRUCTOR_GITLAB=lawrancej
-# Upstream host (uncomment only one upstream host)
+
+# Upstream host: where to host the course repository
+#   (uncomment only one upstream host)
 readonly UPSTREAM_HOST=github.com
 #readonly UPSTREAM=gitlab.com
 #readonly UPSTREAM=bitbucket.org
+
 # Upstream user (most likely the instructor's user name on the upstream host)
 readonly UPSTREAM_USER=lawrancej
 
