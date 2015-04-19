@@ -141,12 +141,18 @@ function updateView(event) {
     Github.getCollaborators({
         page: 1,
         success: function(collaborators) {
+            for (var key in collaborators) {
+                $("#repositories").append("<li><i class=\"fa fa-li fa-lg fa-github\"></i><a href=\"https://github.com/"+ key + "/" + model.repo() + "\" target=\"_blank\">Collaborator " +  key + "'s repository</a></li>");
+            }
             updateCommands();
         },
         fail: function() {}
     });
     Gitlab.getCollaborators({
         success: function(collaborators) {
+            for (var key in collaborators) {
+                $("#repositories").append("<li><i class=\"fa fa-li fa-lg fa-git-square\"></i><a href=\"https://gitlab.com/"+ key + "/" + model.repo() + "\" target=\"_blank\">Collaborator " +  key + "'s repository</a></li>");
+            }
             updateCommands();
         },
         fail: function() {}
