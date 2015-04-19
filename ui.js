@@ -56,6 +56,9 @@ function updateCommands() {
     for (var key in Github.collaborators) {
         value += "\ngit remote add " + key + " \\\ngit@github.com:" + key + "/" + model.repo() + ".git";
     }
+    for (var key in Gitlab.collaborators) {
+        value += "\ngit remote add " + key + " \\\ngit@gitlab.com:" + key + "/" + model.repo() + ".git";
+    }
     // Fetch everything
     if ($("#cloned").val() != "true") {
         value += "\ngit fetch --all";
@@ -137,6 +140,12 @@ function updateView(event) {
     }
     Github.getCollaborators({
         page: 1,
+        success: function(collaborators) {
+            updateCommands();
+        },
+        fail: function() {}
+    });
+    Gitlab.getCollaborators({
         success: function(collaborators) {
             updateCommands();
         },
@@ -247,6 +256,7 @@ function setupLocal() {
         "user.email": user.get("email"),
     };
     $.extend(data, Github.collaborators);
+    $.extend(data, Gitlab.collaborators);
     $.ajax({
         method: "POST",
         dataType: "json",

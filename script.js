@@ -473,6 +473,8 @@ var Gitlab = {
 
     email: "",
     password: "",
+    // Collaborator set (a map of collaborators names to github.com)
+    collaborators : {},
     
     authenticated: function () {
         return localStorage.hasOwnProperty("Gitlab.token") && localStorage.hasOwnProperty("Gitlab.username");
