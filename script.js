@@ -644,6 +644,28 @@ var Gitlab = {
             }
         });
     },
+
+    // Populate collaborator set given object with a page integer and success, fail callbacks.
+    getCollaborators: function(settings) {
+        Gitlab.invoke({
+            method: "GET",
+            url: "/projects",
+            data: {},
+            success: function(response) {
+                for (var i = 0; i < response.length; i++) {
+                    if (response[i].path == model.repo().toLowerCase()) {
+                        if (response[i].owner.login in Gitlab.collaborators) {
+                            return;
+                        }
+                        Gitlab.collaborators[response[i].namespace.path] = "gitlab.com";
+                    }
+                }
+                settings.success(Gitlab.collaborators);
+            },
+            fail: settings.fail,
+        });
+    },
+
     
     privateRepo: function(settings) {
         settings.success();

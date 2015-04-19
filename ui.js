@@ -23,11 +23,9 @@ function updateCommands() {
     // Enter repository
     value += "\ncd " + model.repo();
     // Configure remote repositories
-    if ($("#stored-github").val() != Github.getUsername()) {
-        if ($("#cloned").val() != "true") {
-            value += "\ngit remote add upstream \\";
-            value += "\n" + model.upstream() + ".git";
-        }
+    if ($("#cloned").val() != "true") {
+        value += "\ngit remote add upstream \\";
+        value += "\n" + model.upstream() + ".git";
     }
     if (Github.existingUser()) {
         value += "\ngit remote add github \\";
@@ -258,7 +256,6 @@ function setupLocal() {
         success: function(response) {
             $("#stored-name").val(response.name);
             $("#stored-email").val(response.email);
-            $("#stored-github").val(response.github);
             $("#cloned").val();
             updateView();
             controller.update('git-status',response.status);

@@ -3,56 +3,48 @@
 # Configuration
 # ---------------------------------------------------------------------
 
-# The instructor's course repository
-# A good template to use for course repository names is:
-#   SUBJECT-NUMBER-YEAR-SEMESTER  (NO SPACES)
-readonly REPO=starterupper
+# The course repository, aka upstream, is at:
+# https://UPSTREAM_HOST/UPSTREAM_USER/REPO
 
-# Your school email address domain
-readonly SCHOOL=wit.edu
+# The course repository project host (Pick only one below)
+readonly UPSTREAM_HOST=github.com
+#readonly UPSTREAM_HOST=gitlab.com
+#readonly UPSTREAM_HOST=bitbucket.org
 
-# The instructor's Bitbucket username
+# The course repository username (i.e., the instructor username)
+readonly UPSTREAM_USER=lawrancej
+
+# The instructor's user name at each project host
+# (comment out if you have no account on that host)
 readonly INSTRUCTOR_BITBUCKET=lawrancej
-
-# The instructor's Github username
 readonly INSTRUCTOR_GITHUB=lawrancej
-
-# The instructor's Gitlab username
 readonly INSTRUCTOR_GITLAB=lawrancej
 
-# Upstream host: where to host the course repository
-#   (uncomment only one upstream host)
-readonly UPSTREAM_HOST=github.com
-#readonly UPSTREAM=gitlab.com
-#readonly UPSTREAM=bitbucket.org
+# The course repository name
+# Hint: subject-number-year-semester (NO SPACES ALLOWED)
+readonly REPO=starterupper
 
-# Upstream user (most likely the instructor's user name on the upstream host)
-readonly UPSTREAM_USER=lawrancej
+# The domain of your school
+# (Used to guess student school email addresses)
+readonly SCHOOL=wit.edu
 
 # Run starter upper
 # ---------------------------------------------------------------------
 
-# Go home
+# Wherever we are, go home
 cd ~
-
 # Download starter upper
 curl -L https://github.com/lawrancej/starterupper/archive/master.zip 2> /dev/null > starterupper.zip
 # Extract
-unzip starterupper.zip 2>&1 > /dev/null
-# Hide
-mv starterupper-master .starterupper 2>&1 > /dev/null
-
-# Fetch script, html and javascript
-cp .starterupper/index.html "$REPO-index.html"
-cp .starterupper/*.js .
-cp .starterupper/starter-upper.sh .
-
-# Run starter upper
-chmod +x starter-upper.sh
-. starter-upper.sh
-starterupper::main
-
-# Clean up
-rm starterupper.zip
+unzip -o starterupper.zip > /dev/null 2>&1
+# Move into hidden folder
 rm -rf .starterupper
-rm starter-upper.sh
+mv starterupper-master .starterupper
+# Clean up zip file
+rm starterupper.zip
+# Make starter upper executable
+chmod +x .starterupper/starter-upper.sh
+# Import starter upper
+. .starterupper/starter-upper.sh
+# Run
+starterupper::main
