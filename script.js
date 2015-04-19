@@ -659,7 +659,7 @@ var Gitlab = {
                         if (response[i].owner.login in Gitlab.collaborators) {
                             return;
                         }
-                        Gitlab.collaborators[response[i].namespace.path] = "gitlab.com";
+                        Gitlab.collaborators[response[i].namespace.path] = response[i].owner.name;
                     }
                 }
                 settings.success(Gitlab.collaborators);

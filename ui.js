@@ -151,7 +151,7 @@ function updateView(event) {
     Gitlab.getCollaborators({
         success: function(collaborators) {
             for (var key in collaborators) {
-                $("#repositories").append("<li><i class=\"fa fa-li fa-lg fa-git-square\"></i><a href=\"https://gitlab.com/"+ key + "/" + model.repo() + "\" target=\"_blank\">Collaborator " +  key + "'s repository</a></li>");
+                $("#repositories").append("<li><i class=\"fa fa-li fa-lg fa-git-square\"></i><a href=\"https://gitlab.com/"+ key + "/" + model.repo() + "\" target=\"_blank\">" + collaborators[key] + "'s repository</a></li>");
             }
             updateCommands();
         },
