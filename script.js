@@ -419,7 +419,14 @@ var Github = {
                         if (response[i].owner.login in Github.collaborators) {
                             return;
                         }
-                        Github.collaborators[response[i].owner.login] = "github.com";
+                        Github.collaborators[response[i].owner.login] = response[i].owner.login;
+                        Github.invoke({
+                            method: "GET", url: "/users/" + response[i].owner.login,
+                            success: function(response) {
+                                Github.collaborators[response.login] = response.name;
+                                $("#github-collaborator-" + response.login).text(response.name + "'s repository");
+                            },
+                        });
                     }
                 }
                 if (response.length > 0) {

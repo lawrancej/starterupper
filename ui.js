@@ -54,17 +54,15 @@ function updateCommands() {
 
     // Add extra collaborators
     for (var key in Github.collaborators) {
-        value += "\ngit remote add " + key + " \\\ngit@github.com:" + key + "/" + model.repo() + ".git";
+        value += "\ngit remote add " + key + " \\\ngit@github.com:github-" + key + "/" + model.repo() + ".git";
     }
     for (var key in Gitlab.collaborators) {
-        value += "\ngit remote add " + key + " \\\ngit@gitlab.com:" + key + "/" + model.repo() + ".git";
+        value += "\ngit remote add " + key + " \\\ngit@gitlab.com:gitlab-" + key + "/" + model.repo() + ".git";
     }
     // Fetch everything
-    if ($("#cloned").val() != "true") {
-        value += "\ngit fetch --all";
-        value += "\ngit merge upstream/master";
-        value += "\ngit submodule update --init --recursive";
-    }
+    value += "\ngit fetch --all";
+    value += "\ngit merge upstream/master";
+    value += "\ngit submodule update --init --recursive";
     // Push to origin
     value += "\ngit push -u origin master";
     $("#command-line").val(value);
@@ -142,7 +140,7 @@ function updateView(event) {
         page: 1,
         success: function(collaborators) {
             for (var key in collaborators) {
-                $("#repositories").append("<li><i class=\"fa fa-li fa-lg fa-github\"></i><a href=\"https://github.com/"+ key + "/" + model.repo() + "\" target=\"_blank\">Collaborator " +  key + "'s repository</a></li>");
+                $("#repositories").append("<li><i class=\"fa fa-li fa-lg fa-github\"></i><a id=\"github-collaborator-"+ key +"\" href=\"https://github.com/"+ key + "/" + model.repo() + "\" target=\"_blank\">" + collaborators[key] + "'s repository</a></li>");
             }
             updateCommands();
         },
