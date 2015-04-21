@@ -53,10 +53,10 @@ function updateCommands() {
 
     // Add extra collaborators
     for (var key in Github.collaborators) {
-        value += "\ngit remote add " + key + " \\\ngit@github.com:github-" + key + "/" + model.repo() + ".git";
+        value += "\ngit remote add github-" + key + " \\\ngit@github.com:" + key + "/" + model.repo() + ".git";
     }
     for (var key in Gitlab.collaborators) {
-        value += "\ngit remote add " + key + " \\\ngit@gitlab.com:gitlab-" + key + "/" + model.repo() + ".git";
+        value += "\ngit remote add gitlab-" + key + " \\\ngit@gitlab.com:" + key + "/" + model.repo() + ".git";
     }
     // Fetch everything
     value += "\ngit fetch --all";
