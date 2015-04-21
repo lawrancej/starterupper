@@ -49,7 +49,6 @@ function updateCommands() {
             break;
         }
     }
-    
 
     // Add extra collaborators
     for (var key in Github.collaborators) {
@@ -185,7 +184,7 @@ $("#github-signout").on("click", function(event) {
     controller.update('github-authenticated', false);
 });
 
-$("#github-signin").on("click", function(event) {
+function GithubSignin(event) {
     $("#github-signin").prop("disabled",true);
     Github.login({
         username: user.email.value(),
@@ -209,9 +208,23 @@ $("#github-signin").on("click", function(event) {
             $('#otp').focus();
         }
     });
+}
+
+$("#github-signin").on("click", GithubSignin);
+
+$('#github-password').keypress(function (e) {
+  if (e.which == 13) {
+    GithubSignin(e);
+  }
 });
 
-$("#gitlab-signin").on("click", function(event) {
+$('#otp').keypress(function (e) {
+  if (e.which == 13) {
+    GithubSignin(e);
+  }
+});
+
+function GitlabSignin(event) {
     $("#gitlab-signin").prop("disabled",true);
     Gitlab.login({
         email: user.email.value(),
@@ -226,6 +239,14 @@ $("#gitlab-signin").on("click", function(event) {
             updateView();
         },
     });
+}
+
+$("#gitlab-signin").on("click", GitlabSignin);
+
+$('#gitlab-password').keypress(function (e) {
+  if (e.which == 13) {
+    GitlabSignin(e);
+  }
 });
 
 $("#bitbucket-signin").on("click", function(event) {
