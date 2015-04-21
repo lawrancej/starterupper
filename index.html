@@ -188,12 +188,12 @@ function redirect() {
             <p>
                 Git is a <em>version control system</em>: it stores snapshots
                 of a <em>working directory</em> over time into a <em>repository</em>.
-                Choose which changes to <em>add</em> to the <em>staging area</em>,
+                Pick changes to <em>add</em> to the <em>staging area</em>,
                 then <em>commit</em> to take a snapshot.
                 <em>Commits</em> store timestamped staging area contents,
                 a descriptive message, references to ancestor commits,
                 the author's name and email address.
-                The SHA1 hash of the commit identifies it, and verifies integrity.
+                A commit's SHA1 hash identifies it and verifies integrity.
                 Making a commit does not submit work over the network.
             </p>
             <!-- Branching and merging -->
@@ -205,16 +205,15 @@ function redirect() {
                 <em>checkout</em> a commit or a branch; <code>HEAD</code>
                 points at what is checked out.
                 <em>Merge conflicts</em> occur if two branches have different
-                changes to the same places in a file; fix these with a <em>merge tool</em>.
+                changes to the same places in a file; fix them with a <em>merge tool</em>.
             </p>
             <!-- Distributed remote repositories -->
             <p>
-                Git is <em>distributed</em>: every repository has a list
-                of <em>remote</em> repositories, each with a nickname and URL.
+                Git is <em>distributed</em>: every repository lists <em>remote</em>
+                repositories, each with a nickname and URL.
                 The default remote is <code>origin</code>.
                 <em>Project hosts</em> such as Bitbucket, Github and Gitlab
-                offer network storage for remote repositories and manage access
-                to them.
+                store repositories and manage access to them on the network.
                 <em>Push</em> to submit work to a remote repository;
                 <em>pull</em> to receive updates, or <em>fetch</em> then <em>merge</em>.
             </p>
