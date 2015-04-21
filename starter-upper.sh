@@ -243,9 +243,9 @@ git::clone_upstream() {
 
 # Make the index page
 starterupper::make_ui() {
-    sed -e "s/REPOSITORY/$REPOSITORY/g" \
-    -e "s/UPSTREAM_HOST/${UPSTREAM_HOST}/" \
-    -e "s/UPSTREAM_USER/${UPSTREAM_USER}/" \
+    sed -e "s/REPOSITORY/${REPOSITORY}/g" \
+    -e "s/UPSTREAM_HOST/${UPSTREAM_HOST}/g" \
+    -e "s/UPSTREAM_USER/${UPSTREAM_USER}/g" \
     -e "s/PUBLIC_KEY/$(ssh::getPublicKeyForSed)/g" \
     -e "s/USER_EMAIL/$(email::get)/g" \
     -e "s/FULL_NAME/$(full_name::get)/g" \
@@ -254,7 +254,7 @@ starterupper::make_ui() {
     -e "s/INSTRUCTOR_GITHUB/${INSTRUCTOR_GITHUB}/g" \
     -e "s/INSTRUCTOR_GITLAB/${INSTRUCTOR_GITLAB}/g" \
     -e "s/HOSTNAME/$(hostname)/g" \
-    -e "s/CLONED/${cloned}/" \
+    -e "s/CLONED/${cloned}/g" \
     ".starterupper/index.html" > ".starterupper/$REPOSITORY.html"
 }
 
