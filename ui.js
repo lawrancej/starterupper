@@ -116,11 +116,13 @@ function updateView(event) {
 
     // Update repository URLs
     if (Github.existingUser()) {
+        $('#github-login').text(Github.getUsername());
         $(".github-repo-href").attr("href", Github.repoURL());
         $("#github-collaborator-href").attr("href", Github.repoURL() + "/settings/collaboration");
         $("#github-private-href").attr("href", Github.repoURL() + "/settings");
     }
     if (Gitlab.existingUser()) {
+        $('#gitlab-login').text(Gitlab.getUsername());
         $(".gitlab-repo-href").attr("href", Gitlab.repoURL());
         $("#gitlab-collaborator-href").attr("href", Gitlab.repoURL() + "/project_members");
         $("#gitlab-private-href").attr("href", Gitlab.repoURL() + "/edit");
