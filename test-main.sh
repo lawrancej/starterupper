@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Run starterupper over the network (use for deployment, not testing)
+# Run starterupper locally (use for testing, not deployment)
 # Configuration
 # ---------------------------------------------------------------------
 
@@ -29,20 +29,14 @@ readonly REPO=starterupper
 # (Used to guess student school email addresses)
 readonly SCHOOL=wit.edu
 
-# Run starter upper over the network: curl http://path/to/main.sh | bash
+# Run starter upper locally: ./local-main.sh
 # ---------------------------------------------------------------------
 
+# Move starterupper from the current folder into hidden folder
+mkdir -p ~/.starterupper
+cp * ~/.starterupper > /dev/null 2>&1
 # Wherever we are, go home
 cd ~
-# Download starter upper
-curl -L https://github.com/lawrancej/starterupper/archive/master.zip 2> /dev/null > starterupper.zip
-# Extract
-unzip -o starterupper.zip > /dev/null 2>&1
-# Move into hidden folder
-rm -rf .starterupper
-mv starterupper-master .starterupper
-# Clean up zip file
-rm starterupper.zip
 # Make starter upper executable
 chmod +x .starterupper/starter-upper.sh
 # Import starter upper
