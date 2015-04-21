@@ -77,8 +77,12 @@ ssh::add_hosts() {
 
 # Configure SSH to use port 443 where available to bypass restrictive firewalls
 ssh::bypass_firewall() {
-    printf "Host github.com\n  Hostname ssh.github.com\n  Port 443\n" >> ~/.ssh/config
-    printf "Host bitbucket.org\n  Hostname altssh.bitbucket.org\n  Port 443\n" >> ~/.ssh/config
+    if ! grep -q "github.com" ~/.ssh/config; then
+        printf "Host github.com\n  Hostname ssh.github.com\n  Port 443\n" >> ~/.ssh/config
+    fi
+    if ! grep -q "bitbucket.org" ~/.ssh/config; then
+        printf "Host bitbucket.org\n  Hostname altssh.bitbucket.org\n  Port 443\n" >> ~/.ssh/config
+    fi
 }
 
 # Configure SSH and add known hosts keys
