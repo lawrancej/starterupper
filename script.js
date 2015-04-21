@@ -244,9 +244,7 @@ var Github = {
     // Get user name given object with fields: success, fail
     getUser: function(settings) {
         Github.invoke({
-            url: "/user",
-            method: "GET",
-            data: {},
+            url: "/user", method: "GET", data: {},
             success: settings.success,
             fail: settings.fail
         });
@@ -255,8 +253,7 @@ var Github = {
     // Set user name given object with fields: data, success, fail
     setUser: function(settings) {
         Github.invoke({
-            url: "/user",
-            method: "PATCH",
+            url: "/user", method: "PATCH",
             data: settings.data,
             success: settings.success,
             fail: settings.fail
@@ -267,9 +264,7 @@ var Github = {
     shareKey: function(settings) {
         if (!user.key.isValid()) return;
         Github.invoke({
-            url: "/user/keys",
-            method: "GET",
-            data: {},
+            url: "/user/keys", method: "GET", data: {},
             success: function(response) {
                 for (index in response) {
                     if (response[index].key == settings.key) {
@@ -279,8 +274,7 @@ var Github = {
                 }
                 // Send key
                 Github.invoke({
-                    url: "/user/keys",
-                    method: "POST",
+                    url: "/user/keys", method: "POST",
                     data: {
                         title: settings.title,
                         key: settings.key
