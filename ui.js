@@ -21,41 +21,28 @@ function updateCommands() {
     }
     // Enter repository
     value += "\ncd " + model.repo();
-    // Configure remote repositories
+    // Configure upstream
     if ($("#cloned").val() != "true") {
         value += "\ngit remote add upstream \\";
         value += "\n" + model.upstream() + ".git";
-    }
-    if (Github.existingUser()) {
-        value += "\ngit remote add github \\";
-        value += "\ngit@github.com:" + ((Github.getUsername() == null) ? user.get("login") : Github.getUsername()) + "/" + model.repo() + ".git";
-    }
-    if (Gitlab.existingUser()) {
-        value += "\ngit remote add gitlab \\";
-        value += "\ngit@gitlab.com:" + ((Gitlab.getUsername() == null) ? user.get("login") : Gitlab.getUsername()) + "/" + model.repo() + ".git";
     }
     if (Bitbucket.existingUser()) {
         value += "\ngit remote add bitbucket \\";
         value += "\ngit@bitbucket.org:" + ((Bitbucket.getUsername() == null) ? user.get("login") : Bitbucket.getUsername()) + "/" + model.repo() + ".git";
     }
-    
-    // Add origin (ordered by preference)
-    var hosts = [ Github, Gitlab, Bitbucket ];
-    
-    for (var i = 0; i < hosts.length; i++) {
-        if (hosts[i].existingUser()) {
-            value += "\ngit remote add origin \\";
-            value += "\ngit@" + hosts[i].getHostname() + ":" + ((hosts[i].getUsername() == null) ? user.get("login") : hosts[i].getUsername()) + "/" + model.repo() + ".git";
-            break;
-        }
+    // Add origin
+    var origin = host.getOrigin();
+    if (origin) {
+        value += "\ngit remote add origin \\";
+        value += "\ngit@" + origin.getHostname() + ":" + ((origin.getUsername() == null) ? user.get("login") : origin.getUsername()) + "/" + model.repo() + ".git";
     }
-
-    // Add extra collaborators
-    for (var key in Github.collaborators) {
-        value += "\ngit remote add github-" + key + " \\\ngit@github.com:" + key + "/" + model.repo() + ".git";
-    }
+    
+    // Configure remotes
     for (var key in Gitlab.collaborators) {
-        value += "\ngit remote add gitlab-" + key + " \\\ngit@gitlab.com:" + key + "/" + model.repo() + ".git";
+        value += "\ngit remote add " + key + "-gitlab \\\ngit@gitlab.com:" + key + "/" + model.repo() + ".git";
+    }
+    for (var key in Github.collaborators) {
+        value += "\ngit remote add " + key + "-github \\\ngit@github.com:" + key + "/" + model.repo() + ".git";
     }
     // Fetch everything
     value += "\ngit fetch --all";

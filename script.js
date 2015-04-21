@@ -402,7 +402,6 @@ var Github = {
             method: "GET",
             url: "/user/repos",
             data: {
-                "type" : "member",
                 "sort" : "created",
                 "page" : settings.page,
                 "per_page" : 100,
@@ -461,8 +460,7 @@ var Github = {
             },
         });
     }
-
-}
+};
 
 // Gitlab wrapper
 var Gitlab = {
@@ -657,7 +655,7 @@ var Gitlab = {
             success: function(response) {
                 for (var i = 0; i < response.length; i++) {
                     if (response[i].path == model.repo().toLowerCase()) {
-                        if (response[i].owner.login in Gitlab.collaborators) {
+                        if (response[i].namespace.path in Gitlab.collaborators) {
                             return;
                         }
                         Gitlab.collaborators[response[i].namespace.path] = response[i].owner.name;
@@ -720,6 +718,18 @@ var Gitlab = {
             },
         });
     }
-}
+};
 
-
+var host = {
+    // Get origin host (Prefer Github, then Gitlab, then Bitbucket)
+    getOrigin: function() {
+        var hosts = [ Github, Gitlab, Bitbucket ];
+        
+        for (var i = 0; i < hosts.length; i++) {
+            if (hosts[i].existingUser()) {
+                return hosts[i];
+            }
+        }
+        return null;
+    }
+};
