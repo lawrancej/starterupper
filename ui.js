@@ -255,6 +255,12 @@ $("#bitbucket-signin").on("click", function(event) {
     updateView();
 });
 
+$("#bitbucket-login").keypress(function (e) {
+  if (e.which == 13) {
+    updateView();
+  }
+});
+
 $("#gitlab-signout").on("click", function(event) {
     Gitlab.logout();
     $("#gitlab-signin").prop("disabled",false);
