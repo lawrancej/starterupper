@@ -186,18 +186,15 @@ function redirect() {
             </header>
             <!-- Commits -->
             <p>
-                Git is a <em>version control system</em>: it stores snapshots of
-                a folder over time into a <em>repository</em>.
-                To record a snapshot, you must decide what changes in the
-                <em>working directory</em> to <em>add</em> to the <em>staging
-                area</em>.
-                Snapshots, known as <em>commits</em>, record the timestamped 
-                contents of the staging area, the author's name and email, a
-                descriptive message, and <em>references</em> to ancestor commits.
-                Making a commit happens locally; it does not submit work over
-                the network.
-                The SHA1 hash of the commit uniquely identifies it in the
-                repository, and verifies integrity.
+                Git is a <em>version control system</em>: it stores snapshots
+                of a <em>working directory</em> over time into a <em>repository</em>.
+                Choose which changes to <em>add</em> to the <em>staging area</em>,
+                then <em>commit</em> to take a snapshot.
+                <em>Commits</em> store timestamped staging area contents,
+                a descriptive message, references to ancestor commits,
+                the author's name and email address.
+                The SHA1 hash of the commit identifies it, and verifies integrity.
+                Making a commit does not submit work over the network.
             </p>
             <!-- Branching and merging -->
             <p>
@@ -207,20 +204,19 @@ function redirect() {
                 To see the working directory as it was at another point in time,
                 <em>checkout</em> a commit or a branch; <code>HEAD</code>
                 points at what is checked out.
-                <em>Merge conflicts</em> occur if another branch has different
-                changes to the same places in a file; fix with a <em>merge tool</em>.
+                <em>Merge conflicts</em> occur if two branches have different
+                changes to the same places in a file; fix these with a <em>merge tool</em>.
             </p>
             <!-- Distributed remote repositories -->
             <p>
-                Git is <em>distributed</em> in that every repository has a list
+                Git is <em>distributed</em>: every repository has a list
                 of <em>remote</em> repositories, each with a nickname and URL.
                 The default remote is <code>origin</code>.
                 <em>Project hosts</em> such as Bitbucket, Github and Gitlab
-                offer storage for remote repositories and manage access to them
-                over the network.
-                To submit work, <em>push</em> a branch to a remote repository.
-                To receive updates from a remote repository, <em>fetch</em>
-                then <em>merge</em>, or equivalently, <em>pull</em>.
+                offer network storage for remote repositories and manage access
+                to them.
+                <em>Push</em> to submit work to a remote repository;
+                <em>pull</em> to receive updates, or <em>fetch</em> then <em>merge</em>.
             </p>
         </div>
         <!-- Goal and Profile -->
@@ -237,7 +233,7 @@ function redirect() {
                 developers do.
                 Use this wizard to join a project host, create a private
                 repository, and setup <code>git</code> on your machine so that
-                the instructor can fetch your work and checkout to review it.
+                the instructor can fetch your work to review it.
             </p>
           <!-- Profile -->
           <header>
