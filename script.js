@@ -424,7 +424,7 @@ var Github = {
                             method: "GET", url: "/users/" + response[i].owner.login,
                             success: function(response) {
                                 Github.collaborators[response.login] = response.name;
-                                $("#github-collaborator-" + response.login).text(response.name + "'s repository");
+                                settings.callback(response.login, response.name);
                             },
                         });
                     }

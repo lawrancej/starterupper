@@ -1,5 +1,4 @@
 
-
 // Show commands in textarea
 function updateCommands() {
     var value = "";
@@ -143,6 +142,9 @@ function updateView(event) {
                 $("#repositories").append("<li><i class=\"fa fa-li fa-lg fa-github\"></i><a id=\"github-collaborator-"+ key +"\" href=\"https://github.com/"+ key + "/" + model.repo() + "\" target=\"_blank\">" + collaborators[key] + "'s repository</a></li>");
             }
             updateCommands();
+        },
+        callback: function(key, value) {
+            $("#github-collaborator-" + key).text(value + "'s repository");
         },
         fail: function() {}
     });
