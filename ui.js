@@ -49,7 +49,9 @@ function updateCommands() {
     value += "\ngit merge upstream/master";
     value += "\ngit submodule update --init --recursive";
     // Push to origin
-    value += "\ngit push -u origin master";
+    if (origin) {
+        value += "\ngit push -u origin master";
+    }
     $("#command-line").val(value);
 }
 
