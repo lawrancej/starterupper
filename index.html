@@ -188,20 +188,20 @@ function redirect() {
             <p>
                 Git is a <em>version control system</em>: it stores snapshots
                 of a <em>working directory</em> over time in a <em>repository</em>.
-                Pick changes to <em>add</em> to the <em>staging area</em>,
-                then <em>commit</em> to take a snapshot.
-                <em>Commits</em> store timestamped staging area contents,
+                To take a snapshot, <em>add</em> changes to the <em>staging area</em>,
+                then <em>commit</em>.
+                A <em>commit</em> stores timestamped staging area contents,
                 a descriptive message, references to ancestor commits,
-                the author's name and email address.
+                the author's name, and email address.
                 A commit's SHA1 hash identifies it and verifies integrity.
                 Making a commit does not submit work over the network.
             </p>
             <!-- Branching and merging -->
             <p>
-                Git allows history to split off along separate timelines called
-                <em>branches</em>, which can <i>merge</i> back together.
+                Git history can split into separate timelines called
+                <em>branches</em>, and <i>merge</i> back together.
                 The default branch is <code>master</code>.
-                To see the working directory as it was at another point in time,
+                To see the working directory as it was at some point in time,
                 <em>checkout</em> a commit or a branch; <code>HEAD</code>
                 points at what is checked out.
                 <em>Merge conflicts</em> occur if two branches have different
@@ -213,7 +213,7 @@ function redirect() {
                 repositories, each with a nickname and URL.
                 The default remote is <code>origin</code>.
                 <em>Project hosts</em> such as Bitbucket, Github and Gitlab
-                store repositories and manage access to them on the network.
+                store repositories on the network and manage access to them.
                 <em>Push</em> to submit work to a remote repository;
                 <em>pull</em> to receive updates, or <em>fetch</em> then <em>merge</em>.
             </p>
@@ -824,7 +824,7 @@ git submodule update --init --recursive
 git push -u origin master</textarea>
             <ul class="fa-ul" style="margin-left: 0px; margin-top:10px;">            
                 <li><i class="fa fa-li fa-lg fa-warning" style="color:red;"></i>
-                <b>DO NOT</b> put your git repository in Dropbox or Google Drive</li>
+                <b>DO NOT</b> put any git repository in Dropbox or Google Drive</li>
             </ul>
         </div>
         <div class="clear"></div>
