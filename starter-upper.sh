@@ -220,14 +220,13 @@ git::clone_upstream() {
     local upstream="https://${UPSTREAM_HOST}/${UPSTREAM_USER}/$REPOSITORY.git"
     if [[ ! -d "$REPOSITORY" ]]; then
         git clone "$upstream" > /dev/null 2>&1
+        if [[ $? -eq 0 ]]; then
+            cloned=true
+        fi
         pushd "$REPOSITORY" > /dev/null
         git remote rm origin 2> /dev/null
         git remote add upstream "$upstream"        
         popd > /dev/null
-        
-        if [[ $? -eq 0 ]]; then
-            cloned=true
-        fi
     fi
     
     pushd "$REPOSITORY" > /dev/null
