@@ -232,7 +232,7 @@ git::clone_upstream() {
     
     pushd "$REPOSITORY" > /dev/null
     git submodule update --init --recursive > /dev/null
-    git fetch --all > /dev/null 2>&1
+    git fetch upstream > /dev/null 2>&1
     if [[ $? -eq 0 ]]; then
         cloned=true
     fi
