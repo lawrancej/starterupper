@@ -30,12 +30,16 @@ if ( !Date.prototype.toISOString ) {
 
 // Repository and instructor names
 var model = {
+    // Remotes setup in the local repository
+    remotes: $('#remote-names').val().split(' '),
     // Name of the repository
     repo: function()           { return $("#repository").val(); },
     // Upstream url
     upstream: function()       { return "https://" + $('#upstream-host').val() + "/" + $('#upstream-user').val() + "/" + model.repo(); },
     // Who's the instructor?
     instructor: function(host) { return $("#instructor-" + host).val(); },
+    // Do we have this remote in the list?
+    hasRemote: function(name) { return model.remotes.indexOf(name) >= 0; },
 };
 
 // User information

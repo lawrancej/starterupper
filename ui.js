@@ -22,27 +22,31 @@ function updateCommands() {
     // Enter repository
     value += "\ncd " + model.repo();
     // Configure upstream
-    if ($("#cloned").val() != "true") {
+    if (!model.hasRemote('upstream')) {
         value += "\ngit remote add upstream \\";
         value += "\n" + model.upstream() + ".git";
     }
-    if (Bitbucket.existingUser()) {
+    if (Bitbucket.existingUser() && !model.hasRemote('bitbucket')) {
         value += "\ngit remote add bitbucket \\";
         value += "\ngit@bitbucket.org:" + ((Bitbucket.getUsername() == null) ? user.get("login") : Bitbucket.getUsername()) + "/" + model.repo() + ".git";
     }
     // Add origin
     var origin = host.getOrigin();
-    if (origin) {
+    if (origin && !model.hasRemote('origin')) {
         value += "\ngit remote add origin \\";
         value += "\ngit@" + origin.getHostname() + ":" + ((origin.getUsername() == null) ? user.get("login") : origin.getUsername()) + "/" + model.repo() + ".git";
     }
     
     // Configure remotes
     for (var key in Gitlab.collaborators) {
-        value += "\ngit remote add " + key + "-gitlab \\\ngit@gitlab.com:" + key + "/" + model.repo() + ".git";
+        if (!model.hasRemote(key + "-gitlab")) {
+            value += "\ngit remote add " + key + "-gitlab \\\ngit@gitlab.com:" + key + "/" + model.repo() + ".git";
+        }
     }
     for (var key in Github.collaborators) {
-        value += "\ngit remote add " + key + "-github \\\ngit@github.com:" + key + "/" + model.repo() + ".git";
+        if (!model.hasRemote(key + "-github")) {
+            value += "\ngit remote add " + key + "-github \\\ngit@github.com:" + key + "/" + model.repo() + ".git";
+        }
     }
     // Fetch everything
     value += "\ngit fetch --all";

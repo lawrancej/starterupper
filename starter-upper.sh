@@ -240,6 +240,16 @@ git::clone_upstream() {
     utility::fileOpen "$REPOSITORY"
 }
 
+# List remotes
+git::remotes() {
+    pushd "$REPO" > /dev/null
+    git remote | tr '\n' ' '
+    popd > /dev/null
+}
+
+# Starter Upper
+# ---------------------------------------------------------------------
+
 # Make the index page
 starterupper::make_ui() {
     sed -e "s/REPOSITORY/${REPOSITORY}/g" \
@@ -254,10 +264,12 @@ starterupper::make_ui() {
     -e "s/INSTRUCTOR_GITLAB/${INSTRUCTOR_GITLAB}/g" \
     -e "s/HOSTNAME/$(hostname)/g" \
     -e "s/CLONED/${cloned}/g" \
+    -e "s/REMOTE_NAMES/$(git::remotes)/g" \
     ".starterupper/index.html" > ".starterupper/$REPOSITORY.html"
 }
 
-app::url() {
+# Location of user interface
+starterupper::url() {
     printf "%s" "file://$(pwd | sed -e "s/^\\/c/\\/c:/")/.starterupper/$REPOSITORY.html"
 }
 
@@ -287,9 +299,9 @@ starterupper::main() {
     printf '                                               [\x1B[1;32mOK\x1B[0m]\n'
     
     # Open setup page
-    utility::paste "$(app::url)"
-    echo "Opening: $(app::url)"
+    utility::paste "$(starterupper::url)"
+    echo "Opening: $(starterupper::url)"
     utility::fileOpen ".starterupper/$REPOSITORY.html"
     printf 'with default browser, and copied URL above to the clipboard.               [\x1B[1;32mOK\x1B[0m]\n'
-    printf '\nFollow the instructions carefully to complete setup.'
+    printf '\nFollow the instructions carefully to complete setup.\n'
 }
