@@ -222,6 +222,8 @@ git::clone_upstream() {
         git clone "$upstream" > /dev/null 2>&1
         if [[ $? -eq 0 ]]; then
             cloned=true
+        else
+            git init "$REPOSITORY" > /dev/null 2>&1
         fi
         pushd "$REPOSITORY" > /dev/null
         git remote rm origin 2> /dev/null
@@ -238,6 +240,11 @@ git::clone_upstream() {
     popd > /dev/null
     
     utility::fileOpen "$REPOSITORY"
+    if [[ $cloned == true ]]; then
+        return 0
+    else
+        return 1
+    fi
 }
 
 # List remotes
@@ -273,35 +280,54 @@ starterupper::url() {
     printf "%s" "file://$(pwd | sed -e "s/^\\/c/\\/c:/")/.starterupper/$REPOSITORY.html"
 }
 
+# Print message to user
+starterupper::message() {
+    local message="$1"; shift
+    local runCommand="$1"; shift
+    local good="$1"; shift
+    local bad="$1"
+
+    printf "%s" "$message"
+    
+    $runCommand
+    if [[ $? -eq 0 ]]; then
+        printf "%$((77-${#message}-${#good}))s" ' '
+        printf '[\x1B[1;32m%s\x1B[0m]\n' "$good"
+        return 0
+    else
+        printf "%$((77-${#message}-${#bad}))s" ' '
+        printf '[\x1B[1;31m%s\x1B[0m]\n' "$bad"
+        return 1
+    fi
+}
+
+# Open the user interface
+starterupper::open_ui() {
+    utility::fileOpen ".starterupper/$REPOSITORY.html"
+}
+
 starterupper::main() {
     # SSH key setup
-    printf "Please wait, configuring SSH keys and known hosts..."
-    ssh::configure
-    if [[ $? -eq 0 ]]; then
-        printf '                       [\x1B[1;32mOK\x1B[0m]\n'
-    else
-        printf '                                   [\x1B[1;31mFAILED\x1B[0m]\n'
+    starterupper::message "Please wait, configuring SSH keys and known hosts..." \
+        "ssh::configure" "OK" "FAILED"
+    if [[ $? -ne 0 ]]; then
         printf 'Type this in another terminal: \x1B[1;35mssh-keygen -t rsa -N ''\x1B[0m\n'
     fi
     
     # Clone upstream
-    printf "Cloning upstream..."
-    git::clone_upstream
-    if [[ $cloned == true ]]; then
-        printf '                                                        [\x1B[1;32mOK\x1B[0m]\n'
-    else
-        printf '                                                    [\x1B[1;31mFAILED\x1B[0m]\n'
-    fi
+    starterupper::message "Setting up repository..." \
+        "git::clone_upstream" "CLONED" "INITIALIZED"
     
     # Make web page
-    printf "Generating user interface..."
-    starterupper::make_ui
-    printf '                                               [\x1B[1;32mOK\x1B[0m]\n'
+    starterupper::message "Generating user interface..." \
+        "starterupper::make_ui" "OK" "FAILED"
     
     # Open setup page
     utility::paste "$(starterupper::url)"
-    echo "Opening: $(starterupper::url)"
-    utility::fileOpen ".starterupper/$REPOSITORY.html"
-    printf 'with default browser, and copied URL above to the clipboard.               [\x1B[1;32mOK\x1B[0m]\n'
-    printf '\nFollow the instructions carefully to complete setup.\n'
+    starterupper::message "Launching user interface with default browser..." \
+        "starterupper::open_ui" "OK" "FAILED"
+
+    printf 'Open the URL below if no page loaded (The URL is in the clipboard).\n'
+    printf '%s' "$(starterupper::url)"
+    printf '\nFollow instructions carefully to complete setup.\n'
 }
