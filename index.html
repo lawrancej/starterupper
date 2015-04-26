@@ -68,20 +68,19 @@ function redirect() {
                 of a <em>working directory</em> over time in a <em>repository</em>.
                 To take a snapshot, <em>add</em> changes to the <em>staging area</em>,
                 then <em>commit</em>.
-                A <em>commit</em> stores timestamped staging area contents,
-                a descriptive message, references to ancestor commits,
-                the author's name, and email address.
+                A <em>commit</em> records the staging area with
+                a message, timestamp, author, and links to parent commits.
                 A commit's SHA1 hash identifies it and verifies integrity.
-                Making a commit does not submit work over the network.
+                Making a commit does not submit work.
             </p>
             <!-- Branching and merging -->
             <p>
                 Git history can split into separate timelines called
                 <em>branches</em>, and <i>merge</i> back together.
                 The default branch is <code>master</code>.
-                To see the working directory as it was in the past,
-                <em>checkout</em> a commit or a branch; <code>HEAD</code>
-                points at the checkout.
+                <em>Checkout</em> a commit or a branch
+                to see the working directory as it was (<code>HEAD</code>
+                points at the checkout).
                 During a <em>merge</em>, if two branches have different changes
                 to the same places in a file, fix these <em>conflicts</em>
                 manually or with a <em>merge tool</em>.
@@ -107,9 +106,8 @@ function redirect() {
             Setup git and project hosting
           </header>
             <p>
-                Join a project host and setup git
-                so that you can submit work, receive updates,
-                and the instructor can review work to give feedback.
+                Join a project host and setup git to submit work,
+                receive updates and feedback.
             </p>
           <!-- Profile -->
           <header>
@@ -117,12 +115,9 @@ function redirect() {
             <b>Profile</b>: Name, email, public key, photo
           </header>
           <p>
-            Git needs your name and email address to identify you,
-            so check it below.
-            Project hosts need your public SSH key to secure network
-            connections without passwords.
-            Project hosts use Gravatar to store profile pictures associated
-            with your school email address; please set it up to help the instructor learn names.
+            Confirm your name and school email address below.
+            Your public SSH key secures connections to project hosts without passwords.
+            Your Gravatar profile photo helps the instructor learn names.
           </p>
         <div class="grid_2 alpha">
             <a href="https://en.gravatar.com/gravatars/new"
@@ -163,14 +158,14 @@ function redirect() {
                 <a href="https://en.gravatar.com/connect/?source=_signup"
                 target="gravatar"
                 title="New to Gravatar? Join with your school email">
-                    <b>Join Gravatar</b></a> (New users only)
+                    Join Gravatar</a> (New users only)
             </li>
             <li class="no-gravatar-account">
                 <i class="fa fa-li fa-lg fa-envelope-o"></i>
                 <a href="https://en.gravatar.com/emails/new"
                 target="gravatar"
                 title="Already use Gravatar? Add and verify your school email">
-                    <b>Add school email</b></a> (Gravatar users)
+                    Add school email to account</a>
             </li>
             <li>
                 <i class="fa fa-li fa-lg fa-camera"></i>
@@ -231,7 +226,7 @@ git push --all origin</pre>
         <div class="grid_4">
             <header>
                 <i class="fa fa-cloud-download fa-fw fa-lg"></i>
-                <b>Receive updates</b> following these steps
+                <b>Receive updates</b> with these steps
             </header>
             <pre>cd ~/REPOSITORY
 git commit -am "Message goes here"
@@ -338,8 +333,8 @@ git mergetool</pre>
         </header>
         <div class="grid_6 alpha">
           <p>
-            Join a project host with your school email address, then check your
-            inbox.
+            Join a project host with your school email address,
+            then check your inbox.
             If you have an account already, add your school email address to it;
             <em>do not</em> join again.
             The project host will email a link that you must follow to
