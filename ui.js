@@ -54,7 +54,7 @@ function updateCommands() {
     value += "\ngit submodule update --init --recursive";
     // Push to origin
     if (origin) {
-        value += "\ngit push -u origin master\n";
+        value += "\ngit push -u origin master\n# Done";
     }
     $("#command-line").val(value);
 }
