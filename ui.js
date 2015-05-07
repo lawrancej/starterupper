@@ -51,6 +51,7 @@ function updateCommands() {
     // Fetch everything
     value += "\ngit fetch --all";
     value += "\ngit merge upstream/master";
+    value += "\ngit submodule update --init --recursive < /dev/null"
     // Push to origin
     if (origin) {
         value += "\ngit push -u origin master\n";
