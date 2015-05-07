@@ -40,7 +40,7 @@ function updateCommands() {
     // Configure remotes
     for (var key in Gitlab.collaborators) {
         if (!model.hasRemote(key + "-gitlab")) {
-            value += "\ngit remote add " + key + "-gitlab \\\ngit@gitlab.com:" + key + "/" + model.repo() + ".git";
+            value += "\ngit remote add " + key + "-gitlab \\\ngit@gitlab.com:" + key + "/" + model.repo().toLowerCase() + ".git";
         }
     }
     for (var key in Github.collaborators) {
