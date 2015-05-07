@@ -59,6 +59,25 @@ function updateCommands() {
     $("#command-line").val(value);
 }
 
+// Quick and dirty: get the platform (operating system)
+// Courtesy: http://stackoverflow.com/questions/11219582/how-to-detect-my-browser-version-and-operating-system-using-javascript
+function getPlatform() {
+    var platform="unknown";
+    if (navigator.appVersion.indexOf("Win")!=-1) platform="windows";
+    if (navigator.appVersion.indexOf("Mac")!=-1) platform="mac";
+    if (navigator.appVersion.indexOf("X11")!=-1) platform="linux";
+    if (navigator.appVersion.indexOf("Linux")!=-1) platform="linux";
+    return platform;
+}
+
+function showPlatform() {
+    $(".unknown").hide();
+    $(".windows").hide();
+    $(".mac").hide();
+    $(".linux").hide();
+    $("." + getPlatform()).show();
+}
+
 // Validate profile, outlining broken fields in red
 function validateUser() {
     var fields = [ user.name, user.email, user.key, user.gravatar ];
@@ -257,6 +276,7 @@ $(function() {
     // Show values from local storage, if available
     $("#name").val(user.get("name"));
     $("#email").val(user.get("email"));
+    showPlatform();
     updateView();
 });
 

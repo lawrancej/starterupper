@@ -677,9 +677,22 @@ git mergetool</pre>
             <input type="button" value="Setup git" id="local-setup-button" />
             -->
             <p>
-            Copy and paste commands below into Terminal or Git Bash to set up git,
-            local and remote repositories.
-            Press <code>Insert</code> to paste into Git Bash.
+            Copy and paste commands below into 
+            <span class="unknown">
+                <b>Git Bash</b> (Windows) or <b>Terminal</b> (Linux, Mac OS X) to finish setup.
+            </span>
+            <span class="windows">
+                <b>Git Bash</b> to finish setup: press <code>Insert</code> to paste
+                or right click the window title <i class="fa fa-long-arrow-right"></i> <code>Edit</code> <i class="fa fa-long-arrow-right"></i> <code>Paste</code>.
+            </span>
+            <span class="mac">
+                <b>Terminal</b> to finish setup:
+                press <code>Command</code>-<code>V</code> to paste.
+            </span>
+            <span class="linux">
+                <b>Terminal</b> to finish setup:
+                press <code>Control</code>-<code>Shift</code>-<code>V</code> to paste.
+            </span>
             </p>
             <textarea id="command-line" rows="20" cols="50" style="width:455px;" readonly>git config --global user.name "FULL_NAME"
 git config --global user.email USER_EMAIL
