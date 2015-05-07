@@ -42,14 +42,55 @@ var model = {
     hasRemote: function(name) { return model.remotes.indexOf(name) >= 0; },
 };
 
+// Workaround for moronic web browsers (i.e., IE)
+var localStorageWrapper = {
+    data: {},
+    setItem: function(key, value) {
+        try {
+            localStorage.setItem(key, value);
+        } catch (e) {
+            localStorageWrapper.data[key] = value;
+        }
+    },
+    getItem: function(key) {
+        try {
+            return localStorage.getItem(key);
+        } catch (e) {
+            return localStorageWrapper.data[key];
+        }
+    },
+    removeItem: function(key) {
+        try {
+            localStorage.removeItem(key);
+        } catch (e) {
+            delete localStorageWrapper.data[key];
+        }
+    },
+    hasOwnProperty: function(key) {
+        try {
+            return localStorage.hasOwnProperty(key);
+        } catch (e) {
+            return localStorageWrapper.data.hasOwnProperty(key);
+        }
+    }
+};
+
+var controller = {
+    // Show class and hide its opposite
+    update: function(klass, value) {
+        $(((value) ? "." : ".no-")+klass).show();
+        $(((value) ? ".no-" : ".")+klass).hide();
+        localStorageWrapper.setItem(klass, value);
+    },
+};
+
 // User information
 var user = {
   get: function(field) {
     if (user[field].isValid()) {
-        localStorage.setItem("User." + field, user[field].value());
-        return user[field].value();
+        localStorageWrapper.setItem("User." + field, user[field].value());
     }
-    return localStorage.getItem("User." + field);
+    return localStorageWrapper.getItem("User." + field);
   },
   login: {
     value: function() { return $("#login").val(); },
@@ -74,9 +115,15 @@ var user = {
     changed: function() { return $("#stored-email").val() != user.email.value(); },
   },
   gravatar : {
-    value: function() { return SparkMD5.hash(user.get("email")); },
-    changed: function() { return user.gravatar.value() != localStorage.getItem("Gravatar"); },
-    isValid: function() { return localStorage.hasOwnProperty("Gravatar"); },
+    value: function() {
+        try {
+            return SparkMD5.hash(user.get("email"));
+        } catch (e) {
+            return "";
+        }
+    },
+    changed: function() { return user.gravatar.value() != localStorageWrapper.getItem("Gravatar"); },
+    isValid: function() { return localStorageWrapper.hasOwnProperty("Gravatar"); },
     checkValid: function(callback) {
         if (user.gravatar.changed()) {
             $.ajax({
@@ -86,11 +133,11 @@ var user = {
                 processData: false,
                 url: 'https://en.gravatar.com/' + user.gravatar.value() + '.json',
                 success: function(response) {
-                    localStorage.setItem("Gravatar", user.gravatar.value());
+                    localStorageWrapper.setItem("Gravatar", user.gravatar.value());
                     callback(true);
                 },
                 error: function(response) {
-                    localStorage.removeItem("Gravatar");
+                    localStorageWrapper.removeItem("Gravatar");
                     callback(false);
                 }
             });
@@ -134,20 +181,20 @@ var Github = {
     
     // Are we signed in?
     authenticated: function () {
-        return localStorage.hasOwnProperty("Github.token") && localStorage.hasOwnProperty("Github.username");
+        return localStorageWrapper.hasOwnProperty("Github.token") && localStorageWrapper.hasOwnProperty("Github.username");
     },
     // Internal: used by API invoker
     getAuthorization: function () {
-        if (localStorage.hasOwnProperty("Github.token")) {
-            return "token " + localStorage.getItem("Github.token");
+        if (localStorageWrapper.hasOwnProperty("Github.token")) {
+            return "token " + localStorageWrapper.getItem("Github.token");
         } else {
             return "Basic " + btoa(Github.email + ":" + Github.password)
         }
     },
     // Return the Github user name
-    getUsername: function() { return localStorage.getItem("Github.username"); },
+    getUsername: function() { return localStorageWrapper.getItem("Github.username"); },
     // Is the user already already a user?
-    existingUser: function() { return localStorage.hasOwnProperty("Github.username"); },
+    existingUser: function() { return localStorageWrapper.hasOwnProperty("Github.username"); },
     
     repoURL: function() { return "https://github.com/" + Github.getUsername() + "/" + model.repo(); },
 
@@ -200,10 +247,10 @@ var Github = {
                 },
                 success: function (data) {
                     Github.badCredentials = false;
-                    localStorage.setItem("Github.token", data.token);
+                    localStorageWrapper.setItem("Github.token", data.token);
                     Github.getUser({
                         success: function (response) {
-                            localStorage.setItem("Github.username", response.login);
+                            localStorageWrapper.setItem("Github.username", response.login);
                             settings.authenticated();
                         }
                     });
@@ -226,7 +273,7 @@ var Github = {
     
     // Logout of Github
     logout: function() {
-        localStorage.removeItem('Github.token');
+        localStorageWrapper.removeItem('Github.token');
     },
     
     // Get email configuration given object with fields: email, verified, fail
@@ -480,16 +527,16 @@ var Gitlab = {
     collaborators : {},
     
     authenticated: function () {
-        return localStorage.hasOwnProperty("Gitlab.token") && localStorage.hasOwnProperty("Gitlab.username");
+        return localStorageWrapper.hasOwnProperty("Gitlab.token") && localStorageWrapper.hasOwnProperty("Gitlab.username");
     },
     getHostname: function() { return "gitlab.com"; },
     
     getAuthorization: function () {
-        return localStorage.getItem("Gitlab.token");
+        return localStorageWrapper.getItem("Gitlab.token");
     },
     
-    getUsername: function() { return localStorage.getItem("Gitlab.username"); },
-    existingUser: function() { return localStorage.hasOwnProperty("Gitlab.username"); },
+    getUsername: function() { return localStorageWrapper.getItem("Gitlab.username"); },
+    existingUser: function() { return localStorageWrapper.hasOwnProperty("Gitlab.username"); },
     repoURL: function() { return "https://gitlab.com/" + Gitlab.getUsername() + "/" + model.repo().toLowerCase(); },
 
     // Generic Gitlab API invoker
@@ -522,8 +569,8 @@ var Gitlab = {
                 dataType: "json",
                 data: { "email": Gitlab.email, "password": Gitlab.password },
                 success: function(response) {
-                    localStorage.setItem("Gitlab.username",response.username);
-                    localStorage.setItem("Gitlab.token",response.private_token);
+                    localStorageWrapper.setItem("Gitlab.username",response.username);
+                    localStorageWrapper.setItem("Gitlab.token",response.private_token);
                     
                     settings.authenticated();
                 },
@@ -536,7 +583,7 @@ var Gitlab = {
     },
     
     logout: function() {
-        localStorage.removeItem('Gitlab.token');
+        localStorageWrapper.removeItem('Gitlab.token');
     },
     
     shareKey: function(settings) {

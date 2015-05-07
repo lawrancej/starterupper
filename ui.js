@@ -154,15 +154,6 @@ function updateView(event) {
     updateCommands();
 };
 
-var controller = {
-    // Show class and hide its opposite
-    update: function(klass, value) {
-        $(((value) ? "." : ".no-")+klass).show();
-        $(((value) ? ".no-" : ".")+klass).hide();
-        localStorage.setItem(klass, value);
-    },
-};
-
 $( "#name" ).on( "change", updateView );
 $( "#email" ).on( "change", updateView );
 $( "#github-password" ).on( "change", updateView );
