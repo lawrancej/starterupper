@@ -82,9 +82,11 @@ function showPlatform() {
 function validateUser() {
     var fields = [ user.name, user.email, user.key, user.gravatar ];
     var id = [ "#name", "#email", "#public-key", "#gravatar" ];
+    var klass = ["input-full-name", "input-email", "input-key", "input-gravatar" ];
     var i;
     var allValid = true;
     for (i = 0; i < fields.length; i++) {
+        controller.update(klass[i], fields[i].isValid());
         if (fields[i].isValid()) {
             $(id[i]).removeAttr('style');
             allValid = false;
@@ -227,6 +229,14 @@ $('#otp').keypress(function (e) {
   if (e.which == 13) {
     GithubSignin(e);
   }
+});
+
+// Observe validation
+$('#name').keypress(function (e) {
+  validateUser();
+});
+$('#email').keypress(function (e) {
+  validateUser();
 });
 
 function GitlabSignin(event) {

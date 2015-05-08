@@ -131,20 +131,23 @@ function redirect() {
         <div class="grid_4 omega">
           <ul class="fa-ul" style="margin-left: 0px;">
             <li>
-                <i class="fa fa-li fa-lg fa-user"></i>
+                <i class="fa fa-li fa-lg fa-user input-full-name"></i>
+                <i class="fa fa-li fa-lg fa-warning no-input-full-name error"></i>
                 <input id="name" type="text" name="name" value="FULL_NAME"
                 placeholder="Full name" pattern="[^ ]+( [^ ]+)+" required
                 title="Your full name (first and last name)" autocomplete="on" />
             </li>
             <li>
-                <i class="fa fa-li fa-lg fa-envelope-o"></i>
+                <i class="fa fa-li fa-lg fa-envelope-o input-email"></i>
+                <i class="fa fa-li fa-lg fa-warning no-input-email error"></i>
                 <input id="email" type="email" name="email" value="USER_EMAIL"
                 placeholder="School email address" required autofocus
                 autocomplete="on"
                 title="Your school email address (ends with .edu)" />
             </li>
             <li>
-                <i class="fa fa-li fa-lg fa-key"></i>
+                <i class="fa fa-li fa-lg fa-key input-key"></i>
+                <i class="fa fa-li fa-lg fa-warning no-input-key error"></i>
                 <input id="public-key" type="text" value="PUBLIC_KEY" readonly
                 placeholder="ERROR: public SSH key unset" pattern="ssh-rsa .*"
                 title="Your public SSH key secures connections without passwords" />

@@ -88,6 +88,10 @@ input[type="email"] { width:180px; }
 input[type="password"] { width:120px; }
 .js #javascript-warning {display: none;}
 
+.no-input-full-name { display: none; }
+.no-input-email { display: none; }
+.no-input-key { display: none; }
+
 /* The script may replace these values */
 .github-two-factor { display: none; }
 .github-email-verified { display: none; }
