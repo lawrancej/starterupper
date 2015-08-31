@@ -537,7 +537,7 @@ var Gitlab = {
     
     getUsername: function() { return localStorageWrapper.getItem("Gitlab.username"); },
     existingUser: function() { return localStorageWrapper.hasOwnProperty("Gitlab.username"); },
-    repoURL: function() { return "https://gitlab.com/" + Gitlab.getUsername() + "/" + model.repo().toLowerCase(); },
+    repoURL: function() { return "https://gitlab.com/" + Gitlab.getUsername() + "/" + model.repo(); },
 
     // Generic Gitlab API invoker
     invoke: function (settings) {
@@ -674,7 +674,7 @@ var Gitlab = {
     // Create repository
     createRepo: function(settings) {
         Gitlab.invoke({
-            url: "/projects/" + Gitlab.getUsername() + "%2F" + model.repo().toLowerCase(),
+            url: "/projects/" + Gitlab.getUsername() + "%2F" + model.repo(),
             method: "GET",
             data: {},
             // If the repo is created already, we're done
@@ -705,7 +705,7 @@ var Gitlab = {
             data: {},
             success: function(response) {
                 for (var i = 0; i < response.length; i++) {
-                    if (response[i].path == model.repo().toLowerCase()) {
+                    if (response[i].path == model.repo()) {
                         if (response[i].namespace.path in Gitlab.collaborators) {
                             return;
                         }
@@ -725,7 +725,7 @@ var Gitlab = {
     
     // Add collaborator
     addCollaborator: function(settings) {
-        var url = "/projects/" + Gitlab.getUsername() + "%2F" + model.repo().toLowerCase() + "/members";
+        var url = "/projects/" + Gitlab.getUsername() + "%2F" + model.repo() + "/members";
         Gitlab.getUserByName({
             user: settings.collaborator,
             success: function(response) {
@@ -733,7 +733,7 @@ var Gitlab = {
                     method: "PUT",
                     "url": url,
                     data: {
-                        "id": Gitlab.getUsername() + "%2F" + model.repo().toLowerCase(),
+                        "id": Gitlab.getUsername() + "%2F" + model.repo(),
                         "user_id": response[0].id,
                         // See: https://gitlab.com/help/permissions/permissions
                         "access_level": 30 // Developer
