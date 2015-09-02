@@ -686,6 +686,7 @@ var Gitlab = {
                     method: "POST",
                     data: {
                         name: model.repo(),
+                        "path": model.repo(),
                         "public": false,
                         visibility_level: 0
                         // you could also set the import_url so something public
