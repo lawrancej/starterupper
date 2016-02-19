@@ -7,22 +7,27 @@ hosts, assists in setting up project hosting accounts, and
 creates a private repository shared only with the instructor.
 For instructors, Starter Upper collects the class roster to fetch student work.
 
-== Step 1. Install Git and frontends
-[[install-git]]
-Windows:: http://sourceforge.net/projects/gitextensions/[Install Git Extensions]
-+
-NOTE: Install MsysGit, Install KDiff, and *choose OpenSSH* (not PuTTY); otherwise,
-stick to the default settings.
-+
-image:http://lawrancej.github.io/starterupper/images/what2install.png[Install MsysGit and KDiff]
-image:http://lawrancej.github.io/starterupper/images/openssh.png[Choose OpenSSH]
+== Step 1. Install Git
+Download and install git for your platform.
 
-Mac OS X:: http://rowanj.github.io/gitx/[Install GitX-dev], then https://developer.apple.com/xcode/downloads/[Install XCode developer tools] which ships with git (recommended) or http://git-scm.com/download/mac[install git from here].
+[cols="1a,2a"]
+|===
+|*Download*
+|*Installation Notes*
 
-Linux:: http://git-scm.com/download/linux[Install git] using your package manager.
-http://sourceforge.net/projects/qgit/[QGit, a git frontend] may also be available for your distribution.
-+
-NOTE: Don't forget to use +sudo+ with your package manager.
+|https://git-scm.com/download/win[Git for Windows]
+|Stick with the default options and click `Next` until finished.
+
+|http://git-scm.com/download/mac[Git for Mac OS X]
+|Got an error? Try:
+
+* Apple menu -> System Preferences... -> Security & Privacy -> Open Anyway.
+* Otherwise, try: Command Space (Spotlight Search) -> Terminal and type `git` and follow instructions to install git.
+
+|http://git-scm.com/download/linux[Git for Linux]
+|Use `sudo` with your package manager.
+
+|===
 
 == Step 2. Faculty instructions
 

@@ -22,7 +22,7 @@ if ( !Date.prototype.toISOString ) {
   }() );
 }
 
-// btoa (worry about this) IE10+ 
+// btoa (worry about this) IE10+
 // see: https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#The_.22Unicode_Problem.22
 
 // Methods with an object parameter often require two callbacks in an object:
@@ -152,9 +152,9 @@ var user = {
 var Bitbucket = {
     getUsername: function() { return $('#bitbucket-login').val(); },
     repoURL: function() { return "https://bitbucket.org/" + Bitbucket.getUsername() + "/" + model.repo(); },
-    existingUser: function() { return Bitbucket.getUsername() != ""; },
+    existingUser: function() { return Bitbucket.getUsername() !== ""; },
     getHostname: function() { return "bitbucket.org"; }
-}
+};
 
 // Github wrapper
 var Github = {
@@ -168,17 +168,17 @@ var Github = {
     nameShared: false,
     keyShared: false,
     repoCreated: false,
-    
+
     // Use email to authenticate (because nobody remembers their username)
     email: "",
     // Self-explanatory
     password: "",
     // One Time Password for Two-factor authentication
     otp: "",
-    
+
     // Collaborator set (a map of collaborators names to github.com)
     collaborators : {},
-    
+
     // Are we signed in?
     authenticated: function () {
         return localStorageWrapper.hasOwnProperty("Github.token") && localStorageWrapper.hasOwnProperty("Github.username");
@@ -188,14 +188,14 @@ var Github = {
         if (localStorageWrapper.hasOwnProperty("Github.token")) {
             return "token " + localStorageWrapper.getItem("Github.token");
         } else {
-            return "Basic " + btoa(Github.email + ":" + Github.password)
+            return "Basic " + btoa(Github.email + ":" + Github.password);
         }
     },
     // Return the Github user name
     getUsername: function() { return localStorageWrapper.getItem("Github.username"); },
     // Is the user already already a user?
     existingUser: function() { return localStorageWrapper.hasOwnProperty("Github.username"); },
-    
+
     repoURL: function() { return "https://github.com/" + Github.getUsername() + "/" + model.repo(); },
 
     // Generic Github API invoker (used internally)
@@ -218,7 +218,7 @@ var Github = {
             processData: ("wwwForm" in settings),
             success: settings.success,
             error: settings.fail
-        }
+        };
         if (JSON.stringify(settings.data) !== "{}" && request.contentType === "application/json") {
             request.data = JSON.stringify(settings.data);
         } else if (request.contentType !== "application/json") {
@@ -227,7 +227,7 @@ var Github = {
         $.ajax(request);
     },
 
-    // Login to Github given object with username, password, otp, and 
+    // Login to Github given object with username, password, otp, and
     // function callbacks: authenticated, badCredential, twoFactor
     login: function (settings) {
         // username could be the email or Github username
@@ -270,19 +270,19 @@ var Github = {
             });
         }
     },
-    
+
     // Logout of Github
     logout: function() {
         localStorageWrapper.removeItem('Github.token');
     },
-    
+
     // Get email configuration given object with fields: email, verified, fail
     // verified is function(bool)
     getEmail: function(settings) {
         Github.invoke({
             url: "/user/emails", method: "GET", data: {},
             success: function (response) {
-                for (index in response) {
+                for (var index in response) {
                     if (response[index].email == settings.email) {
                         settings.success(response[index].verified);
                         return;
@@ -291,7 +291,7 @@ var Github = {
             },
         });
     },
-    
+
     // Get user name given object with fields: success, fail
     getUser: function(settings) {
         Github.invoke({
@@ -300,7 +300,7 @@ var Github = {
             fail: settings.fail
         });
     },
-    
+
     // Set user name given object with fields: data, success, fail
     setUser: function(settings) {
         Github.invoke({
@@ -310,14 +310,14 @@ var Github = {
             fail: settings.fail
         });
     },
-    
+
     // Share key given object with fields: key, title, success, fail
     shareKey: function(settings) {
         if (!user.key.isValid()) return;
         Github.invoke({
             url: "/user/keys", method: "GET", data: {},
             success: function(response) {
-                for (index in response) {
+                for (var index in response) {
                     if (response[index].key == settings.key) {
                         settings.success(response);
                         return;
@@ -348,10 +348,10 @@ var Github = {
         // Onboarding/authentication status
         settings.callback("github-onboard", !Github.existingUser());
         settings.callback('github-authenticated', Github.authenticated());
-    
+
         if (Github.authenticated()) {
             // Nag the user if they're not on an upgraded plan
-            if (!Github.upgraded) { 
+            if (!Github.upgraded) {
                 Github.getUser({
                     success: function(response) {
                         Github.upgraded = response.plan.name.toLowerCase() != "free";
@@ -417,7 +417,7 @@ var Github = {
             });
         }
     },
-    
+
     // Make repository private given object with success and fail callbacks
     privateRepo: function(settings) {
         var url = "/repos/" + Github.getUsername() + "/" + model.repo();
@@ -446,7 +446,7 @@ var Github = {
             }
         });
     },
-    
+
     // Populate collaborator set given object with a page integer and success, fail callbacks.
     getCollaborators: function(settings) {
         Github.invoke({
@@ -525,16 +525,16 @@ var Gitlab = {
     password: "",
     // Collaborator set (a map of collaborators names to github.com)
     collaborators : {},
-    
+
     authenticated: function () {
         return localStorageWrapper.hasOwnProperty("Gitlab.token") && localStorageWrapper.hasOwnProperty("Gitlab.username");
     },
     getHostname: function() { return "gitlab.com"; },
-    
+
     getAuthorization: function () {
         return localStorageWrapper.getItem("Gitlab.token");
     },
-    
+
     getUsername: function() { return localStorageWrapper.getItem("Gitlab.username"); },
     existingUser: function() { return localStorageWrapper.hasOwnProperty("Gitlab.username"); },
     repoURL: function() { return "https://gitlab.com/" + Gitlab.getUsername() + "/" + model.repo(); },
@@ -571,7 +571,7 @@ var Gitlab = {
                 success: function(response) {
                     localStorageWrapper.setItem("Gitlab.username",response.username);
                     localStorageWrapper.setItem("Gitlab.token",response.private_token);
-                    
+
                     settings.authenticated();
                 },
                 error: function(response) {
@@ -581,11 +581,11 @@ var Gitlab = {
             });
         }
     },
-    
+
     logout: function() {
         localStorageWrapper.removeItem('Gitlab.token');
     },
-    
+
     shareKey: function(settings) {
         if (!user.key.isValid()) return;
         Gitlab.invoke({
@@ -594,7 +594,7 @@ var Gitlab = {
             data: {},
             success: function(response) {
                 settings.success(response);
-                for (index in response) {
+                for (var index in response) {
                     if (response[index].key == settings.key) {
                         settings.success(response);
                         return;
@@ -615,7 +615,7 @@ var Gitlab = {
             fail: settings.fail
         });
     },
-    
+
     getUser: function(settings) {
         Gitlab.invoke({
             url: "/user",
@@ -625,7 +625,7 @@ var Gitlab = {
             fail: settings.fail
         });
     },
-    
+
     // Find a user by name
     getUserByName: function(settings) {
         Gitlab.invoke({
@@ -643,7 +643,7 @@ var Gitlab = {
         settings.callback('gitlab-authenticated', Gitlab.authenticated());
         if (Gitlab.authenticated()) {
             // Nag the user if they didn't share their name or email
-            if (!Gitlab.nameShared || !Gitlab.emailVerified) { 
+            if (!Gitlab.nameShared || !Gitlab.emailVerified) {
                 Gitlab.getUser({
                     success: function(response) {
                         Gitlab.nameShared = response.name == settings.name;
@@ -719,11 +719,11 @@ var Gitlab = {
         });
     },
 
-    
+
     privateRepo: function(settings) {
         settings.success();
     },
-    
+
     // Add collaborator
     addCollaborator: function(settings) {
         var url = "/projects/" + Gitlab.getUsername() + "%2F" + model.repo() + "/members";
@@ -746,7 +746,7 @@ var Gitlab = {
             fail: settings.fail
         });
     },
-    
+
     // Create repository, add collaborator, and make private, given object with
     // callback function(key, bool) to update view
     setupRepo: function (settings) {
@@ -776,7 +776,7 @@ var host = {
     // Get origin host (Prefer Github, then Gitlab, then Bitbucket)
     getOrigin: function() {
         var hosts = [ Github, Gitlab, Bitbucket ];
-        
+
         for (var i = 0; i < hosts.length; i++) {
             if (hosts[i].existingUser()) {
                 return hosts[i];
