@@ -703,13 +703,10 @@ var Gitlab = {
         Gitlab.invoke({
             method: "GET",
             url: "/projects",
-            data: {},
+            data: {search: model.repo()},
             success: function(response) {
                 for (var i = 0; i < response.length; i++) {
                     if (response[i].path == model.repo()) {
-                        if (response[i].namespace.path in Gitlab.collaborators) {
-                            return;
-                        }
                         Gitlab.collaborators[response[i].namespace.path] = response[i].owner.name;
                     }
                 }
