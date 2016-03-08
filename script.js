@@ -728,7 +728,7 @@ var Gitlab = {
             user: settings.collaborator,
             success: function(response) {
                 Gitlab.invoke({
-                    method: "PUT",
+                    method: "POST",
                     "url": url,
                     data: {
                         "id": Gitlab.getUsername() + "%2F" + model.repo(),

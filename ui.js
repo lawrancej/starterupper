@@ -11,7 +11,7 @@ function updateCommands() {
     }
     // Create public/private SSH keypair
     if (!user.key.isValid()) {
-        value += "printf \"\\n\" | ssh-keygen -t rsa -N ''\n"
+        value += "printf \"\\n\" | ssh-keygen -t rsa -N ''\n";
     }
     // Enter home directory
     value += "cd ~";
@@ -28,15 +28,15 @@ function updateCommands() {
     }
     if (Bitbucket.existingUser() && !model.hasRemote('bitbucket')) {
         value += "\ngit remote add bitbucket \\";
-        value += "\ngit@bitbucket.org:" + ((Bitbucket.getUsername() == null) ? user.get("login") : Bitbucket.getUsername()) + "/" + model.repo() + ".git";
+        value += "\ngit@bitbucket.org:" + ((Bitbucket.getUsername() === null) ? user.get("login") : Bitbucket.getUsername()) + "/" + model.repo() + ".git";
     }
     // Add origin
     var origin = host.getOrigin();
     if (origin && !model.hasRemote('origin')) {
         value += "\ngit remote add origin \\";
-        value += "\ngit@" + origin.getHostname() + ":" + ((origin.getUsername() == null) ? user.get("login") : origin.getUsername()) + "/" + model.repo() + ".git";
+        value += "\ngit@" + origin.getHostname() + ":" + ((origin.getUsername() === null) ? user.get("login") : origin.getUsername()) + "/" + model.repo() + ".git";
     }
-    
+
     // Configure remotes
     for (var key in Gitlab.collaborators) {
         if (!model.hasRemote(key + "-gitlab")) {
@@ -51,7 +51,7 @@ function updateCommands() {
     // Fetch everything
     value += "\ngit fetch --all";
     value += "\ngit merge upstream/master";
-    value += "\ngit submodule update --init --recursive < /dev/null"
+    value += "\ngit submodule update --init --recursive < /dev/null";
     // Push to origin
     if (origin) {
         value += "\ngit push -u origin master\n";
@@ -172,7 +172,7 @@ function updateView(event) {
         },
         fail: function() {}
     });
-    
+
     updateCommands();
 };
 
